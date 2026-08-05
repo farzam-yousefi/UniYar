@@ -4,7 +4,10 @@
 
 desktop.ini
 Desktop.ini
-/core/config.php
+
+# Config
+
+core/config.php
 # Composer
 /vendor/
 
