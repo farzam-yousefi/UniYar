@@ -1,0 +1,19 @@
+#RewriteOptions inherit
+RewriteEngine On
+
+# ==========================
+# MVC Routing
+# ==========================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# ==========================
+# Allow fonts to be loaded from other origins
+# ==========================
+<IfModule mod_headers.c>
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>

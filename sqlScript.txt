@@ -1,0 +1,42 @@
+Database: MariaDB 10.4
+Engine: InnoDB
+Charset: utf8mb4
+Collation: utf8mb4_unicode_ci
+Timezone: Asia/Tehran
+Soft Delete: فعلاً استفاده نمی‌شود
+Primary Key: INT UNSIGNED AUTO_INCREMENT
+-----------------------
+$password = password_hash($password, PASSWORD_DEFAULT);
+password_verify($password, $hashedPassword);
+-----------------
+UPDATE admins
+SET last_login_at = NOW()
+WHERE id = ?;
+-------------------
+INSERT INTO settings (setting_key, setting_value) VALUES
+('site_name', 'UniYar'),
+('phone', ''),
+('email', ''),
+('telegram', ''),
+('whatsapp', ''),
+('instagram', ''),
+('address', ''),
+('footer_text', 'تمامی حقوق محفوظ است.');
+----------------
+class Model_Settings extends Model
+{
+    public function get($key)
+    {
+        $sql = "SELECT setting_value
+                FROM settings
+                WHERE setting_key = :key
+                LIMIT 1";
+
+        $stmt = self::$conn->prepare($sql);
+        $stmt->execute([
+            ':key' => $key
+        ]);
+
+        return $stmt->fetchColumn();
+    }
+}

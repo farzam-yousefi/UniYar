@@ -1,0 +1,212 @@
+/*==============================
+order Form
+==============================*/
+/*==============================
+order Wrapper
+==============================*/
+
+.order-wrapper{
+
+    padding:30px 0 80px;
+
+}
+
+/*==============================
+Card
+==============================*/
+
+.order-card{
+
+    max-width:1200px;
+
+    margin:auto;
+
+    background:#FFFFFF;
+
+    border:1px solid #E8ECEF;
+
+    border-radius:28px;
+
+    box-shadow:
+            0 12px 35px rgba(16,42,67,.05);
+
+    overflow:hidden;
+
+}
+
+
+.order-form{
+
+    padding:48px;
+
+    background:#fff;
+
+    border:1px solid #E8ECEF;
+
+    border-radius:24px;
+
+    padding:48px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.04);
+
+}
+
+.form-section{
+
+    margin-bottom:30px;
+
+}
+
+.form-section:last-child{
+
+    margin-bottom:35px;
+
+}
+
+.form-section-title{
+
+    position:relative;
+
+    color:#17335C;
+
+    font-size:1.35rem;
+
+    font-weight:700;
+
+    margin-bottom:32px;
+
+    padding-bottom:14px;
+
+}
+
+.form-section-title::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:0;
+
+    right:0;
+
+    width:75px;
+
+    height:4px;
+
+    border-radius:20px;
+
+    background:#0EA47A;
+
+}
+
+/*----------------*/
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    color:#17335C;
+
+    font-weight:600;
+
+    margin-bottom:10px;
+
+}
+
+/*----------------*/
+
+.form-control-custom,
+.form-select-custom{
+
+    width:100%;
+
+    min-height:56px;
+
+    border:1px solid #E5E7EB;
+
+    border-radius:16px;
+
+    padding:14px 18px;
+
+    transition:.25s;
+
+    background:#fff;
+
+}
+
+.form-control-custom::placeholder{
+
+    color:#A0AEC0;
+
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus{
+
+    outline:none;
+
+    border-color:#0EA47A;
+
+    box-shadow:0 0 0 4px rgba(14,164,122,.12);
+
+}
+
+textarea.form-control-custom{
+
+    resize:none;
+
+    min-height:200px;
+
+    padding-top:18px;
+
+}
+
+/*----------------*/
+
+.form-check{
+
+    margin-top:10px;
+
+}
+
+.form-check-label{
+
+    color:#5E6E82;
+
+}
+
+/*==============================
+Responsive
+==============================*/
+
+@media (max-width:991.98px){
+
+    .order-form{
+
+        padding:36px;
+
+    }
+
+}
+
+@media (max-width:767.98px){
+
+    .order-form{
+
+        padding:26px;
+
+    }
+
+    .form-section{
+
+        margin-bottom:40px;
+
+    }
+
+}

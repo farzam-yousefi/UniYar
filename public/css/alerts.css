@@ -1,0 +1,31 @@
+/*==========================================
+SweetAlert
+==========================================*/
+
+.swal2{
+
+    border-radius:18px;
+
+}
+
+.swal2-title{
+
+    color:#17335C;
+
+    font-weight:700;
+
+}
+
+.swal2-text{
+
+    color:#6B7280;
+
+    line-height:2;
+
+}
+
+.swal2-icon{
+
+    transform: scale(.75);
+
+}

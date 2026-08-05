@@ -1,0 +1,285 @@
+/*==================================
+Portfolio Card
+==================================*/
+
+.portfolio-card{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    border:2px solid transparent;
+
+    transition:.35s;
+
+    height:100%;
+
+}
+
+.portfolio-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+.portfolio-card img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+}
+
+.portfolio-body{
+
+    padding:24px;
+
+}
+
+.portfolio-body h5{
+
+    color:#17335C;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
+
+.portfolio-body p{
+
+    color:#6B7280;
+
+    line-height:1.9;
+
+    min-height:70px;
+
+}
+
+/*==================================
+Category Badge
+==================================*/
+
+.portfolio-category{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-bottom:14px;
+
+}
+
+
+/*==================================
+Programming
+==================================*/
+
+.card-programming{
+
+    border-color:#0EA47A;
+
+    background:#F5FCF9;
+
+}
+
+.card-programming .portfolio-category{
+
+    background:#E6F8F0;
+
+    color:#0EA47A;
+
+}
+
+.card-programming .portfolio-meta-theme i{
+
+    color:#18A66E;
+
+}
+
+
+/*==================================
+Website
+==================================*/
+
+.card-website{
+
+    border-color:#F59E0B;
+
+    background:#FFF9E8;
+
+}
+
+.card-website .portfolio-category{
+
+    background: #e8dcbf;
+
+    color:#D97706;
+
+}
+
+.card-website .portfolio-meta-theme i{
+
+    color:#D9A404;
+
+}
+
+
+/*==================================
+Database
+==================================*/
+
+.card-database{
+
+    border-color:#8B5CF6;
+
+    background:#F8F6FF;
+
+}
+
+.card-database .portfolio-category{
+
+    background:#EEE9FF;
+
+    color:#7C3AED;
+
+}
+
+.card-database .portfolio-meta-theme i{
+
+    color:#7B61FF;
+
+}
+/*==================================
+FILTERS
+==================================*/
+
+.filter-btn {
+
+    border: 1px solid #D7DEE5;
+
+    background: #fff;
+
+    color: #17335C;
+
+    border-radius: 30px;
+
+    padding: 9px 18px;
+
+    transition: .25s;
+
+    font-weight: 600;
+
+}
+
+.filter-btn:hover {
+
+    background: #F5FCF9;
+
+}
+
+.filter-btn.active {
+
+    background: #18A66E;
+
+    border-color: #18A66E;
+
+    color: #fff;
+
+}
+
+
+
+.filter-programming.active{
+
+    background:#18A66E!important;
+
+    border-color:#18A66E!important;
+
+    color:#fff!important;
+
+}
+
+.filter-website.active{
+
+    background:#F59E0B!important;
+
+    border-color:#F59E0B!important;
+
+    color:#fff!important;
+
+}
+
+.filter-database.active{
+
+    background:#7B61FF!important;
+
+    border-color:#7B61FF!important;
+
+    color:#fff!important;
+
+}
+
+.portfolio-filter .nav-link:hover{
+
+    background:#F4FBF8;
+
+    border-color:#0EA47A;
+
+    color:#0EA47A;
+
+}
+/*==================================
+Portfolio Animation
+==================================*/
+
+.portfolio-item{
+
+    transition:
+            opacity .25s ease,
+            transform .35s ease;
+
+}
+
+.portfolio-item.fade-out{
+
+    opacity:0;
+
+    transform:translateY(18px) scale(.96);
+
+}
+
+.portfolio-item.hide{
+
+    display:none!important;
+
+}
+
+.portfolio-item.fade-in{
+
+    opacity:0;
+
+    transform:translateY(18px) scale(.96);
+
+}
+
+.portfolio-item.show{
+
+    opacity:1;
+
+    transform:translateY(0) scale(1);
+
+}
+

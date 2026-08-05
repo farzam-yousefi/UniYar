@@ -1,0 +1,95 @@
+.form-control-custom {
+
+    width: 100%;
+
+    height: 46px;
+
+    border: 1px solid #DCE3EA;
+
+    border-radius: 12px;
+
+    padding: 0 14px;
+
+    background: #fff;
+
+    transition: .25s;
+
+}
+
+.form-control-custom:focus {
+
+    border-color: #0EA47A;
+
+    box-shadow: 0 0 0 3px rgba(14, 164, 122, .12);
+
+    outline: none;
+
+}
+
+select.form-control-custom {
+
+    cursor: pointer;
+
+}
+
+/*========================================
+  Statistics
+  ========================================*/
+
+.stat-card {
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .05);
+
+}
+
+.stat-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: #fff;
+
+    font-size: 1.5rem;
+
+}
+
+.stat-card h6 {
+
+    margin: 0;
+
+    color: #7B8794;
+
+    font-size: .9rem;
+
+}
+
+.stat-card h3 {
+
+    margin-top: 8px;
+
+    color: #17335C;
+
+    font-weight: 700;
+
+}

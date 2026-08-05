@@ -1,0 +1,144 @@
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('../fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('../fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+    font-weight: 700;
+}
+
+body {
+    font-family: Vazirmatn, sans-serif;
+    background: #F7F9FC;}
+
+.btn-main {
+    background: #0ea47a;
+    color: #fff;
+    border-radius: 50px
+}
+.btn-main:hover {
+    background: #0e754b;
+    color: #fff;
+    border-radius: 50px
+}
+.btn-main-cancel {
+    background: #6a7982;
+    color: #fff;
+    border-radius: 50px
+}
+
+.btn-main-cancel:hover {
+    background:#DC3545;
+    color:#fff;
+    border-color:#DC3545;
+}
+
+a.nonLink{
+    text-decoration: none;
+    color: white;
+}
+/* ======================
+   Shared Section Styles
+====================== */
+
+.section-badge{
+
+    display:inline-block;
+
+    padding:8px 18px;
+
+    background:#E8FAF4;
+
+    color:#0EA47A;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.section-title{
+
+    color:#17335C;
+
+    font-weight:800;
+
+    line-height:1.5;
+
+}
+
+.section-desc{
+
+    color:#6B7280;
+
+    max-width:700px;
+
+    margin:18px auto 0;
+
+    line-height:2;
+
+}
+
+.text-justify{
+
+    text-align: justify;
+
+    text-align-last: right;
+
+    line-height: 2.1;
+
+}
+
+.hero-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    background:#EAF8F3;
+
+    color:#0EA47A;
+
+    padding:8px 18px;
+
+    border-radius:50px;
+
+    font-weight:600;
+
+    font-size:.95rem;
+
+}
+
+.hero-title{
+
+    color:#17335C;
+
+    font-size:2.5rem;
+
+    font-weight:800;
+
+    line-height:1.5;
+
+}
+
+.hero-desc{
+
+    color:#667085;
+
+    font-size:1.1rem;
+
+    line-height:2.1;
+
+}
+
+.hero-image{
+
+    max-width:540px;
+
+}
+

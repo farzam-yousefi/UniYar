@@ -1,0 +1,27 @@
+# IDE
+.idea/
+.vscode/
+
+desktop.ini
+Desktop.ini
+/core/config.php
+# Composer
+/vendor/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Cache
+/cache/

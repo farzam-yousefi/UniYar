@@ -1,0 +1,197 @@
+/*==================================================
+Admin Layout
+==================================================*/
+
+body{
+
+    background:#F6F8FB;
+
+    font-family:IRANSansX;
+
+}
+
+.admin-layout{
+
+    display:flex;
+
+    min-height:calc(100vh - 72px);
+
+}
+
+/*==================================================
+Sidebar
+==================================================*/
+
+.admin-sidebar{
+
+    width:270px;
+
+    background:#17335C;
+
+    color:#fff;
+
+    position:sticky;
+
+    top:72px;
+
+    height:calc(100vh - 72px);
+
+    overflow-y:auto;
+
+}
+
+.admin-menu{
+
+    list-style:none;
+
+    margin:0;
+
+    padding:25px 15px;
+
+}
+
+.admin-menu li{
+
+    margin-bottom:8px;
+
+}
+
+.admin-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 18px;
+
+    color:#DDE7F3;
+
+    text-decoration:none;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+}
+
+.admin-menu a:hover{
+
+    background:#244675;
+
+    color:#fff;
+
+}
+
+.admin-menu a.active{
+
+    background:#0EA47A;
+
+    color:#fff;
+
+}
+
+.admin-menu i{
+
+    font-size:1.2rem;
+
+}
+
+/*==================================================
+Content
+==================================================*/
+
+.admin-content{
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+/*==================================================
+Footer
+==================================================*/
+
+.admin-footer{
+
+    background:#fff;
+
+    border-top:1px solid #E8ECEF;
+
+    height:55px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#7A8797;
+
+    font-size:.9rem;
+
+}
+
+/*==================================================
+Responsive
+==================================================*/
+
+@media(max-width:992px){
+
+    .admin-sidebar{
+
+        position:fixed;
+
+        right:-270px;
+
+        transition:.3s;
+
+        z-index:1200;
+
+    }
+
+    .admin-sidebar.show{
+
+        right:0;
+
+    }
+
+    .admin-content{
+
+        padding:25px;
+
+    }
+    .panelTitle{
+        display: none;
+    }
+
+}
+
+/* Desktop */
+
+.sidebar-toggle{
+
+    display:none;
+
+}
+
+/* Mobile */
+
+@media(max-width:992px){
+
+    .sidebar-toggle{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+    }
+    .panelTitle{
+        display: none;
+    }
+
+}

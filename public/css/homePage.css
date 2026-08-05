@@ -1,0 +1,303 @@
+
+/* ================= hero-services ================= */
+
+.hero {
+    background: linear-gradient(
+            180deg,
+            #F8FBFF 0%,
+            #F2F9F8 100%
+    );
+    padding: 80px 0
+}
+
+.badge-soft {
+    background: #e7faf4;
+    color: #0ea47a;
+    padding: .5rem 1rem;
+    border-radius: 30px
+}
+
+.service-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    padding: 24px;
+    transition: .25s;
+    height: 100%
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08)
+}
+
+.service-card i {
+    font-size: 2rem;
+    color: #0ea47a
+}
+
+/*==========================
+    Why UniYar
+==========================*/
+
+.why-section{
+
+    background:#F8FAFC;
+
+}
+
+.section-title{
+
+    color:#17335C;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.section-subtitle{
+
+    color:#6B7280;
+
+    max-width:650px;
+
+    margin:auto;
+
+    line-height:1.9;
+
+}
+
+.why-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:35px 25px;
+
+    text-align:center;
+
+    transition:.3s;
+
+    border:1px solid #E5E7EB;
+
+}
+
+.why-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.why-icon{
+
+    width:75px;
+
+    height:75px;
+
+    background:#E8FAF4;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:22px;
+
+}
+
+.why-icon i{
+
+    color:#0EA47A;
+
+    font-size:30px;
+
+}
+
+.why-card h5{
+
+    color:#17335C;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.why-card p{
+
+    color:#6B7280;
+
+    line-height:2;
+
+    margin:0;
+
+}
+
+/*========== Responsive ==========*/
+
+@media(max-width:768px){
+
+    .why-card{
+
+        padding:28px 20px;
+
+    }
+
+}
+
+/*==========================
+    Portfolio
+==========================*/
+
+.portfolio-section{
+
+    background:#ffffff;
+
+}
+
+.portfolio-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:1px solid #E5E7EB;
+
+    transition:.3s;
+
+    height:100%;
+
+}
+
+.portfolio-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 12px 28px rgba(0,0,0,.08);
+
+}
+
+.portfolio-image{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+}
+
+.portfolio-body{
+
+    padding:25px;
+
+}
+
+.portfolio-category{
+
+    display:inline-block;
+
+    background:#E8FAF4;
+
+    color:#0EA47A;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+}
+
+.portfolio-body h5{
+
+    color:#17335C;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.portfolio-body p{
+
+    color:#6B7280;
+
+    line-height:1.9;
+
+    min-height:60px;
+
+}
+
+.portfolio-tech{
+
+    display:flex;
+
+    gap:8px;
+
+    flex-wrap:wrap;
+
+}
+
+.portfolio-tech span{
+
+    background:#F3F4F6;
+
+    color:#555;
+
+    padding:6px 12px;
+
+    border-radius:15px;
+
+    font-size:13px;
+
+}
+
+.btn-outline-main{
+
+    border:2px solid #0EA47A;
+
+    color:#0EA47A;
+
+    padding:10px 30px;
+
+    border-radius:30px;
+
+    transition:.3s;
+
+    text-decoration:none;
+
+}
+
+.btn-outline-main:hover{
+
+    background:#0EA47A;
+
+    color:#fff;
+
+}
+
+/*========== Responsive ==========*/
+
+@media(max-width:768px){
+
+    .portfolio-image{
+
+        height:200px;
+
+    }
+
+}

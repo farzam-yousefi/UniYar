@@ -1,0 +1,282 @@
+
+.navbar {
+
+    background: #F8FBFF;
+    border-bottom:1px solid #E8EEF5;
+
+    box-shadow:0 2px 15px rgba(16,42,67,.05);
+    padding: 8px 0;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    display: block;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: .25s;
+}
+
+.nav-link:hover {
+    color: #0ea47a;
+}
+
+.btn-main {
+    background: #0ea47a;
+    color: #fff;
+    border-radius: 50px;
+
+}
+.btn-outline-main {
+    border-color: #0b8a67;
+    border-radius: 50px;
+
+}
+.btn-outline-main :hover {
+   background: #0EA47A;
+
+}
+
+.btn-main:hover {
+    background: #0b8a67;
+    color: #fff;
+}
+
+/*==============================
+Outline Button
+==============================*/
+
+.btn-outline-main{
+
+    border:2px solid #0EA47A;
+
+    color:#0EA47A;
+
+    background:#fff;
+
+    border-radius:50px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.btn-outline-main:hover{
+
+    background:#0EA47A;
+
+    color:#fff;
+
+    border-color:#0EA47A;
+
+}
+
+.btn-outline-main:focus{
+
+    box-shadow:0 0 0 .25rem rgba(14,164,122,.2);
+
+}
+
+.modal-body{
+    /*width: 450px;*/
+    justify-content: center;
+    align-items: center;
+
+}
+
+/*#trackingStep1{*/
+   /**/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+ /**/
+/*}*/
+
+/* ---------- Tablet ---------- */
+
+@media (max-width:991.98px){
+
+    .navbar-collapse{
+
+        text-align:center;
+        padding-top:20px;
+
+    }
+
+    .navbar-nav{
+
+        gap:8px !important;
+
+    }
+
+    .btn-main ,.btn-outline-main{
+
+        display:inline-block;
+        margin-top:20px;
+
+    }
+
+}
+
+
+/*==============================
+Mobile Navbar
+==============================*/
+
+@media (max-width:991.98px){
+
+    .navbar>.container{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:space-between;
+
+    }
+
+    .navbar-toggler{
+
+        order:1;
+
+        margin:0;
+
+    }
+
+    .navbar-brand{
+
+        order:2;
+
+        margin:0;
+
+    }
+
+}
+/*==================================
+Mobile Menu Alignment
+===================================*/
+
+@media (max-width:991.98px){
+
+    /* کل منوی باز شده */
+    .navbar-collapse{
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        text-align:right;
+        padding-top:20px;
+    }
+
+    /* لیست منو */
+    .navbar-nav{
+        width:100%;
+        margin:0 !important;
+        align-items:flex-start;
+    }
+
+    .navbar-nav .nav-item{
+        width:100%;
+    }
+
+    .navbar-nav .nav-link{
+        display:block;
+        width:100%;
+        text-align:right;
+        padding:14px 0;
+    }
+
+    /* دکمه ثبت درخواست */
+    .navbar-collapse .btn-main{
+        margin-top:20px;
+        align-self:flex-start;
+    }
+
+}
+@media (max-width:991.98px){
+
+    .navbar{
+        position:relative;
+    }
+
+    .navbar-brand{
+        position:relative;
+        z-index:1051;
+    }
+
+    .navbar-toggler{
+        position:relative;
+        z-index:1051;
+    }
+
+    .navbar-collapse{
+
+        position:absolute;
+        top:100%;
+        right:0;
+        width:100%;
+
+        background:#F8FBFF;
+
+        padding:20px;
+
+        border-top:1px solid #E8EEF5;
+        box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+        z-index:1050;
+    }
+
+}
+
+/*==============================
+Tracking Result Items
+==============================*/
+
+.tracking-item{
+
+    background:#fff;
+
+    border:1px solid #E8ECEF;
+
+    border-radius:14px;
+
+    padding:16px 18px;
+
+    text-align:right;
+
+    height:100%;
+
+}
+
+.tracking-item strong{
+
+    display:block;
+
+    color:#17335C;
+
+    margin-bottom:8px;
+
+    font-weight:700;
+
+}
+
+.tracking-item span{
+
+    color: #b3c3cc;
+
+}
+
+/*==============================
+Buttons
+==============================*/
+
+.tracking-actions{
+
+    margin-top:30px;
+
+    display:flex;
+
+    justify-content:flex-end;   /* دکمه در سمت چپ */
+
+}
