@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="public/css/header.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/header.css">
 <body>
 
 <header>
@@ -19,8 +19,8 @@
             </button>
 
             <!-- Logo -->
-            <a class="navbar-brand" href="index">
-                <img src="public/images/logo.png" alt="logo" class="logo">
+            <a class="navbar-brand" href="<?= URL ?>index">
+                <img src="<?= URL ?>public/images/logo.png" alt="logo" class="logo">
             </a>
 
 
@@ -29,22 +29,22 @@
 
                 <ul class="navbar-nav mx-lg-auto gap-lg-3">
 
-                    <li class="nav-item"><a class="nav-link" href="index">خانه</a></li>
-                    <li class="nav-item"><a class="nav-link" href="service">خدمات</a></li>
-                    <li class="nav-item"><a class="nav-link" href="portfolio">نمونه‌کارها</a></li>
-                    <li class="nav-item"><a class="nav-link" href="faq">سوالات متداول</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about">درباره ما</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact">تماس با ما</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>index">خانه</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>service">خدمات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>portfolio">نمونه‌کارها</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>faq">سوالات متداول</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>about">درباره ما</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= URL ?>contact">تماس با ما</a></li>
 
                 </ul>
                 <div class="d-flex gap-2 mt-3 mt-lg-0">
-                <a class="btn btn-main px-4" href="order">
+                <a class="btn btn-main p-3" href="<?= URL ?>order">
                     ثبت درخواست
                 </a>
                     <button
                             type="button"
 
-                            class="btn btn-outline-main px-4"
+                            class="btn btn-outline-main p-3"
 
                             data-bs-toggle="modal"
                             data-bs-target="#trackingModal">
@@ -124,7 +124,7 @@ Tracking Request Modal
                         جستجو
 
                     </button>
-                    <a  class="nonLink" href="order/edit/24">
+                    <a  class="nonLink" href="<?= URL ?>order/edit/24">
                     <button
                             type="button"
                             id="trackingSearchBtn"

@@ -482,7 +482,7 @@ Hero
             <div class="col-lg-6 text-center">
 
                 <img
-                        src="public/images/order/order-hero.png"
+                        src="<?= URL ?>public/images/order/order-hero.png"
                         class="img-fluid hero-image"
                         alt="ثبت درخواست">
 

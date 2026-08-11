@@ -9,7 +9,7 @@ class Payment
 
     function __construct()
     {
-        require('public/lib/nuSoap/nusoap.php');
+        require('<?= URL ?>public/lib/nuSoap/nusoap.php');
     }
 
     function zarinpalRequest($Amount, $Description, $Email, $Mobile,$callback)

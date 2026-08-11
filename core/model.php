@@ -6,12 +6,12 @@ class Model
 
     function __construct()
     {
-
-
         $attr = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
         self::$conn = new PDO('mysql:host=' . SERVERNAME . ';dbname=' . DBNAME, USERNAME, PASSWORD, $attr);
         self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
+
+
     public function lastInsertId()
     {
         return self::$conn->lastInsertId();
@@ -22,64 +22,67 @@ class Model
 
 
 
-    function create_thumbnail($file, $pathToSave = '', $w="", $h = '', $crop = FALSE)
-    {
+//    function create_thumbnail($file, $pathToSave = '', $w="", $h = '', $crop = FALSE)
+//    {
+//
+//        $new_height = $h;
+//
+//        list($width, $height) = getimagesize($file);
+//
+//        $r = $width / $height;
+//
+//        if ($crop) {
+//            if ($width > $height) {
+//                $width = ceil($width - ($width * abs($r - $w / $h)));
+//            } else {
+//                $height = ceil($height - ($height * abs($r - $w / $h)));
+//            }
+//            $newwidth = $w;
+//            $newheight = $h;
+//        } else {
+//            if ($w / $h > $r) {
+//                $newwidth = $h * $r;
+//                $newheight = $h;
+//            } else {
+//                $newheight = $w / $r;
+//                $newwidth = $w;
+//            }
+//        }
+//
+//        $what = getimagesize($file);
+//
+//        switch (strtolower($what['mime'])) {
+//            case 'image/png':
+//                $src = imagecreatefrompng($file);
+//
+//                break;
+//            case 'image/jpeg':
+//                $src = imagecreatefromjpeg($file);
+//                break;
+//            case 'image/gif':
+//                $src = imagecreatefromgif($file);
+//                break;
+//            default:
+//                //die();
+//        }
+//
+//        if ($new_height != '') {
+//            $newheight = $new_height;
+//        }
+//
+//        $dst = imagecreatetruecolor($newwidth, $newheight);//the new image
+//        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);//az function
+//
+//        imagejpeg($dst, $pathToSave, 95);//pish farz in tabe 75 darsad quality ast
+//
+//        return $dst;
+//
+//
+//    }
 
-        $new_height = $h;
-
-        list($width, $height) = getimagesize($file);
-
-        $r = $width / $height;
-
-        if ($crop) {
-            if ($width > $height) {
-                $width = ceil($width - ($width * abs($r - $w / $h)));
-            } else {
-                $height = ceil($height - ($height * abs($r - $w / $h)));
-            }
-            $newwidth = $w;
-            $newheight = $h;
-        } else {
-            if ($w / $h > $r) {
-                $newwidth = $h * $r;
-                $newheight = $h;
-            } else {
-                $newheight = $w / $r;
-                $newwidth = $w;
-            }
-        }
-
-        $what = getimagesize($file);
-
-        switch (strtolower($what['mime'])) {
-            case 'image/png':
-                $src = imagecreatefrompng($file);
-
-                break;
-            case 'image/jpeg':
-                $src = imagecreatefromjpeg($file);
-                break;
-            case 'image/gif':
-                $src = imagecreatefromgif($file);
-                break;
-            default:
-                //die();
-        }
-
-        if ($new_height != '') {
-            $newheight = $new_height;
-        }
-
-        $dst = imagecreatetruecolor($newwidth, $newheight);//the new image
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);//az function
-
-        imagejpeg($dst, $pathToSave, 95);//pish farz in tabe 75 darsad quality ast
-
-        return $dst;
-
-
-    }
-
+    /* ======================
+       SESSIONS
+    ====================== */
     public static function sessionInit()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -107,7 +110,6 @@ class Model
         unset($_SESSION[$name]);
     }
 
-
     public static function isAdminLoggedIn()
     {
         if(isset($_SESSION['adminId']))
@@ -127,12 +129,17 @@ class Model
     }
 
 
+
     public static function isActiveMenu($route)
     {
         $url = isset($_GET['url']) ? trim($_GET['url'], '/') : '';
 
         return (strpos($url, $route) === 0) ? 'active' : '';
     }
+
+    /* ======================
+   JALALI/MILADI
+====================== */
 
     public static function miladiDate($format = 'Y - m - d')
     {
@@ -181,40 +188,9 @@ class Model
         return $date;
     }
 
-    public static function cleanInput($input)
-    {
-        $search = array(
-            '@<script[^>]*?>.*?</script>@si', // Strip out javascript
-            '@<[\/\!]*?[^<>]*?>@si', // Strip out HTML tags
-            '@<style[^>]*?>.*?</style>@siU', // Strip style tags properly
-            '@<![\s\S]*?--[ \t\n\r]*>@' // Strip multi-line comments
-        );
-        $output = preg_replace($search, '', $input);
-        return $output;
-    }
-    /**
-     * Clean project technical description.
-     * Preserves line breaks while removing HTML tags.
-     */
-    public static function cleanTechDescription($text)
-    {
-        // Remove HTML tags
-        $text = strip_tags($text);
 
-        // Normalize line endings
-        $text = str_replace(["\r\n", "\r"], "\n", $text);
 
-        // Remove invisible control characters except \n and \t
-        $text = preg_replace('/[^\P{C}\n\t]/u', '', $text);
 
-        // Trim each line
-        $lines = array_map('trim', explode("\n", $text));
-
-        // Remove empty lines at beginning/end
-        $text = trim(implode("\n", $lines));
-
-        return $text;
-    }
 //Data sanitizing
 //    public static function sanitize($input)
 //    {
@@ -231,21 +207,11 @@ class Model
 //        }
 //        return $output;
 //    }
-    public static function sanitize($input)
-    {
-        if (is_array($input)) {
-
-            foreach ($input as $key => $value) {
-                $input[$key] = self::sanitize($value);
-            }
-
-            return $input;
-        }
-
-        return trim(self::cleanInput($input));
-    }
 
 
+    /* ======================
+       CRUD OPERATIONS
+    ====================== */
     function myFetch($sql,$param=[],$typeFetch=3){
         $stmt=self::$conn->prepare($sql);
         foreach ($param as $key=>$val){
@@ -288,6 +254,10 @@ class Model
         $stmt->execute();
     }
 
+
+    /* ======================
+   PICCCC
+====================== */
     public static function uploadFile($file, $dir, $allowFormat,$maxMeg=2,$name="")
     {
         $fileName = $file['name'];
@@ -349,9 +319,6 @@ class Model
         }
         return $img or $pdf or $vid;
     }
-
-
-
     public static function is_image($path)
     {
         $a = getimagesize($path);
@@ -371,8 +338,8 @@ class Model
 
 
     function phpMailer($toMail,$htmlMsg,$textMsg,$subject,$fromMail="info@selectpersia.com",$passFromMail="Mehdijd+select4820*1374*",$nameFromMail="Select Persia Company"){
-        require_once('public/lib/PHPMailer/class.smtp.php');
-        require_once('public/lib/PHPMailer/class.phpmailer.php');
+        require_once('<?= URL ?>public/lib/PHPMailer/class.smtp.php');
+        require_once('<?= URL ?>public/lib/PHPMailer/class.phpmailer.php');
         $mail=new SMTP();
         $mail=new PHPMailer();
         $mail->isSMTP();
@@ -397,6 +364,57 @@ class Model
 //        }
         $mail->smtpClose();
     }
+
+
+    /* ======================
+ inputs cleaning
+====================== */
+    public static function cleanInput($text)
+    {
+        $text = strip_tags($text);
+
+        $text = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $text);
+
+        return $text;
+    }
+    /**
+     * Clean project technical description.
+     * Preserves line breaks while removing HTML tags.
+     */
+    public static function cleanTechDescription($text)
+    {
+        // Remove HTML tags
+        $text = strip_tags($text);
+
+        // Normalize line endings
+        $text = str_replace(["\r\n", "\r"], "\n", $text);
+
+        // Remove invisible control characters except \n and \t
+        $text = preg_replace('/[^\P{C}\n\t]/u', '', $text);
+
+        // Trim each line
+        $lines = array_map('trim', explode("\n", $text));
+
+        // Remove empty lines at beginning/end
+        $text = trim(implode("\n", $lines));
+
+        return $text;
+    }
+
+    public static function sanitize($input)
+    {
+        if (is_array($input)) {
+
+            foreach ($input as $key => $value) {
+                $input[$key] = self::sanitize($value);
+            }
+
+            return $input;
+        }
+
+        return trim(self::cleanInput($input));
+    }
+
     static function remove_special_character($string) {
         $t = $string;
         $specChars = array(
@@ -420,6 +438,25 @@ class Model
         }
         return $t;
     }
+
+    public static function convert2english($string) {
+        $newNumbers = range(0, 9);
+        // 1. Persian HTML decimal
+        $persianDecimal = array('&#1776;', '&#1777;', '&#1778;', '&#1779;', '&#1780;', '&#1781;', '&#1782;', '&#1783;', '&#1784;', '&#1785;');
+        // 2. Arabic HTML decimal
+        $arabicDecimal = array('&#1632;', '&#1633;', '&#1634;', '&#1635;', '&#1636;', '&#1637;', '&#1638;', '&#1639;', '&#1640;', '&#1641;');
+        // 3. Arabic Numeric
+        $arabic = array('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩');
+        // 4. Persian Numeric
+        $persian = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+
+        $string =  str_replace($persianDecimal, $newNumbers, $string);
+        $string =  str_replace($arabicDecimal, $newNumbers, $string);
+        $string =  str_replace($arabic, $newNumbers, $string);
+        return str_replace($persian, $newNumbers, $string);
+    }
+
+
     static function randomString()
     {
         $characters = '0123456789ab6c0d1e1f5g2h7i5j7kl88mdkn7n6op4qrs3tuvw2xy44z';
@@ -429,6 +466,8 @@ class Model
         }
         return $randstring;
     }
+
+
     public static function deleteDir($dirPath) {
         if (is_file($dirPath)){
             unlink($dirPath);
@@ -451,23 +490,6 @@ class Model
         }
 
     }
-    public static function convert2english($string) {
-        $newNumbers = range(0, 9);
-        // 1. Persian HTML decimal
-        $persianDecimal = array('&#1776;', '&#1777;', '&#1778;', '&#1779;', '&#1780;', '&#1781;', '&#1782;', '&#1783;', '&#1784;', '&#1785;');
-        // 2. Arabic HTML decimal
-        $arabicDecimal = array('&#1632;', '&#1633;', '&#1634;', '&#1635;', '&#1636;', '&#1637;', '&#1638;', '&#1639;', '&#1640;', '&#1641;');
-        // 3. Arabic Numeric
-        $arabic = array('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩');
-        // 4. Persian Numeric
-        $persian = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
-
-        $string =  str_replace($persianDecimal, $newNumbers, $string);
-        $string =  str_replace($arabicDecimal, $newNumbers, $string);
-        $string =  str_replace($arabic, $newNumbers, $string);
-        return str_replace($persian, $newNumbers, $string);
-    }
-
 }
 
 

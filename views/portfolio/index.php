@@ -118,7 +118,7 @@ Portfolio Grid
 
                     <div class="portfolio-card card-programming">
 
-                        <img src="public/images/portfolio/project1.jpg">
+                        <img src="<?= URL ?>public/images/portfolio/project1.jpg">
 
                         <div class="portfolio-body">
 
@@ -172,7 +172,7 @@ Portfolio Grid
 
                     <div class="portfolio-card card-website">
 
-                        <img src="public/images/portfolio/project2.jpg">
+                        <img src="<?= URL ?>public/images/portfolio/project2.jpg">
 
                         <div class="portfolio-body">
 
@@ -227,7 +227,7 @@ Portfolio Grid
 
                     <div class="portfolio-card card-database">
 
-                        <img src="public/images/portfolio/project3.jpg">
+                        <img src="<?= URL ?>public/images/portfolio/project3.jpg">
 
                         <div class="portfolio-body">
 

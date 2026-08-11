@@ -83,7 +83,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                         اگر برای انتخاب موضوع پروژه، مسیر یادگیری،
                         فناوری مناسب یا حتی برنامه‌ریزی تردید دارید،
-                        مشاوران متخصص یونیار در کنر شما هستند تا بتوانید بر اساس شرایط خودتان، بهترین تصمیم را بگیرید.
+                        مشاوران متخصص یونیار در کنار شما هستند تا بتوانید بر اساس شرایط خودتان، بهترین تصمیم را بگیرید.
 
                     </p>
 
@@ -188,7 +188,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
                 <div class="col-lg-6 text-center order-1 order-lg-2">
 
                     <img
-                            src="public/images/services/consult-hero.png"
+                            src="<?= URL ?>public/images/services/consult-hero.png"
                             class=" hero-image"
                             alt="مشاوره آموزشی">
 

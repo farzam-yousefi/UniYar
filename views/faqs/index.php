@@ -384,7 +384,7 @@ FAQ Hero
 
             <div class="col-lg-6 text-center order-1 order-lg-2">
 
-                <img src="public/images/faq/hero-faq.png"
+                <img src="<?= URL ?>public/images/faq/hero-faq.png"
                      alt="FAQ"
                      class="img-fluid faq-image">
 
@@ -469,7 +469,7 @@ FAQ CTA
 
             </p>
 
-            <a href="contact"
+            <a href="<?= URL ?>contact"
 
                class="btn">
 

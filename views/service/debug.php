@@ -181,7 +181,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                 <div class="col-lg-6 text-center order-1 order-lg-2">
 
-                    <img src="public/images/services/debug-hero.png"
+                    <img src="<?= URL ?>public/images/services/debug-hero.png"
                          class="img-fluid hero-image"
                          alt="رفع اشکال">
 

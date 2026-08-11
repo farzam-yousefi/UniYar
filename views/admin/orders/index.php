@@ -501,19 +501,19 @@ Page
 
                                 <td>
 
-                                    <a href="admin/orders/details/4" class="table-action">
+                                    <a href="<?= URL ?>admin/orders/details/4" class="table-action">
 
                                         <i class="bi bi-eye"></i>
 
                                     </a>
 
-                                    <a href="admin/orders/edit/4" class="table-action">
+                                    <a href="<?= URL ?>admin/orders/edit/4" class="table-action">
 
                                         <i class="bi bi-pencil-square"></i>
 
                                     </a>
 
-                                    <a href="admin/orders/delete/4" class="table-action text-danger">
+                                    <a href="<?= URL ?>admin/orders/delete/4" class="table-action text-danger">
 
                                         <i class="bi bi-trash"></i>
 

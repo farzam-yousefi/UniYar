@@ -189,36 +189,35 @@ Portfolio Header
 
     }
 
-
-    .portfolio-dates-row,.portfolio-bottom-row{
+    .portfolio-dates-row, .portfolio-bottom-row {
 
         align-items: center;
 
-        display:flex;
+        display: flex;
 
-        justify-content:space-between;
+        justify-content: space-between;
 
-        margin:18px 0;
+        margin: 18px 0;
 
     }
 
-    .date-title-deliver{
+    .date-title-deliver {
         padding-left: 15px;
     }
 
-    .date-title i{
+    .date-title i {
 
-        color:#D9A404;
+        color: #D9A404;
 
-        font-size:16px;
+        font-size: 16px;
 
     }
 
-    .date-value{
+    .date-value {
 
-        color:#6B7280;
+        color: #6B7280;
 
-        font-size:15px;
+        font-size: 15px;
 
     }
 
@@ -346,8 +345,6 @@ Portfolio Header
 
     @media (max-width: 992px) {
 
-
-
         .toolbar-wrapper {
 
             flex-direction: column;
@@ -409,10 +406,66 @@ Portfolio Header
 
         }
 
-
     }
 </style>
 
+<?php if (isset($_SESSION['alert-resultOperation'])): ?>
+    <script>
+        <?php if ($_SESSION['alert-resultOperation']){
+        if ($_SESSION['operation'] === "add"){
+        ?>
+
+        myAlert.success(
+            "عملیات موفق",
+            "نمونه کار با موفقیت ثبت شد."
+        );
+        <?php
+        }else{
+        ?>
+
+        myAlert.success(
+            "عملیات موفق",
+            "نمونه کار با موفقیت ویرایش شد."
+        );
+        <?php
+        }}
+        else{ ?>
+
+        myAlert.error(
+            "عملیات ناموفق",
+            "ثبت نمونه کار با خطا مواجه شد."
+        );
+
+        <?php }
+        $_SESSION['alert-resultOperation'] = null;
+        $_SESSION['operation'] = null;
+        ?>
+    </script>
+
+<?php endif; ?>
+<?php
+require_once 'core/const.php';
+
+if (isset($data['portfolios'])) {
+    $portfolios = $data['portfolios'];
+    $totalCount= $data['totalCount'];
+    $competedCount=$data['completedCount'];
+    $inProgressCount=$totalCount-$competedCount;
+    foreach ($portfolios as &$portfolio) {
+
+        $portfolio['started_date'] =
+            Helper::MiladiTojalili((string)$portfolio['started_date'], '-');
+
+        $portfolio['completed_date'] =
+            Helper::MiladiTojalili((string)$portfolio['completed_date'], '-');
+    }
+
+    unset($portfolio);
+} else
+    $portfolios = [];
+
+
+?>
 <title>نمونه کارها</title>
 <div class="admin-layout">
 
@@ -443,25 +496,25 @@ Portfolio Header
                     </p>
 
                 </div>
-                <div class="flex-items gap-1" >
-                <a href="<?= URL ?>admin/portfolios/sort"
+                <div class="flex-items gap-1">
+                    <a href="<?= URL ?>admin/portfolios/sort"
 
-                   class="btn btn-main">
+                       class="btn btn-main">
 
-                    <i class="bi bi-sort-down-alt ms-2"></i>
+                        <i class="bi bi-sort-down-alt ms-2"></i>
 
-                     ترتیب نمایش
+                        ترتیب نمایش
 
-                </a>
-                <a href="<?= URL ?>admin/portfolios/add"
+                    </a>
+                    <a href="<?= URL ?>admin/portfolios/add"
 
-                   class="btn btn-main">
+                       class="btn btn-main">
 
-                    <i class="bi bi-plus-circle ms-2"></i>
+                        <i class="bi bi-plus-circle ms-2"></i>
 
-                    افزودن نمونه کار
+                        افزودن نمونه کار
 
-                </a>
+                    </a>
                 </div>
             </div>
 
@@ -472,9 +525,10 @@ Portfolio Header
             <div class="row g-3">
 
                 <div class="col-lg-4 col-md-6 stats">
-                    <a href="<?= URL ?>admin/portfolio"
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/all"
 
-                       class="stat-card">
+                       class="stat-card static-filter"
+                    >
 
                 <span>
 
@@ -484,16 +538,16 @@ Portfolio Header
 
                         <h3>
 
-                            28
+                            <?= $totalCount ?? 0 ?>
 
                         </h3>
 
                     </a>
                 </div>
                 <div class="col-lg-4 col-md-6 stats">
-                    <a href="<?= URL ?>admin/portfolio?status=published"
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/COMPLETED"
 
-                       class="stat-card">
+                       class="stat-card static-filter">
 
                 <span>
 
@@ -503,7 +557,8 @@ Portfolio Header
 
                         <h3>
 
-                            24
+                            <?= $competedCount ?? 0 ?>
+
 
                         </h3>
 
@@ -512,9 +567,9 @@ Portfolio Header
                 <div class="col-lg-4 col-md-6 stats">
 
 
-                    <a href="<?= URL ?>admin/portfolio?status=draft"
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/IN_PROGRESS"
 
-                       class="stat-card">
+                       class="stat-card static-filter">
 
                     <span>
 
@@ -524,749 +579,523 @@ Portfolio Header
 
                         <h3>
 
-                            4
+                            <?= $inProgressCount ?? 0 ?>
+
 
                         </h3>
 
                     </a>
                 </div>
-                <!--==============================
-                Toolbar
-                ==============================-->
+            </div>
+            <!--==============================
+            Toolbar
+            ==============================-->
 
-                <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-sm border-0 m-4">
 
-                    <div class="card-body toolbar-wrapper">
+                <div class="card-body toolbar-wrapper">
 
-                        <div class="portfolio-filter">
+                    <div class="portfolio-filter">
 
-                            <button class="filter-btn active filter-btn"
-                                    data-filter="all">
+                        <button class="filter-btn active"
+                                id="all-btn" data-filter="all">
 
-                                همه
+                            همه
 
-                            </button>
+                        </button>
 
-                            <button class="filter-btn filter-website"
+                        <button class="filter-btn filter-website"
 
-                                    data-filter="website">
+                                data-filter="website">
 
-                                وبسایت
+                            وب سایت
 
-                            </button>
+                        </button>
 
-                            <button class="filter-btn filter-database"
+                        <button class="filter-btn filter-database"
 
-                                    data-filter="database">
+                                data-filter="database">
 
-                                پایگاه داده
+                            پایگاه داده
 
-                            </button>
+                        </button>
 
-                            <button class="filter-btn filter-programming"
+                        <button class="filter-btn filter-programming"
 
-                                    data-filter="programming">
+                                data-filter="programming">
 
-                                برنامه نویسی
+                            برنامه نویسی
 
-                            </button>
-
-                        </div>
-
-
-                        <div class="portfolio-sortCats">
-
-                            <label>
-
-                                مرتب سازی
-
-                            </label>
-                            <div>
-
-                                <select class="form-control-custom">
-
-                                    <option>
-
-                                        جدیدترین
-
-                                    </option>
-
-                                    <option>
-
-                                        قدیمی‌ترین
-
-                                    </option>
-
-                                    <option>
-
-                                        پربازدیدترین
-
-                                    </option>
-
-                                </select>
-                            </div>
-
-                        </div>
+                        </button>
 
                     </div>
 
-                </div>
 
+                    <div class="portfolio-sortCats">
 
-                <!--==============================
-                Portfolio Grid
-                ==============================-->
+                        <label>
 
-                <div class="portfolio-grid">
+                            مرتب سازی
 
+                        </label>
+                        <div>
 
-                    <!--==============================
-                    Website
-                    ==============================-->
-                    <div class="portfolio-item website">
-                        <div class="portfolio-card card-website"
+                            <select class="form-control-custom" id="portfolio-sort">
 
-                             data-category="website">
+                                <option value="newest">
 
-                            <img src="<?= URL ?>public/images/portfolio/sample1.jpg">
+                                    جدیدترین
 
+                                </option>
 
-                            <div class="portfolio-body">
+                                <option value="oldest">
 
-                             <span class="portfolio-category">
+                                    قدیمی‌ترین
 
-                               وبسایت
+                                </option>
 
-                             </span>
+                                <option value="displayOrder">
 
-                                <div class="portfolio-title-desc">
-                                    <h5>
-                                        طراحی فروشگاه اینترنتی
-                                    </h5>
-                                    <p>
-                                        طراحی و پیاده‌سازی فروشگاه اینترنتی با پنل مدیریت، درگاه پرداخت و سیستم
-                                        سفارشات.
+                                    اولویت نمایش
 
-                                    </p>
-                                </div>
+                                </option>
 
-
-
-                                    <div class="portfolio-dates-row portfolio-meta-theme">
-
-                                        <div class="date-item">
-
-                                            <div class="date-title">
-
-                                                <i class="bi bi-calendar-plus"></i>
-
-                                                <span>ثبت:</span>
-
-                                            </div>
-
-                                            <div class="date-value">
-
-                                                1405/08/12
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="date-item">
-
-                                            <div class="date-title-deliver">
-
-                                                <i class="bi bi-calendar-check"></i>
-
-                                                <span>تحویل:</span>
-
-                                            </div>
-
-                                            <div class="date-value">
-
-                                                1405/10/02
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                <div class="portfolio-bottom-row">
-
-                                    <a href="https://example.com"
-                                       target="_blank"
-                                       class="portfolio-link">
-
-                                        <i class="bi bi-link-45deg"></i>
-
-                                        مشاهده پروژه
-
-                                    </a>
-
-                                    <span class="badge bg-success">
-
-                                     منتشر شده
-
-                                  </span>
-
-                                </div>
-                                <div class="portfolio-switches">
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            فعال
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_active"
-
-                                                    checked>
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            ممتاز
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_featured">
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="portfolio-footer">
-
-                                <a href="<?= URL ?>admin/portfolios/edit/15">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                    ویرایش
-
-                                </a>
-
-
-                                <a href="#"
-
-                                   class="text-danger">
-
-                                    <i class="bi bi-trash"></i>
-
-                                    حذف
-
-                                </a>
-
-                            </div>
-
+                            </select>
                         </div>
-                    </div>
 
-                    <!--==============================
-                    Database
-                    ==============================-->
-                    <div class="portfolio-item database">
-                        <div class="portfolio-card card-database"
-
-                             data-category="database">
-
-                            <img src="<?= URL ?>public/images/portfolio/sample2.jpg">
-
-
-                            <div class="portfolio-body">
-
-                    <span class="portfolio-category">
-
-                        پایگاه داده
-
-                    </span>
-
-                                <div class="portfolio-title-desc">
-                                    <h5>
-
-                                        سیستم مدیریت انبار
-
-                                    </h5>
-
-
-                                    <p>
-
-                                        طراحی دیتابیس، گزارش گیری، مدیریت کالا و مدیریت موجودی.
-
-                                    </p>
-                                </div>
-                                <div class="portfolio-dates-row portfolio-meta-theme">
-
-                                    <div class="date-item">
-
-                                        <div class="date-title">
-
-                                            <i class="bi bi-calendar-plus"></i>
-
-                                            <span>ثبت:</span>
-
-                                        </div>
-
-                                        <div class="date-value">
-
-                                            1405/05/02
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="date-item">
-
-                                        <div class="date-title-deliver">
-
-                                            <i class="bi bi-calendar-check"></i>
-
-                                            <span>تحویل:</span>
-
-                                        </div>
-
-                                        <div class="date-value">
-
-                                            1405/11/02
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="portfolio-bottom-row">
-
-                                    <a href="https://example.com"
-                                       target="_blank"
-                                       class="portfolio-link">
-
-                                        <i class="bi bi-link-45deg"></i>
-                                        مشاهده پروژه
-
-                                    </a>
-
-                                    <span class="badge bg-secondary">
-
-                            پیش نویس
-
-                        </span>
-
-                                </div>
-
-                                <div class="portfolio-switches">
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            فعال
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_active"
-
-                                                    checked>
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            ممتاز
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_featured">
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-
-                            <div class="portfolio-footer">
-
-                                <a href="<?= URL ?>admin/portfolios/edit/18">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                    ویرایش
-
-                                </a>
-
-
-                                <a href="#"
-
-                                   class="text-danger">
-
-                                    <i class="bi bi-trash"></i>
-
-                                    حذف
-
-                                </a>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!--==============================
-                    Programming
-                    ==============================-->
-                    <div class="portfolio-item programming">
-                        <div class="portfolio-card card-programming"
-
-                             data-category="programming">
-
-                            <img src="<?= URL ?>public/images/portfolio/sample3.jpg">
-
-
-                            <div class="portfolio-body">
-
-                    <span class="portfolio-category">
-
-                        برنامه نویسی
-
-                    </span>
-
-                                <div class="portfolio-title-desc">
-                                    <h5>
-
-                                        سامانه مدیریت آموزش
-
-                                    </h5>
-
-
-                                    <p>
-
-                                        سیستم مدیریت دانشجویان، اساتید و برنامه هفتگی.
-
-                                    </p>
-
-                                </div>
-
-                                <div class="portfolio-dates-row portfolio-meta-theme">
-
-                                    <div class="date-item">
-
-                                        <div class="date-title">
-
-                                            <i class="bi bi-calendar-plus"></i>
-
-                                            <span>ثبت:</span>
-
-                                        </div>
-
-                                        <div class="date-value">
-
-                                            1405/06/01
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="date-item">
-
-                                        <div class="date-title-deliver">
-
-                                            <i class="bi bi-calendar-check"></i>
-
-                                            <span>تحویل:</span>
-
-                                        </div>
-
-                                        <div class="date-value">
-
-                                            1405/09/02
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="portfolio-bottom-row">
-
-                                    <a href="https://example.com"
-                                       target="_blank"
-                                       class="portfolio-link">
-
-                                        <i class="bi bi-link-45deg"></i>
-
-                                        مشاهده پروژه
-
-                                    </a>
-
-                                    <span class="badge bg-success">
-
-                                     منتشر شده
-
-                                  </span>
-
-                                </div>
-                                <div class="portfolio-switches">
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            فعال
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_active"
-
-                                                    checked>
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                    <div class="switch-item">
-
-                                        <label>
-
-                                            ممتاز
-
-                                        </label>
-
-                                        <label class="form-switch">
-
-                                            <input
-                                                    type="checkbox"
-
-                                                    class="portfolio-switch"
-
-                                                    data-id="15"
-
-                                                    data-field="is_featured">
-
-                                            <span></span>
-
-                                        </label>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="portfolio-footer">
-
-                                <a href="<?= URL ?>admin/portfolios/edit/22">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                    ویرایش
-
-                                </a>
-
-
-                                <a href="#"
-
-                                   class="text-danger">
-
-                                    <i class="bi bi-trash"></i>
-
-                                    حذف
-
-                                </a>
-
-                            </div>
-
-                        </div>
                     </div>
 
                 </div>
 
             </div>
 
+
+            <!--==============================
+            Portfolios Grid
+            ==============================-->
+
+            <div id="portfolio-grid"
+                 class="portfolio-grid">
+
+                <?php foreach ($portfolios as $portfolio) {
+                    $cat = strtolower($portfolio['category']);
+                    ?>
+
+                    <div class="portfolio-item <?= $cat ?>"
+                        <?php
+                        $started = Helper::jaliliToMiladi($portfolio['started_date'])
+                        ?>
+
+                         data-started-at="<?= $started ?>  "
+
+                         data-display-order="<?= $portfolio['display_order'] ?>">
+
+                        <div class="portfolio-card card-<?= $cat ?>"
+
+                             data-category="<?= $cat ?>">
+
+                            <img src="<?= URL ?>public/images/portfolio/<?= $portfolio['cover_image'] ?>">
+
+
+                            <div class="portfolio-body">
+
+                             <span class="portfolio-category"> <?= constant($portfolio['category']) ?>
+                             </span>
+
+                                <div class="portfolio-title-desc">
+                                    <h5>
+                                        <?= $portfolio['title'] ?>
+                                    </h5>
+                                    <p>
+                                        <?= $portfolio['short_description'] ?>
+
+                                    </p>
+                                </div>
+
+
+                                <div class="portfolio-dates-row portfolio-meta-theme">
+
+                                    <div class="date-item">
+
+                                        <div class="date-title">
+
+                                            <i class="bi bi-calendar-plus"></i>
+
+                                            <span>ثبت:</span>
+
+                                        </div>
+
+                                        <div class="date-value">
+
+                                            <?= $portfolio['started_date'] ?>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="date-item">
+
+                                        <div class="date-title-deliver">
+
+                                            <i class="bi bi-calendar-check"></i>
+
+                                            <span>تحویل:</span>
+
+                                        </div>
+
+                                        <div class="date-value">
+
+                                            <?= $portfolio['completed_date'] ?>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="portfolio-bottom-row">
+
+                                    <a href="https://example.com"
+                                       target="_blank"
+                                       class="portfolio-link">
+
+                                        <i class="bi bi-link-45deg"></i>
+
+                                        مشاهده پروژه
+
+                                    </a>
+
+                                    <span class="badge
+                                        <?= ($portfolio['status'] === 'COMPLETED') ? 'bg-success' : 'bg-secondary' ?>
+                                        ">
+
+                                     <?= constant($portfolio['status']) ?>
+
+                                  </span>
+
+                                </div>
+                                <div class="portfolio-switches">
+
+                                    <div class="switch-item">
+
+                                        <label>
+
+                                            فعال
+
+                                        </label>
+
+                                        <label class="form-switch">
+
+                                            <input
+                                                    type="checkbox"
+
+                                                    class="portfolio-switch"
+
+                                                    data-id="<?= $portfolio['id'] ?>"
+
+                                                    data-field="is_active"
+
+                                                <?= ($portfolio['is_active'] === 1) ? 'checked' : '' ?>
+
+                                            >
+
+                                            <span></span>
+
+                                        </label>
+
+                                    </div>
+
+                                    <div class="switch-item">
+
+                                        <label>
+
+                                            ممتاز
+
+                                        </label>
+
+                                        <label class="form-switch">
+
+                                            <input
+                                                    type="checkbox"
+
+                                                    class="portfolio-switch"
+
+                                                    data-id="<?= $portfolio['id'] ?>"
+
+                                                    data-field="is_featured"
+                                                <?= ($portfolio['is_featured'] === 1) ? 'checked' : '' ?>
+                                            >
+
+                                            <span></span>
+
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="portfolio-footer">
+
+                                <a href="<?= URL ?>admin/portfolios/edit/<?= $portfolio['id'] ?>">
+
+                                    <i class="bi bi-pencil-square"></i>
+
+                                    ویرایش
+
+                                </a>
+
+
+                                <a href="<?= URL ?>admin/portfolios/delete/<?= $portfolio['id'] ?>"
+                                   class="text-danger btn-delete">
+
+                                    <i class="bi bi-trash"></i>
+
+                                    حذف
+
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+
+            </div>
+
+        </div>
+
     </main>
 </div>
 <script>
     /*==========================================
-  Portfolio filter
-  ==========================================*/
-    document.addEventListener("DOMContentLoaded", () => {
+     transfer data from php to js
+     ==========================================*/
+
+    //let portfolios = null;
+    //
+    //portfolios =<?//= json_encode(
+    //    $portfolios,
+    //    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    //) ?>//;
+    //console.log(portfolios);
+
+    /*==========================================
+     select oldest/newest Filter
+    ==========================================*/
+    $(document).on('change', '#portfolio-sort', function () {
+
+        const container = document.getElementById('portfolio-grid');
+
+
+        const items = [...container.querySelectorAll('.portfolio-item')];
+
+        if (this.value === 'newest') {
+
+            items.sort((a, b) => {
+                return new Date(b.dataset.startedAt)
+                    - new Date(a.dataset.startedAt);
+            });
+
+        }
+
+        if (this.value === 'oldest') {
+
+            items.sort((a, b) => {
+                return new Date(a.dataset.startedAt)
+                    - new Date(b.dataset.startedAt);
+            });
+
+        }
+
+        if (this.value === 'displayOrder') {
+
+            items.sort((a, b) => {
+                return Number(a.dataset.displayOrder)
+                    - Number(b.dataset.displayOrder);
+            });
+
+        }
+
+        items.forEach(item => {
+            container.appendChild(item);
+        });
+    });
+
+    /*==========================================
+ STATIC FILTER AJAX
+ ==========================================*/
+    jQuery('.static-filter').click(function (event) {
+        event.preventDefault();
+        let url = this.href;
+
+        var data_;
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "html",//'text or json
+
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                console.error(jqXHR.status, errorThrown);
+
+                myAlert.error(
+                    'خطا',
+                    'دریافت نمونه کارها انجام نشد.'
+                );
+
+            },
+            success: function (data) {
+                data_ = data;
+            },
+            complete: function () {
+
+                //imporrrrrrtaaaaaaaanttttttttttt
+                var TargetBox = '.portfolio-grid';
+                $(TargetBox).html('');
+                $(TargetBox).html(data_);
+                $('.filter-btn').removeClass('active');
+                $('#all-btn').addClass('active');
+
+
+            },
+        });
+    });
+
+
+    /*==========================================
+     Portfolio Filter
+    ==========================================*/
+
+    $(document).on("click", ".filter-btn", function (event) {
+
+        event.preventDefault();
+
+        const button = this;
+
+        if (button.classList.contains("active")) return;
 
         const buttons = document.querySelectorAll(".filter-btn");
-
         const cards = document.querySelectorAll(".portfolio-item");
 
-        buttons.forEach(button => {
+        buttons.forEach(btn => {
+            btn.classList.remove("active");
+        });
 
-            button.addEventListener("click", () => {
+        button.classList.add("active");
 
-                if (button.classList.contains("active")) return;
+        const filter = button.dataset.filter;
 
-                buttons.forEach(btn => btn.classList.remove("active"));
+        cards.forEach(card => {
 
-                button.classList.add("active");
-
-                const filter = button.dataset.filter;
-
-                cards.forEach(card => {
-
-                    card.classList.add("fade-out");
-
-                });
-
-                setTimeout(() => {
-
-                    cards.forEach(card => {
-
-                        card.classList.remove("fade-out");
-
-                        card.classList.add("hide");
-
-                        if (
-
-                            filter === "all" ||
-
-                            card.classList.contains(filter)
-
-                        ) {
-
-                            card.classList.remove("hide");
-
-                            card.classList.add("fade-in");
-
-                        }
-
-                    });
-
-                    requestAnimationFrame(() => {
-
-                        cards.forEach(card => {
-
-                            if (!card.classList.contains("hide")) {
-
-                                card.classList.remove("fade-in");
-
-                                card.classList.add("show");
-
-                            }
-
-                        });
-
-                    });
-
-                }, 250);
-
-            });
+            card.classList.add("fade-out");
 
         });
 
+        setTimeout(() => {
+
+            cards.forEach(card => {
+
+                card.classList.remove("fade-out");
+
+                card.classList.add("hide");
+
+                if (
+                    filter === "all" ||
+                    card.classList.contains(filter)
+                ) {
+
+                    card.classList.remove("hide");
+
+                    card.classList.add("fade-in");
+
+                }
+
+            });
+
+            requestAnimationFrame(() => {
+
+                cards.forEach(card => {
+
+                    if (!card.classList.contains("hide")) {
+
+                        card.classList.remove("fade-in");
+
+                        card.classList.add("show");
+
+                    }
+
+                });
+
+            });
+
+        }, 250);
+
     });
+    // $(document).on('click', '.filter-btn', function () {
+    //
+    //     // document.addEventListener("DOMContentLoaded", () => {
 
     /*==========================================
 status switch
 ==========================================*/
+    //**** rebind after ajax by delegation
+    $(document).on('change', '.portfolio-switch', function () {
 
-    document.querySelectorAll(".portfolio-switch").forEach(sw => {
+        const id = this.dataset.id;
+        const field = this.dataset.field;
+        const value = this.checked ? 1 : 0;
 
-        sw.addEventListener("change", function () {
 
-            const id = this.dataset.id;
+        $.ajax({
+            url: "<?= URL ?>admin/portfolios/changeBeingActiveFeatured/" + id,
+            type: "POST",
+            dataType: "text",//'text or json
+            data: {value: value, field: field},
 
-            const field = this.dataset.field;
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
 
-            const value = this.checked ? 1 : 0;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
 
-            console.log(id, field, value);
+                console.error(jqXHR.status, errorThrown);
 
-            /*
-            Ajax
+                myAlert.error(
+                    'خطا',
+                    'تغییر وضعیت با خطا مواجه شد .دوباره تلاش کنید.'
+                );
 
-            POST
+            },
+            success: function (data) {
 
-            id
-
-            field
-
-            value
-            */
+            },
 
         });
 
     });
+    /*==========================================
+       Delete
+       ==========================================*/
+    $(document).on('click', '.btn-delete', function (event) {
+
+        event.preventDefault();
+
+        myAlert.delete(this.href);
+
+    });
+
+
 </script>
 
 

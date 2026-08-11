@@ -190,8 +190,9 @@ Sort Header
 
     }
 
-    .star-badge-color{
-        background-color: #ffeb39;!important;
+    .star-badge-color {
+        background-color: #ffeb39;
+    !important;
     }
 
     /*==========================================
@@ -253,6 +254,24 @@ Sort Header
 
     }
 </style>
+<?php
+require_once 'core/const.php';
+
+if (isset($data['portfolios'])) {
+    $portfolios = $data['portfolios'];
+    foreach ($portfolios as &$portfolio) {
+
+        $portfolio['started_date'] =
+            Helper::MiladiTojalili((string)$portfolio['started_date'], '-');
+
+        $portfolio['completed_date'] =
+            Helper::MiladiTojalili((string)$portfolio['completed_date'], '-');
+    }
+
+    unset($portfolio);
+} else
+    $portfolios = [];
+?>
 <title>مرتب سازی نمونه کارها</title>
 <div class="admin-layout">
 
@@ -268,20 +287,29 @@ Sort Header
 
             <div class="sort-header">
 
-                <div>
+                <div class="flex row col-12">
+                    <div class="col-lg-9 col-md-8">
+                        <h2>
 
-                    <h2>
+                            مرتب سازی نمونه کارها
 
-                        مرتب سازی نمونه کارها
+                        </h2>
 
-                    </h2>
+                        <p>
 
-                    <p>
+                            برای تغییر ترتیب نمایش نمونه کارها آنها را بکشید و در محل جدید رها کنید.
 
-                        برای تغییر ترتیب نمایش نمونه کارها آنها را بکشید و در محل جدید رها کنید.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 col-md-4 flex text-center align-items-center ">
+                        <a href="http://localhost:8080/uniyar/admin/portfolios" class="btn btn-main w-75">
 
-                    </p>
+                            <i class="bi bi-arrow-return-right ms-2"></i>
 
+                            بازگشت
+
+                        </a>
+                    </div>
                 </div>
 
             </div>
@@ -292,175 +320,109 @@ Sort Header
             ==============================-->
 
             <div class="card shadow-sm border-0">
-                <form action="<?=URL?>admin/portfolios/saveSort"
-                        method="post" id="sortForm">
+                <form action="<?= URL ?>admin/portfolios/saveSort"
+                      method="post" id="sortForm">
 
-                    <input type="hidden"  name="sortData" id="sortData">
+                    <input type="hidden" name="sortData" id="sortData">
 
-                <div class="card-body p-4">
+                    <div class="card-body p-4">
 
-                    <div id="portfolioSortable">
+                        <div id="portfolioSortable">
 
 
-                        <!-- item -->
+                            <!-- items -->
+                            <?php
+                            foreach ($portfolios
 
-                        <div class="sort-card"
+                                     as $portfolio) {
+                                ?>
+                                <div class="sort-card"
 
-                             data-id="15">
+                                     data-id="<?= $portfolio['id'] ?>">
 
-                            <div class="sort-handle">
+                                    <div class="sort-handle">
 
-                                <i class="bi bi-grip-vertical"></i>
+                                        <i class="bi bi-grip-vertical"></i>
 
-                            </div>
+                                    </div>
 
-                            <div class="sort-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                                    <div class="sort-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
 
-                                <h5 class="mb-md-0 fw-bold sort-title">
-                                    طراحی فروشگاه اینترنتی
-                                </h5>
+                                        <h5 class="mb-md-0 fw-bold sort-title">
+                                            <?= $portfolio['title'] ?>
+                                        </h5>
 
-                                <div class="sort-meta d-flex flex-wrap gap-2">
-                                    <span class="badge star-badge-color text-dark">
-                                        ممتاز
-                                     <i class="bi bi-star-half"></i>
+                                        <div class="sort-meta d-flex flex-wrap gap-2">
+
+                                            <?php if ($portfolio['is_featured'] === 1) { ?>
+                                                <span class="badge star-badge-color text-dark">
+                                             <i class='bi bi-star-half'></i> ممتاز
+
+                                        </span>
+                                            <?php }
+                                            $cat = strtolower($portfolio['category']);
+                                            ?>
+
+                                            <span class="badge badge-<?= $cat ?>">
+
+                                        <?= constant($portfolio['category']) ?>
+
                                     </span>
 
-                                    <span class="badge badge-website">
+                                            <span class="badge
+                                         <?= ($portfolio['status'] === 'COMPLETED') ? 'bg-success' : 'bg-secondary' ?>
+                                        ">
 
-                                        وبسایت
-
-                                    </span>
-
-                                    <span class="badge bg-success">
-
-                                        منتشر شده
+                                         <?= constant($portfolio['status']) ?>
 
                                     </span>
+
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                                <?php
+                            }
+                            ?>
 
-                        </div>
-
-
-                        <!-- item -->
-
-                        <div class="sort-card"
-
-                             data-id="18">
-
-                            <div class="sort-handle">
-
-                                <i class="bi bi-grip-vertical"></i>
-
-                            </div>
-
-                            <div class="sort-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-
-                                <div class="sort-title mb-md-0 fw-bold">
-
-                                    سیستم مدیریت انبار
-
-                                </div>
-
-                                <div class="sort-meta d-flex flex-wrap gap-2 ">
-
-                                    <span class="badge badge-database">
-
-                                        پایگاه داده
-
-                                    </span>
-
-                                    <span class="badge bg-secondary">
-
-                                        پیش نویس
-
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- item -->
-
-                        <div class="sort-card"
-
-                             data-id="22">
-
-                            <div class="sort-handle">
-
-                                <i class="bi bi-grip-vertical"></i>
-
-                            </div>
-
-                            <div class="sort-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
-
-                                <div class="sort-title mb-md-0 fw-bold">
-
-                                    سامانه مدیریت آموزش
-
-                                </div>
-
-                                <div class="sort-meta d-flex flex-wrap gap-2">
-
-                                    <span class="badge badge-programming">
-
-                                        برنامه نویسی
-
-                                    </span>
-
-                                    <span class="badge bg-success">
-
-                                        منتشر شده
-
-                                    </span>
-
-                                </div>
-
-                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+
+                    <!--==============================
+                    Footer
+                    ==============================-->
+
+                    <div class="card-footer sort-footer">
+
+                        <a href="<?= URL ?>admin/portfolios"
+
+                           class="btn btn-main-cancel">
+
+                            <i class="bi bi-arrow-return-right ms-2"></i>
+
+                            انصراف
+
+                        </a>
 
 
-                <!--==============================
-                Footer
-                ==============================-->
+                        <button type="submit"
 
-                <div class="card-footer sort-footer">
+                                id="saveSort"
 
-                    <a href="<?= URL ?>admin/portfolios"
+                                class="btn btn-main">
 
-                       class="btn btn-main-cancel">
+                            <i class="bi bi-check2-circle ms-2"></i>
 
-                        <i class="bi bi-arrow-return-right ms-2"></i>
+                            ذخیره ترتیب
 
-                        انصراف
+                        </button>
 
-                    </a>
-
-
-                    <button  type="submit"
-
-                            id="saveSort"
-
-                            class="btn btn-main">
-
-                        <i class="bi bi-check2-circle ms-2"></i>
-
-                        ذخیره ترتیب
-
-                    </button>
-
-                </div>
+                    </div>
                 </form>
             </div>
 
@@ -473,19 +435,16 @@ Sort Header
     document.addEventListener("DOMContentLoaded", function () {
 
         const sortable = new Sortable(
-
             document.getElementById("portfolioSortable"),
 
             {
 
-                animation:250,
+                animation: 250,
 
-                handle:".sort-handle"
+                handle: ".sort-handle"
 
             }
-
         );
-
 
 
         document
@@ -494,31 +453,29 @@ Sort Header
 
             .addEventListener("submit", function () {
 
-                let result=[];
+                let result = [];
 
-                let cards=document.querySelectorAll("#portfolioSortable .sort-card");
+                let cards = document.querySelectorAll("#portfolioSortable .sort-card");
 
 
-
-                cards.forEach(function(card,index){
+                cards.forEach(function (card, index) {
 
                     result.push({
 
-                        id:card.dataset.id,
+                        id: card.dataset.id,
 
-                        order:index+1
+                        order: index + 1
 
                     });
 
                 });
 
 
-
                 document
 
                     .getElementById("sortData")
 
-                    .value=JSON.stringify(result);
+                    .value = JSON.stringify(result);
 
             });
 

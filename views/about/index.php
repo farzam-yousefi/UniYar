@@ -369,7 +369,7 @@ About Statistics
             <div class="col-lg-6 text-center">
 
                 <img
-                        src="public/images/about/about-hero.png"
+                        src="<?= URL ?>public/images/about/about-hero.png"
                         class="img-fluid hero-image mt-2"
                         alt="UniYar About">
 

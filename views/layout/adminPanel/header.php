@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="public/css/admin.css">
-<link rel="stylesheet" href="public/css/main.css">
-<link rel="stylesheet" href="public/css/mainAdmin.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/admin.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/main.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/mainAdmin.css">
 
 
 <style>
@@ -215,6 +215,9 @@ Admin Header
 
     }
 </style>
+<?php
+require_once('core/lib/changePass.php');
+?>
 <body>
 
 <header class="admin-header">
@@ -236,11 +239,11 @@ Admin Header
 
                 </button>
 
-                <a href="index"
+                <a href="<?= URL ?>index"
                    class="admin-logo">
 
                     <img
-                            src="public/images/logo.png"
+                            src="<?= URL ?>public/images/logo.png"
                             class="logo"
                             alt="UniYar">
                 </a>
@@ -269,7 +272,7 @@ Admin Header
                                 data-bs-toggle="dropdown">
 
                             <img
-                                    src="public/images/admin-avatar.svg"
+                                    src="<?= URL ?>public/images/admin-avatar.svg"
                                     alt="admin">
 
                             <span>
@@ -317,7 +320,7 @@ Admin Header
                             <li>
 
                                 <a class="dropdown-item text-danger"
-                                   href="admin/logout">
+                                   href="<?= URL ?>admin/logout">
 
                                     <i class="bi bi-box-arrow-right"></i>
 
@@ -350,96 +353,3 @@ Admin Header
 
 </header>
 
-<!--==================================
-Change Password Modal
-===================================-->
-
-<div class="modal fade"
-     id="changePasswordModal"
-     tabindex="-1"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content change-password-modal">
-
-            <div class="modal-header border-0">
-
-                <h5 class="modal-title">
-
-                    <i class="bi bi-key text-success me-2"></i>
-
-                    تغییر رمز عبور
-
-                </h5>
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                </button>
-
-            </div>
-
-
-            <div class="modal-body">
-
-                <div class="form-group mb-3">
-
-                    <label>
-                        رمز عبور فعلی
-                    </label>
-
-                    <input type="password"
-                           class="form-control-custom"
-                           placeholder="رمز فعلی خود را وارد کنید">
-
-                </div>
-
-
-                <div class="form-group mb-3">
-
-                    <label>
-                        رمز عبور جدید
-                    </label>
-
-                    <input type="password"
-                           class="form-control-custom"
-                           placeholder="حداقل ۸ کاراکتر(شامل حروف،ارقام و کاراکتر ویژه)">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تکرار رمز عبور جدید
-                    </label>
-
-                    <input type="password"
-                           class="form-control-custom"
-                           placeholder="تکرار رمز جدید">
-
-                </div>
-
-                <div class="flex text-center ">
-                    <button class="btn btn-main w-25  mt-4">
-
-                        ذخیره
-                    </button>
-                    <button class="btn btn-main-cancel w-25 mt-4"
-                            data-bs-dismiss="modal"
-                    type="button">
-
-                        انصراف
-
-                    </button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>

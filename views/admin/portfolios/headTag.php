@@ -1,3 +1,5 @@
-<link rel="stylesheet" href="public/css/sharedPortfolio.css">
-
-<script src="public/js/Sortable.min.js"></script>
+<link rel="stylesheet" href="<?= URL ?>public/css/sharedPortfolio.css">
+<script src="<?= URL ?>public/js/Sortable.min.js"></script>
+<script src="<?= URL ?>public/js/validation.js"></script>
+<script src="<?= URL ?>public/js/uploadPicture.js"></script>
+<link rel="stylesheet" href="<?= URL ?>public/css/validation.css">

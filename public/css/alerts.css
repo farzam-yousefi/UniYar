@@ -8,11 +8,17 @@ SweetAlert
 
 }
 
+.swal2-popup{
+    width: 380px;
+    /*height: 400px;*/
+}
+
 .swal2-title{
 
     color:#17335C;
 
     font-weight:700;
+    padding: 0px;
 
 }
 
@@ -26,6 +32,7 @@ SweetAlert
 
 .swal2-icon{
 
-    transform: scale(.75);
+    transform: scale(.65);
+    margin-top: 10px;
 
 }

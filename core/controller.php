@@ -56,4 +56,10 @@ class Controller
         $this->model($name);
     }
 
+    protected function getCurrentAdminId()
+    {
+        return $_SESSION['adminId'] ?? null;
+    }
+
+
 }

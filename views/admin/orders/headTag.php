@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="public/css/mainAdmin.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/mainAdmin.css">

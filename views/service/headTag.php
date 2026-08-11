@@ -1,3 +1,3 @@
 
 
-<link rel="stylesheet" href="public/css/commonServices.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/commonServices.css">

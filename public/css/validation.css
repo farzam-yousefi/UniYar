@@ -1,0 +1,17 @@
+select:invalid {
+    color: #6c757d;
+}
+
+select option {
+    color: #212529;
+}
+
+input.date{
+    color: #297557;
+}
+
+.form-error{
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}

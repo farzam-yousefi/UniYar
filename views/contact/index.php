@@ -288,7 +288,7 @@
             <div class="col-lg-6 text-center">
 
                 <img
-                        src="public/images/contact/contact-hero.png"
+                        src="<?= URL ?>public/images/contact/contact-hero.png"
                         class="img-fluid hero-image"
                         alt="تماس با ما">
 
@@ -382,7 +382,7 @@
 
                             <ul class="social-list">
                                 <li>
-                                   <img src="public/images/social/telegram.png"
+                                   <img src="<?= URL ?>public/images/social/telegram.png"
                                     class="social-icon"
                                     alt="telegram">
 <!--                                    <i class="bi bi-telegram"></i>-->
@@ -401,7 +401,7 @@
 
                                 <li>
 
-                                    <img src="public/images/social/instagram.png"
+                                    <img src="<?= URL ?>public/images/social/instagram.png"
                                          class="social-icon"
                                          alt="intagram">
 
@@ -412,7 +412,7 @@
                                 <li>
 
                                     <img
-                                            src="public/images/social/bale.png"
+                                            src="<?= URL ?>public/images/social/bale.png"
                                             class="social-icon bale"
                                             alt="Bale">
 
@@ -423,7 +423,7 @@
                                 <li>
 
                                     <img
-                                            src="public/images/social/eitaa.svg"
+                                            src="<?= URL ?>public/images/social/eitaa.svg"
                                             class="social-icon"
                                             alt="Eitaa">
 

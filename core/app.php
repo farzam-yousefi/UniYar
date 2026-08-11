@@ -27,22 +27,41 @@ class App
 
             /*
              * /admin
-             * /admin/login
-             * /admin/logout
              */
 
             if (!isset($url[1])) {
 
                 $controllerName = "admin";
-                unset($url[0]);
 
-            } elseif (in_array(strtolower($url[1]), ["login", "logout"])) {
+                unset($url[0]);
+            }
+
+            /*
+             * Admin controller methods
+             * /admin/login
+             * /admin/logout
+             * /admin/changePassword
+             */
+
+            elseif (
+            in_array(
+                strtolower($url[1]),
+                ["login", "logout", "changepassword"]
+            )
+            ) {
 
                 $controllerName = "admin";
-                $this->method   = strtolower($url[1]);
+
+                $methodMap = [
+                    "login"          => "login",
+                    "logout"         => "logout",
+                    "changepassword" => "changePassword",
+                ];
+
+                $this->method =
+                    $methodMap[strtolower($url[1])];
 
                 unset($url[0], $url[1]);
-
             }
 
             /*
@@ -61,9 +80,7 @@ class App
 
                 unset($url[0], $url[1]);
             }
-
         }
-
         /*
         ==================================================
         NORMAL ROUTES
@@ -168,7 +185,7 @@ class App
     {
         http_response_code(404);
 
-        require "404.html";
+        require __DIR__ . '/../404.php';
 
         exit;
     }

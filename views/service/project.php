@@ -294,7 +294,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
                 <!-- Image -->
 
                 <div class="col-lg-6 text-center order-1 order-lg-2">
-                    <img src="public/images/services/project-hero.png"
+                    <img src="<?= URL ?>public/images/services/project-hero.png"
 
                          class="hero-image"
 
@@ -344,7 +344,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/project1.jpg"
+                        <img src="<?= URL ?>public/images/portfolio/project1.jpg"
                              alt="">
 
                         <div class="portfolio-body">
@@ -379,7 +379,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/project2.jpg"
+                        <img src="<?= URL ?>public/images/portfolio/project2.jpg"
                              alt="">
 
                         <div class="portfolio-body">
@@ -414,7 +414,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/project3.jpg"
+                        <img src="<?= URL ?>public/images/portfolio/project3.jpg"
                              alt="">
 
                         <div class="portfolio-body">
@@ -447,7 +447,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
             <div class="text-center mt-5">
 
-                <a href="portfolio"
+                <a href="<?= URL ?>portfolio"
                    class="btn  btn-main px-4">
 
                     مشاهده همه نمونه کارها

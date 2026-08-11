@@ -10,7 +10,7 @@
                         از ایده تا تحویل کنارتان می مانیم</span>
                     <h1 class="display-4 fw-bold mt-3">هر درخواست،<br>یک راه‌حل تخصصی</h1>
                     <p class="text-muted mt-3">انجام پروژه، تدریس خصوصی، رفع اشکال و مشاوره آموزشی.</p><a
-                            class="btn btn-main px-4 py-2 mt-2" href="order">ثبت درخواست</a></div>
+                            class="btn btn-main px-4 py-2 mt-2" href="<?= URL ?>order">ثبت درخواست</a></div>
                 <div class="col-lg-6">
 
 
@@ -155,7 +155,7 @@
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/CPR.png"
+                        <img src="<?= URL ?>public/images/portfolio/CPR.png"
                              class="img-fluid portfolio-image"
                              alt="">
 
@@ -205,7 +205,7 @@
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/project2.jpg"
+                        <img src="<?= URL ?>public/images/portfolio/project2.jpg"
                              class="img-fluid portfolio-image"
                              alt="">
 
@@ -253,7 +253,7 @@
 
                     <div class="portfolio-card">
 
-                        <img src="public/images/portfolio/project3.jpg"
+                        <img src="<?= URL ?>public/images/portfolio/project3.jpg"
                              class="img-fluid portfolio-image"
                              alt="">
 
@@ -299,7 +299,7 @@
 
             <div class="text-center mt-5">
 
-                <a href="portfolio" class="btn btn-outline-main">
+                <a href="<?= URL ?>portfolio" class="btn btn-outline-main">
 
                     مشاهده همه نمونه‌کارها
 

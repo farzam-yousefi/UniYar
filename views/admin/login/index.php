@@ -136,7 +136,7 @@ Login Page
                 </div>
 
                 <form id="loginForm" novalidate
-                    action="admin/login"
+                    action="<?= URL ?>admin/login"
                     method="post">
 
                     <div class="form-group">

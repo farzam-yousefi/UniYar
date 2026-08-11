@@ -6,6 +6,6 @@
 
 </body>
 
-<script src="public/js/admin.js"></script>
+<script src="<?= URL ?>public/js/admin.js"></script>
 
 </html>

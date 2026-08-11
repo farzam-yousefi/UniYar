@@ -10,13 +10,43 @@ class model_admin extends Model
 
     function setLogin($post)
     {
-        if ($post['username'] && $post['password']) {
+        if ((isset($post['username']))&&($post['username'] )&&( $post['password'])) {
             $sql = "select id,username,password, full_name from admins where username=?";
             $result = $this->myFetch($sql, [$post['username']]);
-            if(($result)&& (password_verify($post['password'], $result['password'])))
+            if (($result) && (password_verify($post['password'], $result['password'])))
                 return $result;
             return null;
         } else
             return null;
     }
+
+    function getCurrentUserPass($adminId){
+        $sql="select password from admins where id=?";
+        return $this->myFetch($sql,[$adminId]);
+    }
+
+    function changePassword($newPassword, $adminId)
+    {
+        try {
+            $hashedPassword =password_hash($newPassword, PASSWORD_BCRYPT);
+            $sql="update admins set password=? where id=? ";
+            $this->doQuery($sql,[$hashedPassword,$adminId]);
+            return true;
+
+        } catch (PDOException $e) {
+
+            // ثبت خطا برای خودم
+            error_log($e->getMessage());
+
+            // پیام مناسب برای کاربر
+            return false;
+
+        } catch (Exception $e) {
+
+            error_log($e->getMessage());
+
+            return false;
+        }
+    }
+
 }

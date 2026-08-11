@@ -445,6 +445,10 @@
         opacity:.6;
 
     }
+
+    .service-image p {
+        height: 100px;
+    }
     @media(max-width:992px){
 
         .process-wrapper{
@@ -507,7 +511,7 @@
 
                 <div class="col-lg-5 text-center">
 
-                    <img src="public/images/services/hero-service.png"
+                    <img src="<?= URL ?>public/images/services/hero-service.png"
                          class="img-fluid service-hero-img"
                          alt="">
 
@@ -638,7 +642,7 @@
 
                             <img class="img-fluid "
 
-                                 src="public/images/services/project.png" alt="project">
+                                 src="<?= URL ?>public/images/services/project.png" alt="project">
 
 
                             <h3 class="pt-2">
@@ -650,7 +654,7 @@
                             <p>
 
                                 انجام انواع پروژه‌های دانشگاهی، برنامه‌نویسی، پایگاه داده،
-                                طراحی سایت و نرم‌افزار.
+                                طراحی سایت.
 
                             </p>
 
@@ -671,18 +675,23 @@
                                     طراحی سایت
                                 </li>
 
+                                <li>
+                                    <i class="fas fa-check"></i>
+                                   پروژه های تحقیقاتی
+                                </li>
+
                             </ul>
                         </div>
                             <div class="service-buttons">
 
-                                <a href="service/projectService"
+                                <a href="<?= URL ?>service/projectService"
                                    class="btn btn-outline-main">
 
                                     جزئیات
 
                                 </a>
 
-                                <a href="order" class="btn btn-main">
+                                <a href="<?= URL ?>order" class="btn btn-main">
 
                                     ثبت درخواست
 
@@ -704,7 +713,7 @@
                         <div class="text-center service-image">
 
                             <img class="img-fluid "
-                                 src="public/images/services/teach.png" alt="private teach">
+                                 src="<?= URL ?>public/images/services/teach.png" alt="private teach">
                             <h3 class="pt-2">
 
                                 تدریس خصوصی
@@ -734,13 +743,13 @@
                         </div>
                             <div class="service-buttons">
 
-                                <a href="service/privateTeachingService" class="btn btn-outline-main">
+                                <a href="<?= URL ?>service/privateTeachingService" class="btn btn-outline-main">
 
                                     جزئیات
 
                                 </a>
 
-                                <a href="order" class="btn btn-main">
+                                <a href="<?= URL ?>order" class="btn btn-main">
 
                                     ثبت درخواست
 
@@ -761,7 +770,7 @@
 
                         <div class="text-center service-image">
 
-                            <img class="img-fluid " src="public/images/services/debug.png"
+                            <img class="img-fluid " src="<?= URL ?>public/images/services/debug.png"
                                  alt="correct-code">
 
 
@@ -798,13 +807,13 @@
                         </div>
                             <div class="service-buttons">
 
-                                <a href="service/debugService" class="btn btn-outline-main">
+                                <a href="<?= URL ?>service/debugService" class="btn btn-outline-main">
 
                                     جزئیات
 
                                 </a>
 
-                                <a href="order" class="btn btn-main">
+                                <a href="<?= URL ?>order" class="btn btn-main">
 
                                     ثبت درخواست
 
@@ -825,7 +834,7 @@
 
                         <div class="text-center service-image">
 
-                            <img class="img-fluid " src="public/images/services/consult.png"
+                            <img class="img-fluid " src="<?= URL ?>public/images/services/consult.png"
                                  alt="consultance">
 
 
@@ -861,14 +870,14 @@
                         </div>
                             <div class="service-buttons">
 
-                                <a href="service/consultService"
+                                <a href="<?= URL ?>service/consultService"
                                         class="btn btn-outline-main">
 
                                     جزئیات
 
                                 </a>
 
-                                <a href="order" class="btn btn-main">
+                                <a href="<?= URL ?>order" class="btn btn-main">
 
                                     ثبت درخواست
 

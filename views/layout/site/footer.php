@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="public/css/footer.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/footer.css">
 
 <footer class="footer">
 
@@ -10,7 +10,7 @@
 
             <div class="col-lg-4 col-md-6 logo-slogan">
 
-                <img src="public/images/logo-footer.png" class="footer-logo" alt="logo">
+                <img src="<?= URL ?>public/images/logo-footer.png" class="footer-logo" alt="logo">
 
 
 
@@ -25,13 +25,13 @@
 
                 <ul class="footer-links">
 
-                    <li><a href="index">خانه</a></li>
+                    <li><a href="<?= URL ?>index">خانه</a></li>
 
-                    <li><a href="portfolio">نمونه کارها</a></li>
+                    <li><a href="<?= URL ?>portfolio">نمونه کارها</a></li>
 
-                    <li><a href="fag">سوالات متداول</a></li>
+                    <li><a href="<?= URL ?>fag">سوالات متداول</a></li>
 
-                    <li><a href="about">درباره ما</a></li>
+                    <li><a href="<?= URL ?>about">درباره ما</a></li>
 
                 </ul>
 
@@ -45,13 +45,13 @@
 
                 <ul class="footer-links">
 
-                    <li><a href="service/projectService">انجام پروژه</a></li>
+                    <li><a href="<?= URL ?>service/projectService">انجام پروژه</a></li>
 
-                    <li><a href="service/privateTeachingService">تدریس خصوصی</a></li>
+                    <li><a href="<?= URL ?>service/privateTeachingService">تدریس خصوصی</a></li>
 
-                    <li><a href="service/debugService">رفع اشکال</a></li>
+                    <li><a href="<?= URL ?>service/debugService">رفع اشکال</a></li>
 
-                    <li><a href="service/consultService">مشاوره آموزشی</a></li>
+                    <li><a href="<?= URL ?>service/consultService">مشاوره آموزشی</a></li>
 
                 </ul>
 

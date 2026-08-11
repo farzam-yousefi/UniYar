@@ -1,2 +1,2 @@
-<link rel="stylesheet" href="public/css/homePage.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/homePage.css">
 <title>خانه</title>

@@ -1,3 +1,3 @@
-<link rel="stylesheet" href="public/css/form.css">
+<link rel="stylesheet" href="<?= URL ?>public/css/form.css">
 
 <title> تماس با ما </title>
