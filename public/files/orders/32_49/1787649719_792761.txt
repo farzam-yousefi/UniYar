@@ -1,0 +1,198 @@
+                 ---------------------------------------------
+                           Advanced Video Compressor 
+
+                     Copyright 2000-2012 WinSoftMagic, Inc.
+                 ---------------------------------------------
+
+                           * IMPORTANT INFORMATION *
+
+--------
+CONTENTS
+--------
+
+* About Advanced Video Compressor
+* Installing Advanced Video Compressor
+* Customer Services & Technical Support
+* Purchasing/Registering Advanced Video Compressor
+* License, Warranty, Copyright and Trademarks
+
+-------------------------------
+About Advanced Video Compressor
+-------------------------------
+
+Advanced Video Compressor for Windows, from WinSoftMagic, Inc. , is designed to compress digital video files by using the most advanced video compression algorithms and technology.
+
+Advanced Video Compressor is an excellent way to convert video for portable devices, prepare video files for sharing or storing, for private or business use: 
+
+*        Reduce the size of your video files 
+
+Advanced Video Compressor can reduce file size impressively - without any loss of quality. Smaller files take less space and can be uploaded and downloaded more quickly: effectively optimize videos for faster downloading from the Web, faster e-mail smaller video files - avoiding exceeding size limits. 
+
+*        Convert video files for portable devices 
+
+Advanced Video Compressor can easily convert your video files for using them on portable devices, such as a mobile phone or a media player. 
+
+*        Convert videos to MPEG4, H.264  from other formats 
+
+Advanced Video Compressor can help you to convert video files from many formats to the most  modern ones by using a selection of our advanced video/audio codecs. 
+
+You can easily process multiple videos just in several clicks, as well as a single video.
+
+Digital video camera users benefit most from Advanced Video Compressor's excellent abilities. It can be the perfect add-on to your other video software.
+
+------------------------------------
+INSTALLING Advanced Video Compressor
+------------------------------------
+
+Requirements: 
+------------
+Windows 7, Vista, XP, ... Windows 95.
+When installed it occupies about 12 Mbytes of disk space.  
+
+Installing:
+----------
+The installation is quite simple - unzip avideocompr.zip, just run 
+the avideocompr.exe and follow the directions given in the screen. 
+The automatic installation procedure will copy all the necessary 
+files to the specified directory and create a shortcut for the 
+program. After installing, AVC can be launched from the "Start" 
+menu.
+
+Upgrading:
+---------
+To upgrade your version to the latest version of AVC, just install 
+the latest version to the folder, which contains a previous version 
+of AVC.
+
+Uninstalling:
+------------
+You can uninstall the program from the Control Panel  Add/Remove 
+Applications window.  Open the Control Panel from the "Start" menu,
+double click Add/Remove Programs, and double click on the "Advanced
+Video Compressor" entry in the dialog box.
+
+
+-------------------------------------
+CUSTOMER SERVICES & TECHNICAL SUPPORT
+-------------------------------------
+
+WinSoftMagic, Inc. provides its registered software customers 
+with free technical support. We also provide limited technical support
+to persons evaluating our products.
+
+We do, however, strongly encourage people to purchase a license.
+Software development and support is very expensive and we need your 
+help if we are to continue to provide quality programs at affordable 
+prices. If you haven't already, please take a few moments to register.
+This will assure you of eligibility for technical support, product 
+update notification, special discounts, new product announcements, etc.
+
+Technical support, updates, product information and evaluation
+copies of all our products are available from the following on-line
+services:
+
+Internet E-Mail:
+    support@winsoftmagic.com
+
+World Wide Web:
+    http://www.winsoftmagic.com/
+
+
+Additional services (for businesses): 
+------------------------------------
+We are able to create a derivative software product, based on Advanced
+Video Compressor, that covers your particular needs in image processing.
+Quickly, rates are reasonable. Contact us at info@winsoftmagic.com
+
+Also, the implementation of some special functions for your hardware,
+or customizing the existing AVC's functions can be made as a result of
+OEM sales agreement.
+
+
+------------------------------------------------
+PURCHASING/REGISTERING Advanced Video Compressor
+------------------------------------------------
+
+Advanced Video Compressor is commercial software. 
+The unregistered version of AVC is available to you for free evaluation.  
+You are entitled to evaluate the software as long as you wish. This allows
+you to try out all the features in AVC to confirm that they work to your 
+satisfaction. 
+
+Evaluation (non-registered) version of AVC has only one limitation. 
+It adds a watermark "Trial". You can save and open compressed files.
+Purchase of the license (registration) is required to get the fully 
+functional, licensed version of AVC.
+
+Benefits for registered users are:
+
+* Free technical support
+* Free minor upgrades and large discounts on major upgrades and other
+  high quality products of WinSoftMagic, Inc.
+* Notification on new releases of AVC
+
+Current price of the single user license is $35. Site licenses with a defined 
+number of copies and discounts are available. You can see the current 
+pricing information at the "Order" page of our Web site.
+
+We provided the following methods of ordering: 
+
+* online
+* by phone (TOLL-FREE, if you are in the USA or Canada)
+* fax
+* postal mail
+* purchase order
+
+Ways to start registering:
+
+1. Run AVC. Click on the "Help" item in the main menu, then click on
+   the "Purchase a license" item and follow the instructions.
+
+2. Go to the "Order" page on our Web site:  
+   http://www.winsoftmagic.com/order.html
+   
+
+-------------------------------------------
+LICENSE, WARRANTY, COPYRIGHT AND TRADEMARKS
+-------------------------------------------
+
+Your use of Advanced Video Compressor (AVC) is governed by a License 
+which appears before you install AVC, contains in the user manual and 
+in license.txt file. 
+
+Advanced Video Compressor and WinSoftMagic are trademarks of 
+WinSoftMagic, Inc. 
+All other brand names are trademarks of their respective owners.
+
+This software and all accompanying documentation are protected by
+both United States and International Copyright laws and treaties.
+
+Copyright 2000-2011 WinSoftMagic, Inc.
+All rights reserved.
+
+
+Distribution:
+------------
+
+This software may be freely distributed, provided that:
+
+1. Such distribution only includes the original archive supplied 
+by WinSoftMagic, taken directly from our web site:
+
+		http://www.winsoftmagic.com/
+
+You may not alter, delete, or add any files in the distribution archive.
+
+2. The distribution does not include a registration information.
+In particular, you may not distribute a registered version of AVC.
+
+If you publish magazines, news, books, shareware, freeware or demo CD-ROMs 
+or you are Internet software repository, you are welcome to distribute our
+software provided that you will follow these rules. Please distribute only 
+the MOST RECENT versions of our software.
+
+
+-----------------------------------------
+Thank you for your support!
+WinSoftMagic, Inc.
+

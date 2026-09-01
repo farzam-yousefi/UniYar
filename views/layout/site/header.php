@@ -1,4 +1,38 @@
 <link rel="stylesheet" href="<?= URL ?>public/css/header.css">
+
+<?php
+Model::sessionInit('UNIYAR_SITE');
+$errors =
+    $_SESSION['trackingCode_errors'] ?? [];
+
+$openTrackingModal =
+    $_SESSION['open_trackingModal'] ?? false;
+
+unset($_SESSION['trackingCode_errors']);
+unset($_SESSION['open_trackingModal']);
+
+if ($openTrackingModal): ?>
+
+    <script>
+        let err="<?=$errors?>";
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const modalElement =
+                document.getElementById('trackingModal');
+
+            const modal =
+                bootstrap.Modal.getOrCreateInstance(modalElement);
+            const trackingError = document.getElementById("trackingError");
+            document.getElementById('defaultMsg').classList.add('d-none');
+            trackingError.innerHTML =err;
+            modal.show();
+
+        });
+    </script>
+
+<?php endif; ?>
+
+
 <body>
 
 <header>
@@ -38,9 +72,9 @@
 
                 </ul>
                 <div class="d-flex gap-2 mt-3 mt-lg-0">
-                <a class="btn btn-main p-3" href="<?= URL ?>order">
-                    ثبت درخواست
-                </a>
+                    <a class="btn btn-main p-3" href="<?= URL ?>order">
+                        ثبت درخواست
+                    </a>
                     <button
                             type="button"
 
@@ -81,58 +115,57 @@ Tracking Request Modal
                 ==============================-->
 
                 <div id="trackingStep1">
+                    <form method="get" action="<?= URL ?>order/edit"
+                        id="editByTrackingCode">
 
-                    <div class="tracking-icon">
+                        <input type="hidden"
+                               name="return_url"
+                               value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
 
-                        <i class="bi bi-search"></i>
-                        <h4 class="d-inline-block">
+                        <div class="tracking-icon">
 
-                            پیگیری درخواست
+                            <i class="bi bi-search"></i>
+                            <h4 class="d-inline-block">
 
-                        </h4>
+                                پیگیری درخواست
 
-                    </div>
+                            </h4>
 
+                        </div>
 
+                        <p id="defaultMsg">
+                            کد پیگیری خود را وارد کنید.
+                        </p>
 
-                    <p>
+                        <div class="form-group mt-4">
 
-                        کد پیگیری خود را وارد کنید.
+                            <input
+                                    id="trackingCode"
+                                    name="trackingCode"
+                                    type="number"
+                                    class="form-control-custom text-center"
+                                    placeholder="مثال : 34258741">
+                        </div>
+                        <div
+                                id="trackingError"
+                                class="tracking-error">
 
-                    </p>
+                        </div>
+                        <button
+                                id="trackingSearchBtn" type="button"
+                                class="btn btn-main mt-4 ms-2 px-5">
+                            جستجو
+                        </button>
 
-                    <div class="form-group mt-4">
+                        <button
+                                type="submit"
 
-                        <input
-                                id="trackingInput"
-                                type="text"
-                                class="form-control-custom text-center"
-                                placeholder="مثال : UY-258741">
-
-                    </div>
-
-                    <div
-                            id="trackingError"
-                            class="tracking-error">
-
-                    </div>
-
-                    <button
-                            id="trackingSearchBtn"
-                            class="btn btn-main mt-4 ms-2 px-5">
-
-                        جستجو
-
-                    </button>
-                    <a  class="nonLink" href="<?= URL ?>order/edit/24">
-                    <button
-                            type="button"
-                            id="trackingSearchBtn"
-                            class="btn btn-main mt-4 px-5">
+                                class="btn btn-main mt-4 px-5">
 
                             ویرایش
-                    </button>
-                    </a>
+                        </button>
+
+                    </form>
                 </div>
 
                 <!--==============================
@@ -288,7 +321,11 @@ Tracking Request Modal
 </div>
 
 <script>
-    function showStep(step){
+    document.getElementById("defaultMsg").classList.remove('d-none');
+    /*==================================================
+         SEARCH SECTION
+         ==================================================*/
+    function showStep(step) {
 
         document
             .getElementById("trackingStep1")
@@ -321,13 +358,13 @@ Tracking Request Modal
         .addEventListener("click", function () {
 
             const tracking =
-                document.getElementById("trackingInput").value.trim();
+                document.getElementById("trackingCode").value.trim();
 
-            if(tracking===""){
+            if (tracking === "") {
 
                 document.getElementById("trackingError").innerHTML =
-                    "کد پیگیری را وارد کنید.";
-
+                    "لطفا کد پیگیری را وارد کنید.";
+                document.getElementById("defaultMsg").classList.add('d-none');
                 return;
             }
 
@@ -373,11 +410,11 @@ Tracking Request Modal
             //for testing
             showStep("trackingLoading");
 
-            setTimeout(function(){
+            setTimeout(function () {
 
                 showStep("trackingResult");
 
-            },2500);
+            }, 2500);
 
         });
 
@@ -391,7 +428,7 @@ Tracking Request Modal
         showStep("trackingStep1");
 
         // پاک کردن ورودی
-        document.getElementById("trackingInput").value = "";
+        document.getElementById("trackingCode").value = "";
 
         // پاک کردن پیام خطا
         document.getElementById("trackingError").innerHTML = "";
@@ -402,6 +439,30 @@ Tracking Request Modal
         document.getElementById("rDate").innerHTML = "";
         document.getElementById("rStatus").innerHTML = "";
         document.getElementById("rDescription").innerHTML = "";
+
+    });
+
+
+    /*==================================================
+         EDIT SECTION
+         ==================================================*/
+    const form = document.getElementById("editByTrackingCode");
+
+    form.addEventListener("submit", function (e) {
+
+        const trackingCode =
+            document.getElementById("trackingCode").value.trim();
+        const trackingError = document.getElementById("trackingError");
+
+        if (trackingCode === "") {
+
+            trackingError.innerHTML =
+                "لطفا کد پیگیری را وارد کنید.";
+            document.getElementById("defaultMsg").classList.add('d-none');
+            e.preventDefault();
+            return;
+        }
+        trackingError.innerHTML = "";
 
     });
 </script>

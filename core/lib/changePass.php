@@ -5,31 +5,20 @@ Change Password Modal
 <link rel="stylesheet" href="<?= URL ?>public/css/validation.css">
 
 
-
 <?php if (isset($_SESSION['alert-resultOperation'])): ?>
+
 <script>
-    <?php if ($_SESSION['alert-resultOperation']):?>
 
-    myAlert.success(
-        "عملیات موفق",
-        "رمز با موفقیت تغییر یافت."
-    );
-    <?php
-    else:
-    ?>
-    myAlert.error(
-        "عملیات ناموفق",
-        "تغییر رمز با خطا مواجه شد. مجددا تلاش کنید."
+    myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+        <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+        <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
     );
 
-    <?php endif;
-    $_SESSION['alert-resultOperation'] = null;
-    $_SESSION['operation'] = null;
-    ?>
 </script>
 
-<?php endif; ?>
+<?php unset($_SESSION['alert-resultOperation']); ?>
 
+<?php endif; ?>
 
 <?php
 
@@ -59,6 +48,8 @@ if ($openChangePassword): ?>
     </script>
 
 <?php endif; ?>
+
+
 <div class="modal fade"
      id="changePasswordModal"
      tabindex="-1"

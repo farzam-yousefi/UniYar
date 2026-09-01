@@ -26,6 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        if (file.size > 20 *1024 *1024) {
+            myAlert.error(
+                'خطا',
+                'حجم مجاز عکس حداکثر 20 مگا بایت است.'
+            );
+
+            return;
+        }
+
 
         preview.src = URL.createObjectURL(file);
 

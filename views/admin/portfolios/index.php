@@ -409,61 +409,46 @@ Portfolio Header
     }
 </style>
 
-<?php if (isset($_SESSION['alert-resultOperation'])): ?>
-    <script>
-        <?php if ($_SESSION['alert-resultOperation']){
-        if ($_SESSION['operation'] === "add"){
-        ?>
+<?php if (isset($_SESSION['alert-resultOperation'])) {
+    if (!($_SESSION['operation'] === 'editPortfolioFromAdmin' &&
+        $_SESSION['alert-resultOperation']['type'] === 'error')) { ?>
+        <script>
 
-        myAlert.success(
-            "عملیات موفق",
-            "نمونه کار با موفقیت ثبت شد."
-        );
+            myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+                <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+                <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
+            );
+
+        </script>
+
         <?php
-        }else{
-        ?>
+        unset($_SESSION['alert-resultOperation']);
+        unset($_SESSION['operation']);
+    }
+}
+?>
 
-        myAlert.success(
-            "عملیات موفق",
-            "نمونه کار با موفقیت ویرایش شد."
-        );
-        <?php
-        }}
-        else{ ?>
-
-        myAlert.error(
-            "عملیات ناموفق",
-            "ثبت نمونه کار با خطا مواجه شد."
-        );
-
-        <?php }
-        $_SESSION['alert-resultOperation'] = null;
-        $_SESSION['operation'] = null;
-        ?>
-    </script>
-
-<?php endif; ?>
 <?php
-require_once 'core/const.php';
 
 if (isset($data['portfolios'])) {
     $portfolios = $data['portfolios'];
-    $totalCount= $data['totalCount'];
-    $competedCount=$data['completedCount'];
-    $inProgressCount=$totalCount-$competedCount;
+    $totalCount = $data['totalCount'];
+    $competedCount = $data['completedCount'];
+    $inProgressCount = $totalCount - $competedCount;
     foreach ($portfolios as &$portfolio) {
 
         $portfolio['started_date'] =
-            Helper::MiladiTojalili((string)$portfolio['started_date'], '-');
+            Helper::MiladiTojalili((string)$portfolio['started_date']);
 
         $portfolio['completed_date'] =
-            Helper::MiladiTojalili((string)$portfolio['completed_date'], '-');
+            Helper::MiladiTojalili((string)$portfolio['completed_date']);
     }
 
     unset($portfolio);
-} else
-    $portfolios = [];
+} else {
 
+    $portfolios = [];
+}
 
 ?>
 <title>نمونه کارها</title>
@@ -545,7 +530,7 @@ if (isset($data['portfolios'])) {
                     </a>
                 </div>
                 <div class="col-lg-4 col-md-6 stats">
-                    <a href="<?= URL ?>admin/portfolios/getPortfolios/COMPLETED"
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/completed"
 
                        class="stat-card static-filter">
 
@@ -567,7 +552,7 @@ if (isset($data['portfolios'])) {
                 <div class="col-lg-4 col-md-6 stats">
 
 
-                    <a href="<?= URL ?>admin/portfolios/getPortfolios/IN_PROGRESS"
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/in_progress"
 
                        class="stat-card static-filter">
 
@@ -694,7 +679,7 @@ if (isset($data['portfolios'])) {
 
                              data-category="<?= $cat ?>">
 
-                            <img src="<?= URL ?>public/images/portfolio/<?= $portfolio['cover_image'] ?>">
+                            <img src="<?= URL ?>public/images/portfolios/<?=$portfolio['category']?>/<?= $portfolio['cover_image'] ?>">
 
 
                             <div class="portfolio-body">
@@ -704,10 +689,16 @@ if (isset($data['portfolios'])) {
 
                                 <div class="portfolio-title-desc">
                                     <h5>
-                                        <?= $portfolio['title'] ?>
+                                        <?= htmlspecialchars(
+                                            $portfolio['title'] ?? '',
+                                            ENT_QUOTES,
+                                            'UTF-8') ?>
                                     </h5>
                                     <p>
-                                        <?= $portfolio['short_description'] ?>
+                                        <?= htmlspecialchars(
+                                            $portfolio['short_description'] ?? '',
+                                            ENT_QUOTES,
+                                            'UTF-8') ?>
 
                                     </p>
                                 </div>

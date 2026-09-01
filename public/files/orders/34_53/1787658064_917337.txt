@@ -1,0 +1,36 @@
+Advanced Video Compressor(TM)
+Copyright (C) 2000 - 2012 WinSoftMagic, Inc. 
+All rights reserved.
+
+This software and all accompanying documentation are protected by both United States and International Copyright laws and treaties.
+
+End-User License Agreement
+  ("License Agreement")
+
+For the purposes of this agreement, "SOFTWARE" refers to any and all executable files, help files and other documentation that accompany the Advanced Video Compressor product. "WSM" means WinSoftMagic, Inc.
+
+By installing, copying or otherwise using the SOFTWARE you are agreeing to be bound by the terms of this License Agreement. If you do not agree to the terms of this License Agreement, WSM is unwilling to license the SOFTWARE to you. In that case, do not install, distribute or use the SOFTWARE.
+
+This is not free software. Subject to the terms below, you are hereby licensed by WSM to use the unregistered SOFTWARE for evaluation purposes only. You are entitled to evaluate the SOFTWARE as long as you wish. This allows you to try out all the features to confirm that they work to your satisfaction. To do not violate the terms of evaluation, you may not save any results of working the unregistered SOFTWARE. Purchase of the license (registration) is required to get the fully functional, licensed version of SOFTWARE.
+
+Two types of license are available to purchase: PERSONAL LICENSE and BUSINESS LICENSE. The PERSONAL LICENSE allows you to use the SOFTWARE for non-commercial purposes in non-business, non commercial environment. The BUSINESS LICENSE permits you to use the SOFTWARE in a corporate, government or business environment, for a commercial or private use. Each license limits the number of users that may use the SOFTWARE: if this is a single user license, the licensed (registered) SOFTWARE may be used by one person on one computer at one time. If this is a multi-user license, you may make, install, and use additional copies of the SOFTWARE up to the number defined by the license purchased. If this is an Unlimited Business license, you may install and use the SOFTWARE on any or all of the your computers within your company / organization. You may access the licensed (registered) SOFTWARE through a network, provided that you have obtained a multi-user license for all computers that will access SOFTWARE through the network, or an unlimited license for your company / organization. 
+
+The "command-line" use requires the multi-user (from 10 to unlimited) business license, according to the number of users that will provide files to be processed. 
+
+Neither the evaluator nor registered user are not allowed to attempt to reverse engineer, disassemble, or decompile the SOFTWARE and products. You may neither modify, rent, or resell for profit this software, nor may you create derivative works based upon this software.
+Any logo or graphics included in the SOFTWARE, name and all parts of the SOFTWARE are copyright protected.  No program, code, part, image, algorithm, video clip, audio sample, text, or computer generated sequence of images may be copied or used in any way by the user except as intended within the bounds of the single user program.
+The sale or distribution of registered copies of the SOFTWARE is strictly forbidden.  It is a violation of this agreement to loan, rent or resell, lease, borrow, or transfer the use of registered copies of SOFTWARE.
+
+DISCLAIMER. This software is provided on an "as is" basis, without any other warranties, or conditions, expressed or implied, including but not limited to warranties of merchantable quality, merchantability, or fitness for a particular purpose, or those arising by law, statute, usage of trade, or course of dealing. The entire risk as to the results and performance of this software is assumed by you. Neither we nor our dealers or suppliers of SOFTWARE will have any liability to you or any other person or entity for any indirect, incidental, special, or consequential damages whatsoever, including but not limited to loss of revenue or profit, lost or damaged data, or other kind of loss, even if we have been advised of the possibility of such damages or they are foreseeable; or for claims by a third party. You may have other rights which vary from state to state. 
+
+GENERAL. This license gives you the right to use this software, but all rights not specifically mentioned in this agreement, including ownership rights, intellectual property rights, trademarks and copyright, are reserved by WSM.
+
+RESTRICTIONS. The Software may be subject to United States Export control. You agree to fully comply with all applicable United States export regulations.
+
+DISTRIBUTION. You may allow other users to evaluate copies of the unregistered SOFTWARE. All evaluation users are subject to the terms of this agreement. The SOFTWARE may be freely distributed, provided that:
+1. Such distribution only includes the original archive supplied by WSM, taken directly from our web site: http://www.winsoftmagic.com/
+You may not alter, delete, or add any files in the distribution archive.
+2. The distribution does not include a registration information.  In particular, you may not distribute a registered version of the SOFTWARE.
+For more information about distribution of the SOFTWARE contact WSM by e-mail:	info@winsoftmagic.com
+
+YOU ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.

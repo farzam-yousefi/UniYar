@@ -173,7 +173,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="hero-buttons justify-content-center">
 
-                        <a href="#" class="btn btn-main">
+                        <a href=<?= URL ?>order/index/CONSULT" class="btn btn-main">
 
                             ثبت درخواست مشاوره
                             <i class="fas fa-chevron-left"></i>

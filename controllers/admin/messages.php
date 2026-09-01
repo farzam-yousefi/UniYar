@@ -5,8 +5,8 @@ class messages extends Controller
     function __construct()
     {
 
-        Model::sessionInit();
-        if (!Model::isAdminLoggedIn()) {
+        Model::sessionInit('UNIYAR_ADMIN');
+        if (!Model::isAdminLoggedIn('UNIYAR_ADMIN')) {
             header("Location:" . URL . "admin");
         }
 

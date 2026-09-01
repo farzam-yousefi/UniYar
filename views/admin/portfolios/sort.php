@@ -254,11 +254,11 @@ Sort Header
 
     }
 </style>
+
 <?php
-require_once 'core/const.php';
 
 if (isset($data['portfolios'])) {
-    $portfolios = $data['portfolios'];
+    $portfolios = $data['portfolios'][0];
     foreach ($portfolios as &$portfolio) {
 
         $portfolio['started_date'] =
@@ -302,7 +302,7 @@ if (isset($data['portfolios'])) {
                         </p>
                     </div>
                     <div class="col-lg-3 col-md-4 flex text-center align-items-center ">
-                        <a href="http://localhost:8080/uniyar/admin/portfolios" class="btn btn-main w-75">
+                        <a href="http://localhost:8080/uniyar/admin/portfolios" class="btn btn-main w-100">
 
                             <i class="bi bi-arrow-return-right ms-2"></i>
 
@@ -349,7 +349,10 @@ if (isset($data['portfolios'])) {
                                     <div class="sort-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
 
                                         <h5 class="mb-md-0 fw-bold sort-title">
-                                            <?= $portfolio['title'] ?>
+                                            <?= htmlspecialchars(
+                                                $portfolio['title'] ?? '',
+                                                ENT_QUOTES,
+                                                'UTF-8')  ?>
                                         </h5>
 
                                         <div class="sort-meta d-flex flex-wrap gap-2">

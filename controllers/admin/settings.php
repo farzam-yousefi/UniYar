@@ -5,7 +5,7 @@ class settings extends Controller
     function __construct()
     {
 
-        Model::sessionInit();
+        Model::sessionInit('UNIYAR_ADMIN');
         if (!Model::isAdminLoggedIn()) {
             header("Location:" . URL . "admin");
         }

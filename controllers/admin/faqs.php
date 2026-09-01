@@ -5,7 +5,7 @@ class faqs extends Controller
     function __construct()
     {
 
-        Model::sessionInit();
+        Model::sessionInit('UNIYAR_ADMIN');
         if (!Model::isAdminLoggedIn()) {
             header("Location:" . URL . "admin");
         }
@@ -19,17 +19,5 @@ class faqs extends Controller
             "admin", "admin");
     }
 
-//    function  details($orderId){
-//
-//        $data['mode'] = "view";
-//        $this->view("admin/orders/details", $data,
-//            "admin", "admin");
-//    }
-//    function  edit($orderId){
-//
-//        $data['mode'] = "edit";
-//        $this->view("admin/orders/details", $data,
-//            "admin", "admin");
-//    }
 
 }

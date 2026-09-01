@@ -83,9 +83,10 @@ class Model
     /* ======================
        SESSIONS
     ====================== */
-    public static function sessionInit()
+    public static function sessionInit($sessionName)
     {
         if (session_status() === PHP_SESSION_NONE) {
+            session_name($sessionName);
             session_start();
         }
     }

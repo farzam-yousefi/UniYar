@@ -8,11 +8,156 @@ class Helper
     }
 
     /* ======================
-   PICTURES
+   PICTURES && FILES
     ====================== */
+    public static function validatorFileOrImg($file, $subDir, $item = '', $itemName = '', $isRequired)
+    {
+        /*
+    ==========================================
+    بررسی اینکه فایل ارسال شده یا نه
+    ==========================================
+    */
 
-    public static function  create_thumbnail( $file,$pathToSave, $w = 300,$h = 300,
-        $crop = false, $quality = 90 )
+        $noFile =
+            !is_array($file) ||
+            !isset($file['name']) ||
+            !isset($file['error']) ||
+            $file['error'] === UPLOAD_ERR_NO_FILE;
+
+
+        /*
+        ==========================================
+        فایل اجباری
+        ==========================================
+        */
+
+        if ($isRequired && $noFile) {
+
+            return [
+                'success' => false,
+
+                'data' => [
+                    'filename' => null
+                ],
+
+                'errors' => [
+                    'file' => [
+                        'آپلود فایل ' . $itemName . ' الزامی است.'
+                    ]
+                ]
+            ];
+        }
+
+
+        /*
+        ==========================================
+        فایل اختیاری و ارسال نشده
+        ==========================================
+        */
+
+        if ($noFile) {
+
+            return [
+                'success' => true,
+
+                'data' => [
+                    'filename' => null
+                ],
+
+                'errors' => []
+            ];
+        }
+
+
+        /*
+        ==========================================
+        فایل ارسال شده
+        ==========================================
+        */
+
+        $dir = "public/" . $subDir . "/";
+
+        return self::uploadFile(
+            $file,
+            $dir,
+            ['img', 'pdf', 'word', 'zip', 'rar', 'txt'],
+            40
+        );
+    }
+
+    public static function validatorImage($image, $subDir, $item = '', $itemName = '', $imgIsRequired)
+    {
+        /*
+    ==========================================
+    بررسی اینکه عکس ارسال شده یا نه
+    ==========================================
+    */
+
+        $noFile =
+            !is_array($image) ||
+            !isset($image['name']) ||
+            !isset($image['error']) ||
+            $image['error'] === UPLOAD_ERR_NO_FILE;
+
+
+        /*
+        ==========================================
+        عکس اجباری
+        ==========================================
+        */
+
+        if ($imgIsRequired && $noFile) {
+
+            return [
+                'success' => false,
+
+                'data' => [
+                    'filename' => null
+                ],
+
+                'errors' => [
+                    'file' => [
+                        'آپلود تصویر ' . $itemName . ' الزامی است.'
+                    ]
+                ]
+            ];
+        }
+
+
+        /*
+        ==========================================
+        عکس اختیاری و ارسال نشده
+        ==========================================
+        */
+
+        if ($noFile) {
+
+            return [
+                'success' => true,
+
+                'data' => [
+                    'filename' => null
+                ],
+
+                'errors' => []
+            ];
+        }
+
+
+        /*
+        ==========================================
+        عکس ارسال شده
+        ==========================================
+        */
+
+        $dir = "public/images/" . $subDir . "/";
+        return self::uploadFile($image, $dir, ['img'], 20);
+
+    }
+
+
+    public static function create_thumbnail($file, $pathToSave, $w = 300, $h = 300,
+                                            $crop = false, $quality = 90)
     {
 
         if (!file_exists($file)) {
@@ -209,72 +354,431 @@ class Helper
 
     }
 
-    public static function uploadFile($file, $dir, $allowFormat,$maxMeg=20,$name="")
+    public static function uploadFile($file, $dir, $allowFormat, $maxMeg = 20, $name = "")
     {
-        $errors['picture'] = [];
-        $fileName = $file['name'];
-        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $file['size'];
-        $fileTmp = $file['tmp_name'];
+        $errors = [];
         $uploadOk = 1;
 
-        if ($name==""){
-            $newName = time()."_".rand(1,1000000) . "." . strtolower($ext);
-        }else{
+
+        /* =========================
+           بررسی ساختار فایل
+        ========================= */
+
+        if (!isset($file['name']) || !isset($file['tmp_name']) || !isset($file['size'])
+            || !isset($file['error'])) {
+            $errors['file'][] ="ساختار فایل ارسالی نامعتبر است.";
+
+            return [
+                'success' => false,
+                'data' => [
+                    'filename' => null
+                ],
+                'errors' => $errors
+            ];
+
+        }
+
+
+        /* =========================
+           بررسی خطای Upload
+        ========================= */
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+
+            $errors['file'][] =
+                "در آپلود فایل انتخابی خطایی رخ داده است.";
+
+            return [
+                'success' => false,
+                'data'=> [
+                    'filename' => null,
+                ],
+                'errors' => $errors
+            ];
+        }
+
+
+        $fileName = $file['name'];
+        $fileSize = $file['size'];
+        $fileTmp = $file['tmp_name'];
+        $fileType=$file['type'];
+
+
+        /* =========================
+           بررسی اینکه فایل واقعی است
+        ========================= */
+
+        if (!is_uploaded_file($fileTmp)) {
+
+            $errors['file'][] =
+               "فایل".$file['name']."آپلود شده معتبر نیست.";
+
+            return [
+                'success' => false,
+                'data'=> [
+                    'filename' => null,
+                ],
+                'errors' => $errors
+            ];
+        }
+
+
+        /* =========================
+           Extension
+        ========================= */
+
+        $ext = strtolower(
+            pathinfo($fileName, PATHINFO_EXTENSION)
+        );
+
+
+        /* =========================
+           بررسی Extension
+        ========================= */
+
+        if (!self::validateExtension($allowFormat, $ext)) {
+
+            $uploadOk = 0;
+
+            $errors['file'][] =
+                'پسوند فایل '.$file['name']. 'نامناسب است';
+        }
+
+
+        /* =========================
+           بررسی حجم
+        ========================= */
+
+        if ($fileSize > ($maxMeg * 1024 * 1024)) {
+
+            $uploadOk = 0;
+
+            $errors['file'][]=
+                "حداکثر حجم فایل انتخابی {$maxMeg} مگابایت است";
+        }
+
+
+        /* =========================
+           بررسی نوع واقعی فایل
+        ========================= */
+
+        if ($uploadOk) {
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+            if ($finfo === false) {
+
+                $uploadOk = 0;
+
+                $errors['file'][] =
+                    "امکان بررسی نوع فایل {$file['name']}وجود ندارد.";
+
+
+            } else {
+
+                $mime = finfo_file($finfo, $fileTmp);
+
+                finfo_close($finfo);
+
+
+                /*
+                =========================
+                IMAGE
+                =========================
+                */
+
+                if (
+                in_array(
+                    $ext,
+                    ['jpg', 'jpeg', 'png'],
+                    true
+                )
+                ) {
+
+                    if (!self::is_image($fileTmp)) {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][] =
+                            " فایل {$file['name']} یک تصویر معتبر نیست.";
+
+                    }
+
+                } /*
+                =========================
+                PDF
+                =========================
+                */
+
+                elseif ($ext === 'pdf') {
+
+                    if ($mime !== 'application/pdf') {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][]=
+                            "فایل PDF {$file['name']}معتبر نیست.";
+
+                    }
+
+                } /*
+                =========================
+                WORD
+                =========================
+                */
+
+                elseif (
+                in_array(
+                    $ext,
+                    ['doc', 'docx'],
+                    true
+                )
+                ) {
+
+                    $allowedWordMime = [
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    ];
+
+                    if (!in_array($mime, $allowedWordMime, true)) {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][]=
+                            "فایل WORD {$file['name']}معتبر نیست.";
+                    }
+
+                } /*
+                =========================
+                ZIP
+                =========================
+                */
+
+                elseif ($ext === 'zip') {
+
+                    if ($mime !== 'application/zip') {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][] =
+                            "فایل ZIP {$file['name']}معتبر نیست.";
+                    }
+
+                } /*
+                =========================
+                RAR
+                =========================
+                */
+
+                elseif ($ext === 'rar') {
+
+                    $allowedRarMime = [
+                        'application/vnd.rar',
+                        'application/x-rar',
+                        'application/x-rar-compressed'
+                    ];
+
+                    if (!in_array($mime, $allowedRarMime, true)) {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][] =
+                            "فایل RAR {$file['name']}معتبر نیست.";
+                    }
+
+                }
+            }
+        }
+
+
+        /* =========================
+           ساخت نام فایل
+        ========================= */
+
+        if ($name === "") {
+
+            $newName =
+                time() .
+                "_" .
+                random_int(1, 1000000) .
+                "." .
+                $ext;
+
+        } else {
+
             $newName = $name;
         }
 
 
-            if (!file_exists($dir)) {
+        /* =========================
+           ساخت Directory
+        ========================= */
 
-                if (!mkdir($dir, 0777, true)) {
-                    $errors['dir']='خطا در ساخت پوشه';
-                    return [
-                        'success' => false,
+        if (!file_exists($dir)) {
+
+            if (!mkdir($dir, 0755, true)) {
+
+                $errors['file'][] =
+                    'خطا در ساخت پوشه';
+
+                return [
+                    'success' => false,
+                    'data'=> [
                         'filename' => null,
-                        'errors' => $errors
-                    ];
+                    ],
+                    'errors' => $errors
+                ];
+            }
+        }
 
-                }
 
+        /* =========================
+           Upload
+        ========================= */
+
+        if (!empty($fileSize) && $uploadOk === 1) {
+
+            $target = $dir . $newName;
+
+
+            /*
+            جلوگیری از overwrite
+            */
+
+            if (file_exists($target)) {
+
+                $errors['file'][]=
+                    "فایلی با نام{$file['name']}از قبل وجود دارد.";
+
+                return [
+                    'success' => false,
+                    'data'=> [
+                        'filename' => null,
+                    ],
+                    'errors' => $errors
+                ];
             }
 
 
-        if (!self::validateExtension($allowFormat,$ext)) {
-            $uploadOk = 0;
-            $errors['picture']['ext']= 'پسوند فایل انتخابی نامناسب است';
-        }
-
-        if ($uploadOk && in_array('img', $allowFormat) && !self::is_image($fileTmp)) {
-            $uploadOk = 0;
-            $errors['picture']['format'] = 'فایل انتخاب شده یک تصویر معتبر نیست.';
-        }
-
-        if ($fileSize > ($maxMeg*1024*1024)) {
-            $uploadOk = 0;
-            $errors['picture']['size']= "حداکثر حجم فایل انتخابی {$maxMeg} مگابایت است";
-        }
-        if (!empty($fileSize)  && $uploadOk == 1) {
-            $target = $dir . $newName;
             if (move_uploaded_file($fileTmp, $target)) {
 
-
-               // $err = 'آپلود فایل با موفقیت انجام شد';
                 return [
                     'success' => true,
-                    'filename' => $newName,
+                    'data'=>[
+                        'filename' => $newName,
+                        'originalName'=>$fileName,
+                        'fileSize'=>$fileSize,
+                        'fileType'=>$fileType,
+                        'path'=>$target
+                    ],
+
                     'errors' => null
                 ];
             }
 
+
+            $errors['file'][] =
+                "ذخیره فایل  {$file['name']}با خطا مواجه شد.";
         }
+
 
         return [
             'success' => false,
-            'filename' => null,
+            'data'=> [
+                'filename' => null,
+            ],
             'errors' => $errors
         ];
+    }
 
+//    public static function uploadFile($file, $dir, $allowFormat,$maxMeg=20,$name="")
+//    {
+//        $errors['picture'] = [];
+//        $fileName = $file['name'];
+//        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+//        $fileSize = $file['size'];
+//        $fileTmp = $file['tmp_name'];
+//        $uploadOk = 1;
+//
+//        if ($name==""){
+//            $newName = time()."_".rand(1,1000000) . "." . strtolower($ext);
+//        }else{
+//            $newName = $name;
+//        }
+//
+//
+//            if (!file_exists($dir)) {
+//
+//                if (!mkdir($dir, 0777, true)) {
+//                    $errors['dir']='خطا در ساخت پوشه';
+//                    return [
+//                        'success' => false,
+//                        'filename' => null,
+//                        'errors' => $errors
+//                    ];
+//
+//                }
+//
+//            }
+//
+//
+//        if (!self::validateExtension($allowFormat,$ext)) {
+//            $uploadOk = 0;
+//            $errors['picture']['ext']= 'پسوند فایل انتخابی نامناسب است';
+//        }
+//
+//        if ($uploadOk && in_array('img', $allowFormat) && !self::is_image($fileTmp)) {
+//            $uploadOk = 0;
+//            $errors['picture']['format'] = 'فایل انتخاب شده یک تصویر معتبر نیست.';
+//        }
+//
+//        if ($fileSize > ($maxMeg*1024*1024)) {
+//            $uploadOk = 0;
+//            $errors['picture']['size']= "حداکثر حجم فایل انتخابی {$maxMeg} مگابایت است";
+//        }
+//        if (!empty($fileSize)  && $uploadOk == 1) {
+//            $target = $dir . $newName;
+//            if (move_uploaded_file($fileTmp, $target)) {
+//
+//
+//               // $err = 'آپلود فایل با موفقیت انجام شد';
+//                return [
+//                    'success' => true,
+//                    'filename' => $newName,
+//                    'errors' => null
+//                ];
+//            }
+//
+//        }
+//
+//        return [
+//            'success' => false,
+//            'filename' => null,
+//            'errors' => $errors
+//        ];
+//
+//    }
+    public static function normalizeFiles($files)
+    {
+        $result = [];
+
+        foreach ($files['name'] as $index => $name) {
+
+            if ($files['error'][$index] === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $result[] = [
+                'name' => $files['name'][$index],
+                'full_path' => $files['full_path'][$index],
+                'type' => $files['type'][$index],
+                'tmp_name' => $files['tmp_name'][$index],
+                'error' => $files['error'][$index],
+                'size' => $files['size'][$index],
+            ];
+        }
+
+        return $result;
     }
 
     public static function validateExtension($allowFormat, $ext)
@@ -283,15 +787,32 @@ class Helper
 
         foreach ($allowFormat as $format) {
 
-            if ($format == 'img' && in_array($ext, ['jpg', 'jpeg', 'png'])) {
+            if ($format === 'img' && in_array($ext, ['jpg', 'jpeg', 'png'], true))
+                return true;
+
+            if ($format === 'pdf' && $ext === 'pdf')
+                return true;
+
+            if (
+                $format === 'word' &&
+                in_array($ext, ['doc', 'docx'], true)
+            ) {
                 return true;
             }
 
-            if ($format == 'pdf' && $ext == 'pdf') {
+            if ($format === 'zip' && $ext === 'zip') {
                 return true;
             }
 
-            if ($format == 'vid' && $ext == 'mp4') {
+            if ($format === 'rar' && $ext === 'rar') {
+                return true;
+            }
+
+            if ($format === 'vid' && $ext === 'mp4') {
+                return true;
+            }
+
+            if ($format == 'txt' && $ext === 'txt') {
                 return true;
             }
         }
@@ -299,8 +820,7 @@ class Helper
         return false;
     }
 
-
-        //just:  jpg    ,jpeg    ,png
+    //just:  jpg    ,jpeg    ,png
     public static function is_image($path)
     {
         $info = getimagesize($path);
@@ -338,25 +858,27 @@ class Helper
             $info[1] >= $minHeight
         );
     }
-/* ======================
-   CLEANING
-  ===================== */
 
-public static function removeSpecialCharacter($string)
-{
-    // تبدیل فاصله‌ها به خط تیره
-    $string = preg_replace('/\s+/u', '-', trim($string));
+    /* ======================
+       CLEANING
+      ===================== */
 
-    // حذف همه کاراکترها به جز حروف فارسی، انگلیسی، اعداد و خط تیره
-    $string = preg_replace('/[^\p{L}\p{N}-]/u', '', $string);
+    public static function removeSpecialCharacter($string)
+    {
+        // تبدیل فاصله‌ها به خط تیره
+        $string = preg_replace('/\s+/u', '-', trim($string));
 
-    // حذف خط تیره‌های تکراری
-    $string = preg_replace('/-+/u', '-', $string);
+        // حذف همه کاراکترها به جز حروف فارسی، انگلیسی، اعداد و خط تیره
+        $string = preg_replace('/[^\p{L}\p{N}-]/u', '', $string);
 
-    // حذف خط تیره ابتدا و انتها
-    return trim($string, '-');
+        // حذف خط تیره‌های تکراری
+        $string = preg_replace('/-+/u', '-', $string);
 
-}
+        // حذف خط تیره ابتدا و انتها
+        return trim($string, '-');
+
+    }
+
     public static function cleanInput($text)
     {
         $text = strip_tags($text);
@@ -365,6 +887,7 @@ public static function removeSpecialCharacter($string)
 
         return $text;
     }
+
     /**
      * Clean project technical description.
      * Preserves line breaks while removing HTML tags.
@@ -430,39 +953,67 @@ public static function removeSpecialCharacter($string)
 
     public static function jaliliToMiladi($jalili, $format = '/')
     {
+        // تبدیل اعداد فارسی/عربی به انگلیسی
+        $jalili = self::convert2english($jalili);
 
-        $jalili = explode('/', $jalili);
-        $year = $jalili[0];
-        $month = $jalili[1];
-        $day = $jalili[2];
+        $jalili = explode($format, $jalili);
+
+        if (count($jalili) !== 3) {
+            return false;
+        }
+
+        $year = (int)$jalili[0];
+        $month = (int)$jalili[1];
+        $day = (int)$jalili[2];
+
         $date = jalali_to_gregorian($year, $month, $day);
-        $date = implode($format, $date);
-        $date = new DateTime($date);
-        $date = $date->format('Y/m/d');
 
-        return $date;
+        return sprintf(
+            '%04d-%02d-%02d',
+            $date[0],
+            $date[1],
+            $date[2]
+        );
     }
 
-    public static function MiladiTojalili($miladi, $format = '/')
+    public static function MiladiTojalili($miladi, $separator = '-')
     {
+        $parts = explode($separator, $miladi);
 
-        $miladi = explode($format, $miladi);
-        $year = $miladi[0];
-        $month = $miladi[1];
-        $day = $miladi[2];
+        $year = $parts[0];
+        $month = $parts[1];
+        $day = $parts[2];
+
         $date = gregorian_to_jalali($year, $month, $day);
-        $date = implode('/', $date);
-        return $date;
+
+        return sprintf(
+            '%04d/%02d/%02d',
+            $date[0],
+            $date[1],
+            $date[2]
+        );
     }
 
-
+//    public static function MiladiTojalili($miladi, $format = '/')
+//    {
+//
+//        $miladi = explode('/', $miladi);
+//        $year = $miladi[0];
+//        $month = $miladi[1];
+//        $day = $miladi[2];
+//        $date = gregorian_to_jalali($year, $month, $day);
+//        $date = implode($format, $date);
+//        return $date;
+//    }
+//
 
 
     /* ======================
 GENERAL
 ====================== */
 
-    public static function convert2english($string) {
+    public static function convert2english($string)
+    {
         $newNumbers = range(0, 9);
         // 1. Persian HTML decimal
         $persianDecimal = array('&#1776;', '&#1777;', '&#1778;', '&#1779;', '&#1780;', '&#1781;', '&#1782;', '&#1783;', '&#1784;', '&#1785;');
@@ -473,9 +1024,9 @@ GENERAL
         // 4. Persian Numeric
         $persian = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
 
-        $string =  str_replace($persianDecimal, $newNumbers, $string);
-        $string =  str_replace($arabicDecimal, $newNumbers, $string);
-        $string =  str_replace($arabic, $newNumbers, $string);
+        $string = str_replace($persianDecimal, $newNumbers, $string);
+        $string = str_replace($arabicDecimal, $newNumbers, $string);
+        $string = str_replace($arabic, $newNumbers, $string);
         return str_replace($persian, $newNumbers, $string);
     }
 

@@ -52,10 +52,26 @@
 
 
 </style>
+<?php if (isset($_SESSION['alert-resultOperation'])) {
+    if ($_SESSION['operation'] === 'editPortfolioFromAdmin' &&
+        $_SESSION['alert-resultOperation']['type'] === 'error') { ?>
+        <script>
 
+            myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+                <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+                <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
+            );
+
+        </script>
+
+        <?php
+        unset($_SESSION['alert-resultOperation']);
+        unset($_SESSION['operation']);
+    }
+} ?>
 <?php
 $mode = $data['mode'];
-//print_r($data['portfolio']);
+
 if (isset($data['portfolio'])) {
     $portfolio = $data['portfolio'];
     $started_date = Helper::jaliliDate(Helper::MiladiTojalili($portfolio['started_date'], '-'));
@@ -64,7 +80,9 @@ if (isset($data['portfolio'])) {
 }
 if (isset($data['errors']))
     $errors = $data['errors'];
-
+else
+    $errors = [];
+$hasError = !empty($errors);
 ?>
 <title> <?= $title = ($mode == "add") ? "افزودن نمونه کار" : "ویرایش نمونه کار" ?> </title>
 
@@ -122,7 +140,10 @@ if (isset($data['errors']))
                                     type="text"
                                     name="title"
                                     class="form-control"
-                                    value="<?= $portfolio['title'] ?? '' ?>"
+                                    value="<?= htmlspecialchars(
+                                        $portfolio['title'] ?? '',
+                                        ENT_QUOTES,
+                                        'UTF-8') ?>"
                                     placeholder="مثلا طراحی فروشگاه اینترنتی">
                             <?php if (isset($errors['title'])): ?>
 
@@ -278,7 +299,10 @@ if (isset($data['errors']))
                                       name="short_description"
                                       rows="3"
                                       class="form-control"
-                                      placeholder="توضیح مختصر درباره پروژه"><?= $portfolio['short_description'] ?? '' ?>
+                                      placeholder="توضیح مختصر درباره پروژه"><?= htmlspecialchars(
+                                    $portfolio['short_description'] ?? '',
+                                    ENT_QUOTES,
+                                    'UTF-8') ?>
                             </textarea>
                             <?php if (isset($errors['short_description'])): ?>
 
@@ -305,7 +329,10 @@ if (isset($data['errors']))
                                       data-action="پر کنید"
                                       name="description"
                                       rows="7"
-                                      class="form-control"><?= $portfolio['description'] ?? '' ?>
+                                      class="form-control"><?= htmlspecialchars(
+                                    $portfolio['description'] ?? '',
+                                    ENT_QUOTES,
+                                    'UTF-8') ?>
                             </textarea>
                             <?php if (isset($errors['description'])): ?>
 
@@ -332,7 +359,10 @@ if (isset($data['errors']))
                                     type="url"
                                     name="project_url"
                                     class="form-control"
-                                    value="<?= $portfolio['project_url'] ?? '' ?>"
+                                    value="<?= htmlspecialchars(
+                                        $portfolio['project_url'] ?? '',
+                                        ENT_QUOTES,
+                                        'UTF-8') ?>"
                                     placeholder="https://example.com">
 
 
@@ -410,11 +440,11 @@ if (isset($data['errors']))
                                     name="cover_image"
                                     id="image"
                                     class="form-control">
-                            <?php if (isset($errors['picture'])): ?>
+                            <?php if (isset($errors['file'])): ?>
 
                                 <div class="form-error">
                                     <?php
-                                    foreach ($err as $errors['picture']) {
+                                    foreach ($errors['file'] as $err) {
                                         ?>
                                         <ul>
                                             <li><?= $err ?></li>
@@ -439,7 +469,7 @@ if (isset($data['errors']))
                                     <?php if (!empty($portfolio['cover_image'])): ?>
 
                                         <img id="preview"
-                                             src="<?= URL ?>public/images/portfolio/<?= $portfolio['cover_image'] ?>">
+                                             src="<?= URL ?>public/images/portfolios/<?= $portfolio['category'] ?>/<?= $portfolio['cover_image'] ?>">
 
                                     <?php else: ?>
 
@@ -490,7 +520,15 @@ if (isset($data['errors']))
                                                 type="checkbox"
                                                 name="is_active"
                                                 value="1"
-                                            <?= ((isset($portfolio)) && ($portfolio['is_active'])) ? 'checked' : '' ?>
+
+                                            <?php
+                                            if ($mode === "add")
+                                                echo 'checked';
+
+                                            else
+                                                if ((isset($portfolio)) && ($portfolio['is_active']))
+                                                    echo 'checked';
+                                            ?>
                                         >
                                         <span></span>
                                     </label>
@@ -534,13 +572,13 @@ if (isset($data['errors']))
                                         name="status"
                                         class="form-control w-50">
 
-                                    <option value="IN_PROGRESS"
+                                    <option value="in_progress"
                                         <?= ($portfolio['status'] ?? '') === 'IN_PROGRESS' ? 'selected' : '' ?>>
                                         پیش نویس
                                     </option>
 
-                                    <option value="DONE"
-                                        <?= ($portfolio['status'] ?? '') === 'DONE' ? 'selected' : '' ?>>
+                                    <option value="completed"
+                                        <?= ($portfolio['status'] ?? '') === 'COMPLETED' ? 'selected' : '' ?>>
                                         منتشر شده
                                     </option>
 
@@ -591,9 +629,13 @@ if (isset($data['errors']))
     $(function () {
         // transfer data from php to js
         let mode = "<?= $mode ?>";
+        let hasError = "<?= $hasError ?>";
 
         let initialVal = null;
-        initialVal = (mode === "edit") ? false : true;
+        if ((mode === "edit") || hasError)
+            initialVal = false;
+        else
+            initialVal = true;
 
         $(".jalali-date").persianDatepicker({
             format: "YYYY/MM/DD",
@@ -617,5 +659,17 @@ if (isset($data['errors']))
                 e.preventDefault();
 
         });
+    });
+
+    const textareas = document.querySelectorAll('textarea');
+
+    textareas.forEach(textarea => {
+
+        textarea.addEventListener('click', function () {
+
+            this.setSelectionRange(0, 0);
+
+        });
+
     });
 </script>

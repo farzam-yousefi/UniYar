@@ -24,15 +24,15 @@ class model_portfolio extends Model
 
     function getPortfolios($status)
     {
-        if ($status === "all")
+        if ($status === "ALL")
             $res = $this->getAllPortfolios()[0];
 
         else {
             $sql = "select * from projects where status=? order by started_date desc";
             $res = $this->myFetchAll($sql, [$status]);
         }
-//            $json = json_encode($res);
-//       print_r($res);
+////            $json = json_encode($res);
+////       print_r($res);
         return $res;
 
     }
@@ -134,7 +134,7 @@ handled_by_admin_id=?,started_date=?,completed_date=? ,status=? where id=? ";
             $this->doQuery($sql, [$post['title'], $slug, $post['short_description'],
                 $post['description'], $imgName, $post['project_url'], $post['is_featured'] ,
                 $post['is_active'] , $duration, $post['level'], $post['category']
-                , $adminId, $post['started_date'], $post['completed_date'], $post['status'],$id]);
+                , $adminId, $post['started_date'], $post['completed_date'],  $post['status'],$id]);
             return true;
         } catch (PDOException $e) {
 

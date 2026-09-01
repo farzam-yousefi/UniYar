@@ -2,11 +2,10 @@
 
 class Admin extends Controller
 {
+
     function __construct()
     {
-
-        Model::sessionInit();
-
+        Model::sessionInit('UNIYAR_ADMIN');
     }
 
     function index()
@@ -24,7 +23,7 @@ class Admin extends Controller
     {
         $result = $this->model->setLogin($_POST);
         if ($result) {
-            Model::sessionInit();
+            Model::sessionInit('UNIYAR_ADMIN');
             Model::sessionSet("adminId", $result['id']);
             Model::sessionSet("adminUser", $result['full_name']);
             header("Location: " . URL . "admin/dashboard");
@@ -45,7 +44,8 @@ class Admin extends Controller
 
     function changePassword()
     {
-        $returnUrl = $_POST['return_url'] ?? '';
+
+        $returnUrl = trim($_POST['return_url'] ?? '');
 
         // اگر return_url وجود نداشت
         if (empty($returnUrl)) {
@@ -53,14 +53,15 @@ class Admin extends Controller
         }
 
         // فقط اجازه redirect به داخل خود پروژه
-        if (!str_starts_with($returnUrl, URL)) {
+        //for develop // after you should delete second condition
+        if (!(str_starts_with($returnUrl, URL)||str_starts_with($returnUrl, '/uniyar'))) {
             $returnUrl = URL . 'admin/dashboard';
         }
 
 
         $adminId = $this->getCurrentAdminId();
-        $user=$this->model->getCurrentUserPass($adminId);
-        if(!empty($user)&&(!password_verify($_POST['oldPassword'], $user['password']))) {
+        $user = $this->model->getCurrentUserPass($adminId);
+        if (!empty($user) && (!password_verify($_POST['oldPassword'], $user['password']))) {
             $errors['newPassword'] = 'رمز عبور فعلی صحیح نیست.';
 
             // این اطلاعات را برای صفحه مقصد نگه می‌داریم
@@ -72,7 +73,7 @@ class Admin extends Controller
             exit;
 
         }
-        $errors =$this-> validator($_POST);
+        $errors = $this->validator($_POST);
         if (!empty($errors)) {
 
             $_SESSION['change_password_errors'] = $errors;
@@ -86,7 +87,20 @@ class Admin extends Controller
 
         // اینجا یعنی همه چیز درست است
 
-        $_SESSION['alert-resultOperation'] = $this->model->changePassword($_POST['newPassword'], $adminId);
+        $result = $this->model->changePassword($_POST['newPassword'], $adminId);
+        if ($result)
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'success',
+                'title' => 'عملیات موفق',
+                'message' => 'رمز با موفقیت تغییر یافت.'
+            ];
+        else
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'error',
+                'title' => 'عملیات ناموفق',
+                'message' => ' تغییر رمز با خطا مواجه شد.مجددا تلاش کنید.'
+            ];
+
         header('Location: ' . $returnUrl);
 
     }
