@@ -708,14 +708,14 @@ $hasError = !empty($errors) || $hasErr;
                                 انجام پروژه
                             </option>
 
-                            <option value="DEBUG"
-                                <?= ($order['service_id'] ?? '') === 'DEBUG' ? 'selected' : '' ?>>
-                                رفع اشکال
-                            </option>
-
                             <option value="TEACH"
                                 <?= ($order['service_id'] ?? '') === 'TEACH' ? 'selected' : '' ?>>
                                 تدریس خصوصی
+                            </option>
+
+                            <option value="DEBUG"
+                                <?= ($order['service_id'] ?? '') === 'DEBUG' ? 'selected' : '' ?>>
+                                رفع اشکال
                             </option>
 
                             <option value="CONSULT"

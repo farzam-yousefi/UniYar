@@ -111,7 +111,6 @@ class Order extends Controller
             Model::sessionInit('UNIYAR_SITE');
 
             $_SESSION['alert-resultOperationFromSite'] = $this->model->addFromSite($post, $files);
-
             $_SESSION['operationFromSite'] = "addOrder";
 
             if ($_SESSION['alert-resultOperationFromSite']['type'] === 'success')

@@ -139,6 +139,14 @@ orders.title as 'title',tracking_code,
                 $customerId = $customer['id'];
             else {
                 self::$conn->rollBack();
+if(!empty($files)) {
+    $oldDirRelative = 'public/files/orders/' .
+        $post['full_name'] . '_' . $post ['title'];
+
+    $oldDir = ROOT_PATH . $oldDirRelative;
+
+    Helper::deleteDir($oldDir,true);
+}
                 return [
                     'type' => 'error',
                     'title' => 'عملیات ناموفق',
@@ -163,7 +171,6 @@ orders.title as 'title',tracking_code,
             $files
         );
 
-
         //<!--=========================
         //INSERT
         //=========================-->
@@ -182,34 +189,34 @@ orders.title as 'title',tracking_code,
             //save order's files
             $orderId = Model::lastInsertId();
             $hasFile = false;
+            $order_files = $result['order_files'];
 
-            if (($post['service_id'] === 'PROJECT' || $post['service_id'] === 'DEBUG')
-                && !empty($order_files)) {
+            if (($post['service_id'] === "DEBUG" || $post['service_id'] === "PROJECT") && !empty($order_files)) {
                 $hasFile = true;
-            }
-            if (($post['service_id'] == "PROJECT" || $post['service_id'] == "DEBUG")
-                && $hasFile) {
 
-                $newDirRelative = 'public/files/orders/' .
-                    $customerId . '_' . $orderId;
-                $oldDirRelative = 'public/files/orders/' .
-                    $post['full_name'] . '_' . $post ['title'];
+                if ($hasFile) {
 
-                $oldDir = ROOT_PATH . $oldDirRelative;
-                $newDir = ROOT_PATH . $newDirRelative;
+                    $newDirRelative = 'public/files/orders/' .
+                        $customerId . '_' . $orderId;
+                    $oldDirRelative = 'public/files/orders/' .
+                        $post['full_name'] . '_' . $post ['title'];
 
-                if (!rename($oldDir, $newDir)) {
-                    throw new Exception(
-                        "تغییر نام پوشه انجام نشد."
-                    );
-                }
-                $fileSql = "insert into order_files (order_id,original_name,stored_name
+                    $oldDir = ROOT_PATH . $oldDirRelative;
+                    $newDir = ROOT_PATH . $newDirRelative;
+
+                    if (!rename($oldDir, $newDir)) {
+                        throw new Exception(
+                            "تغییر نام پوشه انجام نشد."
+                        );
+                    }
+                    $fileSql = "insert into order_files (order_id,original_name,stored_name
                    ,file_size, file_type ,path) values (?,?,?,?,?,?)";
 
-                foreach ($files as $file) {
+                    foreach ($order_files as $file) {
 
-                    $this->doQuery($fileSql, [$orderId, $file['originalName'], $file['filename'],
-                        $file['fileSize'], $file['fileType'], $newDirRelative . '/' . $file['filename']]);
+                        $this->doQuery($fileSql, [$orderId, $file['originalName'], $file['filename'],
+                            $file['fileSize'], $file['fileType'], $newDirRelative . '/' . $file['filename']]);
+                    }
                 }
             }
             do {
@@ -274,8 +281,8 @@ orders.title as 'title',tracking_code,
             Update order
             =========================
             */
-            $previousServiceId=  $this->myFetch("SELECT service_id FROM orders 
-                WHERE order_id=?" ,[$post['orderId']])['service_id'];
+            $previousServiceId = $this->myFetch("SELECT service_id FROM orders 
+                WHERE id=?", [$post['orderId']]);
 
             $mainSql = "UPDATE orders SET service_id = ?, service_items_id = ?,
                 title = ?,description = ?, major = ?, level = ?, first_price = ?,
@@ -292,10 +299,10 @@ orders.title as 'title',tracking_code,
             */
             if ($post['service_id'] === 'TEACH' || $post['service_id'] === 'CONSULT') {
                 //   unlink(ROOT_PATH . $path);
-                $filesToDelete=$this->myFetchAll("select path from order_files where order_id=?",[$post['orderId']]);
+                $filesToDelete = $this->myFetchAll("select path from order_files where order_id=?", [$post['orderId']]);
                 foreach ($filesToDelete as $file) {
 
-                    if (!empty($file['path']) &&file_exists($file['path']))
+                    if (!empty($file['path']) && file_exists($file['path']))
                         unlink($file['path']);
                 }
                 $this->doQuery("DELETE FROM order_files WHERE order_id=?", [$post['orderId']]);
@@ -306,13 +313,12 @@ orders.title as 'title',tracking_code,
             =========================
             */
 
-            if (($post['service_id'] === 'DEBUG' && $previousServiceId==='PROJECT')
-            ||($post['service_id'] === 'PROJECT' && $previousServiceId==='DEBUG'))
-            {
-                $filesToDelete=$this->myFetchAll("select path from order_files where order_id=?",[$post['orderId']]);
+            if (($post['service_id'] === 'DEBUG' && $previousServiceId === 'PROJECT')
+                || ($post['service_id'] === 'PROJECT' && $previousServiceId === 'DEBUG')) {
+                $filesToDelete = $this->myFetchAll("select path from order_files where order_id=?", [$post['orderId']]);
                 foreach ($filesToDelete as $file) {
 
-                    if (!empty($file['path']) &&file_exists($file['path']))
+                    if (!empty($file['path']) && file_exists($file['path']))
                         unlink($file['path']);
                 }
                 $this->doQuery("DELETE FROM order_files WHERE order_id=?", [$post['orderId']]);

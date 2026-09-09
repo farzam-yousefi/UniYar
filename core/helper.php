@@ -366,13 +366,14 @@ class Helper
 
         if (!isset($file['name']) || !isset($file['tmp_name']) || !isset($file['size'])
             || !isset($file['error'])) {
-            $errors['file'][] ="ساختار فایل ارسالی نامعتبر است.";
+            $errors['file'][] = "ساختار فایل ارسالی نامعتبر است.";
 
             return [
                 'success' => false,
                 'data' => [
                     'filename' => null
                 ],
+                'directory' => null,
                 'errors' => $errors
             ];
 
@@ -390,9 +391,10 @@ class Helper
 
             return [
                 'success' => false,
-                'data'=> [
+                'data' => [
                     'filename' => null,
                 ],
+                'directory' => null,
                 'errors' => $errors
             ];
         }
@@ -401,7 +403,7 @@ class Helper
         $fileName = $file['name'];
         $fileSize = $file['size'];
         $fileTmp = $file['tmp_name'];
-        $fileType=$file['type'];
+        $fileType = $file['type'];
 
 
         /* =========================
@@ -411,13 +413,14 @@ class Helper
         if (!is_uploaded_file($fileTmp)) {
 
             $errors['file'][] =
-               "فایل".$file['name']."آپلود شده معتبر نیست.";
+                "فایل" . $file['name'] . "آپلود شده معتبر نیست.";
 
             return [
                 'success' => false,
-                'data'=> [
+                'data' => [
                     'filename' => null,
                 ],
+                'directory' => null,
                 'errors' => $errors
             ];
         }
@@ -441,7 +444,7 @@ class Helper
             $uploadOk = 0;
 
             $errors['file'][] =
-                'پسوند فایل '.$file['name']. 'نامناسب است';
+                'پسوند فایل ' . $file['name'] . 'نامناسب است';
         }
 
 
@@ -453,7 +456,7 @@ class Helper
 
             $uploadOk = 0;
 
-            $errors['file'][]=
+            $errors['file'][] =
                 "حداکثر حجم فایل انتخابی {$maxMeg} مگابایت است";
         }
 
@@ -516,7 +519,7 @@ class Helper
 
                         $uploadOk = 0;
 
-                        $errors['file'][]=
+                        $errors['file'][] =
                             "فایل PDF {$file['name']}معتبر نیست.";
 
                     }
@@ -544,7 +547,7 @@ class Helper
 
                         $uploadOk = 0;
 
-                        $errors['file'][]=
+                        $errors['file'][] =
                             "فایل WORD {$file['name']}معتبر نیست.";
                     }
 
@@ -623,9 +626,10 @@ class Helper
 
                 return [
                     'success' => false,
-                    'data'=> [
+                    'data' => [
                         'filename' => null,
                     ],
+                    'directory' => null,
                     'errors' => $errors
                 ];
             }
@@ -647,14 +651,15 @@ class Helper
 
             if (file_exists($target)) {
 
-                $errors['file'][]=
+                $errors['file'][] =
                     "فایلی با نام{$file['name']}از قبل وجود دارد.";
 
                 return [
                     'success' => false,
-                    'data'=> [
+                    'data' => [
                         'filename' => null,
                     ],
+                    'directory' => null,
                     'errors' => $errors
                 ];
             }
@@ -664,14 +669,14 @@ class Helper
 
                 return [
                     'success' => true,
-                    'data'=>[
+                    'data' => [
                         'filename' => $newName,
-                        'originalName'=>$fileName,
-                        'fileSize'=>$fileSize,
-                        'fileType'=>$fileType,
-                        'path'=>$target
+                        'originalName' => $fileName,
+                        'fileSize' => $fileSize,
+                        'fileType' => $fileType,
+                        'path' => $target
                     ],
-
+                    'directory' => $dir,
                     'errors' => null
                 ];
             }
@@ -684,12 +689,41 @@ class Helper
 
         return [
             'success' => false,
-            'data'=> [
+            'data' => [
                 'filename' => null,
             ],
+            'directory' => null,
             'errors' => $errors
         ];
     }
+
+    public static function deleteDir($dirPath, $ignoreInvalidPath = false)
+    {
+        if (is_file($dirPath)) {
+            unlink($dirPath);
+        } else {
+            if (!is_dir($dirPath)) {
+                if (!$ignoreInvalidPath)
+                    throw new InvalidArgumentException("$dirPath must be a directory");
+                else
+                    return true;
+            }
+            if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+                $dirPath .= '/';
+            }
+            $files = glob($dirPath . '*', GLOB_MARK);
+            foreach ($files as $file) {
+                if (is_dir($file)) {
+                    self::deleteDir($file);
+                } else {
+                    unlink($file);
+                }
+            }
+            rmdir($dirPath);
+        }
+
+    }
+
 
 //    public static function uploadFile($file, $dir, $allowFormat,$maxMeg=20,$name="")
 //    {
