@@ -36,9 +36,12 @@ class Admin extends Controller
 
     function logout()
     {
+        $adminId = $this->getCurrentAdminId();
         session_unset();
         session_destroy();
+        $this->model->updateLastLogin($adminId);
         header("Location:" . URL . "admin");
+
 
     }
 

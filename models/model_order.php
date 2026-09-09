@@ -224,6 +224,7 @@ if(!empty($files)) {
                 $sql = "select id from orders where tracking_code=?";
                 $repeated = $this->myFetch($sql, [$trackingCode]);
             } while ($repeated);
+            $trackingCode='UY-'.$trackingCode;
             $trckCodeSql = "update orders set tracking_code=? , has_file=? where id=?";
             $this->doQuery($trckCodeSql, [$trackingCode, $hasFile, $orderId]);
 

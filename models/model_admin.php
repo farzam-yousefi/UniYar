@@ -49,4 +49,10 @@ class model_admin extends Model
         }
     }
 
+    function updateLastLogin($adminId){
+        $sql="update admins set last_login_at=? where id=?";
+        $currentDate=date("Y-m-d H:i:s");
+        $this->doQuery($sql,[$currentDate,$adminId]);
+    }
+
 }

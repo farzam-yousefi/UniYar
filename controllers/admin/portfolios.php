@@ -68,7 +68,7 @@ class portfolios extends Controller
         $this->loadModel("portfolio");
 
         $items = json_decode($_POST['sortData'], true);
-        print_r($items);
+        //print_r($items);
 
         $this->model->saveSortOrder($items);
 
