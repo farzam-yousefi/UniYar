@@ -10,11 +10,7 @@ class Dashboard extends Controller
     }
     function index()
     {
-//            $data = [
-//                'adminId' => Model::sessionGet("adminId"),
-//                'adminUser' => Model::sessionGet("adminUser")
-//            ];
-        $data=Model::getAdminLoggedInfo();
+            $data =$this->model->getInitialInfo();
 
             $this->view("admin/dashboard/index", $data,
                 "admin", "admin");

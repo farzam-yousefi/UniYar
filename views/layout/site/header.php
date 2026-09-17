@@ -142,9 +142,8 @@ Tracking Request Modal
                             <input
                                     id="trackingCode"
                                     name="trackingCode"
-                                    type="number"
                                     class="form-control-custom text-center"
-                                    placeholder="مثال : 34258741">
+                                    placeholder="مثال : UY-34258741">
                         </div>
                         <div
                                 id="trackingError"

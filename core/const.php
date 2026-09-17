@@ -1,12 +1,11 @@
 <?php
 
-
 define("PENDING","در انتظار");
-define("REVIEW","در حال بررسی");
-define("DONE","برطرف شد");
+define("REVIEWING","در حال بررسی");
+define("CANCELED","لغو شد");
 
-define("IN_PROGRESS","پیش نویس");
-define("COMPLETED","منتشر شده");
+define("IN_PROGRESS","درحال انجام");
+define("COMPLETED","کامل شده");
 
 
 define("ASSOCIATE","کاردانی");
@@ -21,7 +20,7 @@ define("agreement","توافقی");
 
 
 define("WEBSITE","وب سایت");
-define("RESEARCH","تحقیقاتی-مقاله-پایان نامه");
+define("RESEARCH","تحقیقاتی");
 define("DATABASE","پایگاه داده");
 define("PROGRAMMING","برنامه نویسی");
 
@@ -30,6 +29,10 @@ define("TEACH","تدریس خصوصی");
 define("DEBUG","رفع اشکال");
 define("CONSULT","مشاوره آموزشی");
 
+
+
+define("ItemsPerPage",10);
+define("PaginationWindowSize",5);
 
 
 define("type","نوع خدمت");

@@ -139,14 +139,14 @@ orders.title as 'title',tracking_code,
                 $customerId = $customer['id'];
             else {
                 self::$conn->rollBack();
-if(!empty($files)) {
-    $oldDirRelative = 'public/files/orders/' .
-        $post['full_name'] . '_' . $post ['title'];
+                if (!empty($files)) {
+                    $oldDirRelative = 'public/files/orders/' .
+                        $post['full_name'] . '_' . $post ['title'];
 
-    $oldDir = ROOT_PATH . $oldDirRelative;
+                    $oldDir = ROOT_PATH . $oldDirRelative;
 
-    Helper::deleteDir($oldDir,true);
-}
+                    Helper::deleteDir($oldDir, true);
+                }
                 return [
                     'type' => 'error',
                     'title' => 'عملیات ناموفق',
@@ -224,7 +224,7 @@ if(!empty($files)) {
                 $sql = "select id from orders where tracking_code=?";
                 $repeated = $this->myFetch($sql, [$trackingCode]);
             } while ($repeated);
-            $trackingCode='UY-'.$trackingCode;
+            $trackingCode = 'UY-' . $trackingCode;
             $trckCodeSql = "update orders set tracking_code=? , has_file=? where id=?";
             $this->doQuery($trckCodeSql, [$trackingCode, $hasFile, $orderId]);
 
@@ -415,5 +415,86 @@ if(!empty($files)) {
         }
     }
 
+
+
+
+    //<!--=========================
+//ADMIN PANEL section
+//=========================-->
+
+    function getInitialInfo()
+    {
+        $pendingCount = $this->myFetch("select count(*) as 'pendingCount' from orders 
+ where status = ?", ['PENDING'])['pendingCount'];
+        $reviewingCount = $this->myFetch("select count(*) as 'reviewingCount' from orders 
+ where status = ?", ['REVIEWING'])['reviewingCount'];
+        $inProgressCount = $this->myFetch("select count(*) as 'inProgressCount' from orders 
+ where status = ?", ['IN_PROGRESS'])['inProgressCount'];
+        $completedCount = $this->myFetch("select count(*) as 'completedCount' from orders 
+ where status = ?", ['COMPLETED'])['completedCount'];
+        $canceledCount = $this->myFetch("select count(*) as 'canceledCount' from orders 
+ where status = ?", ['CANCELED'])['canceledCount'];
+
+        $totalCount = $this->myFetch("select count(*) as 'totalCount' from orders")['totalCount'];
+        $sql = "select full_name ,tracking_code,services.type as 'service_type', orders.title as 'order_title',
+         service_items.title as 'project_type' ,status , orders.created_at as 'submission_date'
+         from orders INNER JOIN customers on orders.customer_id=customers.id
+          INNER JOIN services on orders.service_id=services.id 
+           LEFT  JOIN service_items on orders.service_items_id=service_items.id
+          ORDER BY orders.created_at DESC limit " . ItemsPerPage;
+        $orders = $this->myFetchAll($sql);
+        return [
+            'pendingCount' => $pendingCount,
+            'reviewingCount' => $reviewingCount,
+            'inProgressCount' => $inProgressCount,
+            'completedCount' => $completedCount,
+            'canceledCount' => $canceledCount,
+            'totalCount' => $totalCount,
+            'orders' => $orders];
+
+    }
+
+    function getOrdersByStatus($status = "ALL", $page)
+    {
+        $offset = ($page - 1) * ItemsPerPage;
+        if ($status == "ALL")
+            return $this->getPageOrders($page);
+
+        else {
+            $filteredOrdersCount = $this->myFetch("select count(*) as 'totalCount' from orders 
+           where status = ?", [$status])['totalCount'];
+            $sql = "select full_name ,tracking_code,services.type as 'service_type', orders.title as 'order_title',
+         service_items.title as 'project_type' ,status , orders.created_at as 'submission_date'
+         from orders INNER JOIN customers on orders.customer_id=customers.id
+          INNER JOIN services on orders.service_id=services.id 
+           LEFT  JOIN service_items on orders.service_items_id=service_items.id
+           WHERE orders.status=? ORDER BY orders.created_at DESC 
+           LIMIT " . ItemsPerPage . " OFFSET " . $offset;
+            $orders = $this->myFetchAll($sql, [$status]);
+            return [
+                'totalCount' => $filteredOrdersCount,
+                'orders' => $orders,
+            ];
+        }
+    }
+
+    function getPageOrders($page = 1)
+    {
+        $offset = ($page - 1) * ItemsPerPage;
+        $totalOrdersCount = $this->myFetch("select count(*) as 'totalCount' from orders")['totalCount'];
+        $sql = "select full_name ,tracking_code,services.type as 'service_type', orders.title as 'order_title',
+         service_items.title as 'project_type' ,status , orders.created_at as 'submission_date'
+         from orders INNER JOIN customers on orders.customer_id=customers.id
+          INNER JOIN services on orders.service_id=services.id 
+           LEFT  JOIN service_items on orders.service_items_id=service_items.id
+          ORDER BY orders.created_at DESC  LIMIT " . ItemsPerPage . " OFFSET " . $offset;
+        $orders= $this->myFetchAll($sql);
+        return [
+            'totalCount' => $totalOrdersCount,
+            'orders' => $orders,
+        ];
+
+
+    }
 
 }

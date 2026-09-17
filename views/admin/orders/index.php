@@ -3,12 +3,6 @@
 Page
 ========================================*/
 
-    .admin-main {
-
-        padding: 35px;
-
-    }
-
     .page-header h2 {
 
         font-weight: 700;
@@ -25,6 +19,11 @@ Page
 
     }
 
+    .page-header > div:last-child {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
     /*==================================
     Search Area
@@ -43,7 +42,6 @@ Page
         color: #17335C;
 
     }
-
 
     /*==================================
     Status Filter
@@ -115,8 +113,6 @@ Page
 
         font-weight: 700;
 
-        border: none;
-
         padding: 18px;
 
     }
@@ -126,6 +122,8 @@ Page
         padding: 18px;
 
         vertical-align: middle;
+
+        border: none;
 
     }
 
@@ -159,17 +157,17 @@ Page
 
     }
 
+    span.badge {
+        width: 90px;
+        padding-top: 7px;
+        align-content: baseline;
+    }
+
     /*========================================
     Responsive
     ========================================*/
 
     @media (max-width: 992px) {
-
-        .admin-main {
-
-            padding: 20px;
-
-        }
 
         .filter-buttons {
 
@@ -181,6 +179,10 @@ Page
 
     }
 </style>
+
+<?php
+$data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
+?>
 <title> سفارشات </title>
 <div class="admin-layout">
 
@@ -192,13 +194,32 @@ Page
 
             <!-- Page Title -->
 
-            <div class="page-header mb-4">
+            <div class="page-header mb-4 d-flex justify-content-sm-between ps-md-2 pe-md-4 gap-sm-2 gap-4">
+                <div>
 
-                <h2>مدیریت درخواست‌ها</h2>
+                    <h2>مدیریت درخواست‌ها</h2>
 
-                <p>
-                    مشاهده، جستجو و مدیریت درخواست‌های کاربران
-                </p>
+                    <p>
+                        مشاهده، جستجو و مدیریت درخواست‌های کاربران
+                    </p>
+                </div>
+
+                <div>
+                    <span>
+
+                        <h6>همه</h6>
+
+                        <h3><?= $data['totalCount'] ?></h3>
+
+                    </span>
+                    <div class="stat-icon bg-info">
+
+                        <i class="bi bi-folder2-open"></i>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -210,17 +231,17 @@ Page
 
                     <div class="stat-card">
 
-                        <div class="stat-icon bg-primary">
+                        <div class="stat-icon bg-secondary">
 
-                            <i class="bi bi-folder2-open"></i>
+                            <i class="bi bi-hourglass-split"></i>
 
                         </div>
 
                         <div>
 
-                            <h6>همه</h6>
+                            <h6>درانتظار (جدید)</h6>
 
-                            <h3>152</h3>
+                            <h3><?= $data['pendingCount'] ?></h3>
 
                         </div>
 
@@ -234,15 +255,37 @@ Page
 
                         <div class="stat-icon bg-warning">
 
-                            <i class="bi bi-hourglass-split"></i>
+                            <i class="bi bi-clock-fill"></i>
 
                         </div>
 
                         <div>
 
-                            <h6>در انتظار</h6>
+                            <h6>درحال بررسی</h6>
 
-                            <h3>18</h3>
+                            <h3><?= $data['reviewingCount'] ?></h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon bg-primary">
+
+                            <i class="bi bi-gear"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h6>در حال انجام</h6>
+
+                            <h3><?= $data['inProgressCount'] ?></h3>
 
                         </div>
 
@@ -256,28 +299,6 @@ Page
 
                         <div class="stat-icon bg-success">
 
-                            <i class="bi bi-gear"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h6>در حال انجام</h6>
-
-                            <h3>37</h3>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-3 col-md-6">
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon bg-secondary">
-
                             <i class="bi bi-check2-circle"></i>
 
                         </div>
@@ -286,7 +307,7 @@ Page
 
                             <h6>تکمیل شده</h6>
 
-                            <h3>97</h3>
+                            <h3><?= $data['completedCount'] ?></h3>
 
                         </div>
 
@@ -362,7 +383,7 @@ Page
 
                                 <option>
 
-                                   تدریس خصوصی
+                                    تدریس خصوصی
 
                                 </option>
 
@@ -404,35 +425,37 @@ Page
                     <div class="filter-buttons">
 
                         <button class="btn btn-main btn-sm filter-btn active"
-                                data-status="all">
-
+                                data-status="ALL">
                             همه
+                        </button>
+
+                        <button class="btn btn-outline-main btn-sm filter-btn"
+                                data-status="PENDING">
+
+                            درانتظار
 
                         </button>
 
                         <button class="btn btn-outline-main btn-sm filter-btn"
-                                data-status="waiting">
+                                data-status="REVIEWING">
 
-                            در انتظار
+                            درحال بررسی
 
                         </button>
 
                         <button class="btn btn-outline-main btn-sm filter-btn"
-                                data-status="doing">
-
+                                data-status="IN_PROGRESS">
                             در حال انجام
 
                         </button>
 
                         <button class="btn btn-outline-main btn-sm filter-btn"
-                                data-status="done">
-
+                                data-status="COMPLETED">
                             تکمیل شده
-
                         </button>
 
                         <button class="btn btn-outline-main btn-sm filter-btn"
-                                data-status="cancel">
+                                data-status="CANCELED">
 
                             لغو شده
 
@@ -475,59 +498,18 @@ Page
 
                             </thead>
 
-                            <tbody>
+                            <tbody id="ordersTableBody">
+                            <?php require "views/admin/orders/_orderRows.php"; ?>
 
-                            <tr>
-
-                                <td>UY258741</td>
-
-                                <td>علی رضایی</td>
-
-                                <td>طراحی سایت فروشگاهی</td>
-
-                                <td>برنامه نویسی</td>
-
-                                <td>1405/05/20</td>
-
-                                <td>
-
-                                <span class="badge bg-warning">
-
-                                    در انتظار
-
-                                </span>
-
-                                </td>
-
-                                <td>
-
-                                    <a href="<?= URL ?>admin/orders/details/4" class="table-action">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </a>
-
-                                    <a href="<?= URL ?>admin/orders/edit/4" class="table-action">
-
-                                        <i class="bi bi-pencil-square"></i>
-
-                                    </a>
-
-                                    <a href="<?= URL ?>admin/orders/delete/4" class="table-action text-danger">
-
-                                        <i class="bi bi-trash"></i>
-
-                                    </a>
-
-                                </td>
-
-                            </tr>
 
                             </tbody>
 
                         </table>
 
                     </div>
+
+                    <?php require "views/pagination.php"; ?>
+
 
                 </div>
 
@@ -539,49 +521,82 @@ Page
 </div>
 
 <script>
+
+    let currentSearch = {
+        tracking: '',
+        user: '',
+        service: ''
+    };
+    let currentMode = 'filter';
+    let currentStatus = 'ALL';
+
+
     /*==================================
-   Status Filter
+   Search Section
    ==================================*/
-    document
-        .getElementById("btnSearch")
+
+    function searchOrders(page, search) {
+
+        // فقط اطلاعات جستجو ارسال شود
+    }
+
+    document.getElementById("btnSearch")
         .addEventListener("click", function () {
 
-            let tracking = document
-                .getElementById("trackingSearch")
-                .value
-                .trim();
+            currentMode = 'search';
 
-            let user = document
-                .getElementById("userSearch")
-                .value
-                .trim();
+            currentSearch = {
+                tracking: document.getElementById("trackingSearch").value.trim(),
+                user: document.getElementById("userSearch").value.trim(),
+                service: document.getElementById("serviceSearch").value
+            };
 
-            let service = document
-                .getElementById("serviceSearch")
-                .value;
+            currentPage = 1;
+            pageStart = 1;
 
-            let status = document
-                .querySelector(".filter-btn.active")
-                .dataset
-                .status;
+            updatePages();
+            updatePagination();
 
-            console.log(tracking, user, service, status);
-
-            /*
-                Ajax
-
-                tracking
-                user
-                service
-                status
-
-            */
-
+            searchOrders(1, currentSearch);
         });
 
     /*==================================
    Status Filter
    ==================================*/
+
+    function filterOrders(page = 1, status) {
+
+        let url = "admin/orders/getOrdersByStatus/" + status + "/" + page;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "text",//'text or json
+
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                console.error(jqXHR.status, errorThrown);
+
+                myAlert.error(
+                    'خطا',
+                    'دریافت درخواست ها با خطا مواجه شد.'
+                );
+
+            },
+            success: function (data) {
+                $("#ordersTableBody").html(data);
+                updatePages();
+                updatePagination();
+            },
+
+        });
+
+    }
 
     const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -589,27 +604,274 @@ Page
 
         btn.addEventListener("click", function () {
 
-            // حذف حالت فعال از همه
-            filterButtons.forEach(item => {
+            currentMode = 'filter';
 
+            filterButtons.forEach(item => {
                 item.classList.remove("btn-main", "active");
                 item.classList.add("btn-outline-main");
-
             });
 
-            // فعال کردن دکمه انتخاب شده
             this.classList.remove("btn-outline-main");
             this.classList.add("btn-main", "active");
 
-            let status = this.dataset.status;
+            currentStatus = this.dataset.status;
 
-            console.log(status);
+            currentPage = 1;
+            pageStart = 1;
 
-            // Ajax
+            updatePages();
+            updatePagination();
+
+            filterOrders(1, currentStatus);
+        });
+    });
+
+    /*==================================
+  Pagination
+==================================*/
+
+    let currentPage = 1;
+    let totalPages = <?= $data['totalPages']?>;
+    let pageStart = 1;
+
+
+    /*==================================
+      Update Previous / Next
+    ==================================*/
+    function updatePagination() {
+
+        const first = document.querySelector(".pagination-first").parentElement;
+        const prev = document.querySelector(".pagination-prev").parentElement;
+
+        const next = document.querySelector(".pagination-next").parentElement;
+        const last = document.querySelector(".pagination-last").parentElement;
+
+
+        // First / Previous
+
+        const atFirstPage = currentPage === 1;
+
+        first.classList.toggle("disabled", atFirstPage);
+        prev.classList.toggle("disabled", atFirstPage);
+
+
+        // Next / Last
+
+        const atLastPage = currentPage === totalPages;
+
+        next.classList.toggle("disabled", atLastPage);
+        last.classList.toggle("disabled", atLastPage);
+
+    }
+
+
+    function updatePages() {
+
+        const buttons = document.querySelectorAll(".page-btn");
+
+        buttons.forEach((btn, index) => {
+
+            const page = pageStart + index;
+
+            btn.dataset.page = page;
+            btn.textContent = page;
+
+            if (page <= totalPages) {
+
+                btn.parentElement.style.display = "";
+
+            } else {
+
+                btn.parentElement.style.display = "none";
+
+            }
+
+            btn.classList.toggle(
+                "active",
+                page === currentPage
+            );
+
+        });
+    }
+
+    function updatePageWindow() {
+
+        // اگر به ابتدای لیست رسیده‌ایم
+        if (currentPage <= 3) {
+
+            pageStart = 1;
+
+        }
+
+        // اگر به انتهای لیست نزدیک شده‌ایم
+        else if (currentPage >= totalPages - 2) {
+
+            pageStart = Math.max(
+                1,
+                totalPages - <?=PaginationWindowSize?> + 1
+            );
+
+        }
+
+        // حالت عادی: صفحه جاری وسط پنجره باشد
+        else {
+
+            pageStart = currentPage - 2;
+
+        }
+
+    }
+
+    /*==================================
+      Page Buttons
+    ==================================*/
+
+    document.querySelectorAll(".page-btn")
+        .forEach(btn => {
+
+            btn.addEventListener("click", function (e) {
+
+                e.preventDefault();
+
+                const page = Number(this.dataset.page);
+
+                if (page < 1 || page > totalPages) {
+                    return;
+                }
+
+                currentPage = page;
+
+                updatePageWindow();
+                updatePages();
+                updatePagination();
+
+                changePage(currentPage);
+
+            });
 
         });
 
-    });
+    /*==================================
+      Previous
+    ==================================*/
 
+    document.querySelector(".pagination-prev")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === 1) {
+                return;
+            }
+
+            currentPage--;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+      Next
+    ==================================*/
+
+    document.querySelector(".pagination-next")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === totalPages) {
+                return;
+            }
+
+            currentPage++;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+     First
+   ==================================*/
+    document.querySelector(".pagination-first")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === 1) {
+                return;
+            }
+
+            currentPage = 1;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+     Last
+   ==================================*/
+    document.querySelector(".pagination-last")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === totalPages) {
+                return;
+            }
+
+            currentPage = totalPages;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+      Change Page
+    ==================================*/
+
+    function changePage(page) {
+
+        if (currentMode === 'search') {
+
+            searchOrders(
+                page,
+                currentSearch
+            );
+
+        } else {
+
+            filterOrders(
+                page,
+                currentStatus
+            );
+
+        }
+
+    }
+
+
+    /*==================================
+      Initial State
+    ==================================*/
+
+    updatePageWindow();
+    updatePages();
+    updatePagination();
 
 </script>

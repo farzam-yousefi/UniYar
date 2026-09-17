@@ -3,206 +3,200 @@
 Dashboard
 =====================================*/
 
-    .dashboard-card{
+    .dashboard-card {
 
-        background:#fff;
+        background: #fff;
 
-        border-radius:24px;
+        border-radius: 24px;
 
-        padding:35px;
+        padding: 35px;
 
-        box-shadow:0 8px 30px rgba(0,0,0,.04);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, .04);
 
     }
-
 
     /*=====================================
     Welcome
     =====================================*/
 
-    .dashboard-welcome h2{
+    .dashboard-welcome h2 {
 
-        color:#17335C;
+        color: #17335C;
 
-        font-size:1.8rem;
+        font-size: 1.8rem;
 
-        font-weight:700;
+        font-weight: 700;
 
-        margin-bottom:10px;
-
-    }
-
-    .dashboard-welcome p{
-
-        margin:0;
-
-        color:#6B7280;
+        margin-bottom: 10px;
 
     }
 
+    .dashboard-welcome p {
+
+        margin: 0;
+
+        color: #6B7280;
+
+    }
 
     /*=====================================
     Statistics
     =====================================*/
 
-    .stat-card{
+    .stat-card {
 
-        height:100%;
+        height: 100%;
 
-        display:flex;
+        width: 100%;
 
-        align-items:center;
+        display: flex;
 
-        gap:18px;
+        align-items: center;
 
-        background:#F8FBFF;
+        gap: 18px;
 
-        border-radius:18px;
+        background: #F8FBFF;
 
-        padding:22px;
+        border-radius: 18px;
 
-        transition:.25s;
+        padding: 5px;
 
-    }
-
-    .stat-card:hover{
-
-        transform:translateY(-3px);
-
-        box-shadow:0 10px 20px rgba(0,0,0,.05);
+        transition: .25s;
 
     }
 
-    .stat-icon{
+    .stat-card:hover {
 
-        width:58px;
+        transform: translateY(-3px);
 
-        height:58px;
-
-        border-radius:16px;
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .05);
 
     }
 
-    .stat-icon i{
+    .stat-icon {
 
-        font-size:1.6rem;
+        width: 58px;
 
-        color:#17335C;
+        height: 58px;
 
-    }
+        border-radius: 16px;
 
-    .stat-title{
+        display: flex;
 
-        display:block;
+        align-items: center;
 
-        color:#6B7280;
-
-        font-size:.9rem;
-
-        margin-bottom:5px;
+        justify-content: center;
 
     }
 
-    .stat-card h3{
+    .stat-icon i {
 
-        margin:0;
+        font-size: 1.6rem;
 
-        color:#17335C;
-
-        font-weight:700;
+        color: #17335C;
 
     }
 
+    .stat-title {
+
+        display: block;
+
+        color: #6B7280;
+
+        font-size: .9rem;
+
+        margin-bottom: 5px;
+
+    }
+
+    .stat-card h3 {
+
+        margin: 0;
+
+        color: #17335C;
+
+        font-weight: 700;
+
+    }
 
     /*=====================================
     Section
     =====================================*/
 
-    .dashboard-section{
+    .dashboard-section {
 
-        margin-top:45px;
-
-    }
-
-    .section-header{
-
-        display:flex;
-
-        justify-content:space-between;
-
-        align-items:center;
-
-        margin-bottom:18px;
+        margin-top: 45px;
 
     }
 
-    .section-header h4{
+    .section-header {
 
-        margin:0;
+        display: flex;
 
-        color:#17335C;
+        justify-content: space-between;
 
-        font-weight:700;
+        align-items: center;
+
+        margin-bottom: 18px;
 
     }
 
+    .section-header h4 {
+
+        margin: 0;
+
+        color: #17335C;
+
+        font-weight: 700;
+
+    }
 
     /*=====================================
     Table
     =====================================*/
 
-    .latest-table{
+    .latest-table th {
 
-        margin:0;
+        font-weight: 600;
 
-    }
+        border: none;
 
-    .latest-table thead{
-
-        background:#F8FBFF;
+        white-space: nowrap;
 
     }
 
-    .latest-table th{
+    .latest-table td {
 
-        color:#17335C;
-
-        font-weight:600;
-
-        border:none;
-
-        white-space:nowrap;
+        vertical-align: middle;
 
     }
-
-    .latest-table td{
-
-        vertical-align:middle;
-
+    span.badge{
+        width: 90px;
+        padding-top: 7px;
+        align-content: baseline;
     }
 
 
+    .latest-table thead > tr > th {
+        background-color: #0eb186 !important;
+        color: #fff;
+
+    }
     /*=====================================
     Responsive
     =====================================*/
 
-    @media(max-width:768px){
+    @media (max-width: 768px) {
 
-        .dashboard-card{
+        .dashboard-card {
 
-            padding:22px;
+            padding: 22px;
 
         }
 
-        .dashboard-welcome h2{
+        .dashboard-welcome h2 {
 
-            font-size:1.45rem;
+            font-size: 1.45rem;
 
         }
 
@@ -212,50 +206,49 @@ Dashboard
 
     <?php require "views/layout/adminPanel/sidebar.php"; ?>
 
-       <main class="admin-content">
+    <main class="admin-content">
 
-            <div class="dashboard-card">
+        <div class="dashboard-card">
 
-                <!--=========================
-                Welcome
-                =========================-->
+            <!--=========================
+            Welcome
+            =========================-->
 
-                <div class="dashboard-welcome">
+            <div class="dashboard-welcome">
 
-                    <div>
+                <div>
 
-                        <h5>
+                    <h5>
 
-                            سلام،
-                            👋
-                            به پنل مدیریت UniYar خوش آمدید.
-                            امروز
-                            <?= jdate("Y/m/d"); ?>
-                        </h5>
+                        سلام،
+                        👋
+                        به پنل مدیریت UniYar خوش آمدید.
+                        امروز
+                        <?= jdate("Y/m/d"); ?>
+                    </h5>
 
-
-
-                    </div>
 
                 </div>
 
-                <!--=========================
-                Statistics
-                =========================-->
+            </div>
 
-                <div class="row g-4 mt-2">
+            <!--=========================
+            Statistics
+            =========================-->
 
-                    <div class="col-xl-3 col-md-6">
+            <div class="row g-4 mt-2">
 
-                        <div class="stat-card">
+                <div class="col-xl-3 col-md-6">
 
-                            <div class="stat-icon bg-primary-subtle">
+                    <div class="stat-card">
 
-                                <i class="bi bi-envelope-paper"></i>
+                        <div class="stat-icon bg-primary-subtle">
 
-                            </div>
+                            <i class="bi bi-envelope-paper"></i>
 
-                            <div>
+                        </div>
+
+                        <div>
 
                         <span class="stat-title">
 
@@ -263,29 +256,29 @@ Dashboard
 
                         </span>
 
-                                <h3>
+                            <h3>
 
-                                    12
+                                <?= $data['newOrdersCount'] ?>
 
-                                </h3>
-
-                            </div>
+                            </h3>
 
                         </div>
 
                     </div>
 
-                    <div class="col-xl-3 col-md-6">
+                </div>
 
-                        <div class="stat-card">
+                <div class="col-xl-3 col-md-6">
 
-                            <div class="stat-icon bg-warning-subtle">
+                    <div class="stat-card">
 
-                                <i class="bi bi-hourglass-split"></i>
+                        <div class="stat-icon bg-warning-subtle">
 
-                            </div>
+                            <i class="bi bi-hourglass-split"></i>
 
-                            <div>
+                        </div>
+
+                        <div>
 
                         <span class="stat-title">
 
@@ -293,29 +286,30 @@ Dashboard
 
                         </span>
 
-                                <h3>
+                            <h3>
 
-                                    8
+                                <?= $data['reviewingOrdersCount'] ?>
 
-                                </h3>
 
-                            </div>
+                            </h3>
 
                         </div>
 
                     </div>
 
-                    <div class="col-xl-3 col-md-6">
+                </div>
 
-                        <div class="stat-card">
+                <div class="col-xl-3 col-md-6">
 
-                            <div class="stat-icon bg-success-subtle">
+                    <div class="stat-card">
 
-                                <i class="bi bi-check-circle"></i>
+                        <div class="stat-icon bg-success-subtle">
 
-                            </div>
+                            <i class="bi bi-check-circle"></i>
 
-                            <div>
+                        </div>
+
+                        <div>
 
                         <span class="stat-title">
 
@@ -323,29 +317,30 @@ Dashboard
 
                         </span>
 
-                                <h3>
+                            <h3>
 
-                                    125
+                                <?= $data['completedOrdersCount'] ?>
 
-                                </h3>
 
-                            </div>
+                            </h3>
 
                         </div>
 
                     </div>
 
-                    <div class="col-xl-3 col-md-6">
+                </div>
 
-                        <div class="stat-card">
+                <div class="col-xl-3 col-md-6">
 
-                            <div class="stat-icon bg-info-subtle">
+                    <div class="stat-card">
 
-                                <i class="bi bi-people"></i>
+                        <div class="stat-icon bg-info-subtle">
 
-                            </div>
+                            <i class="bi bi-people"></i>
 
-                            <div>
+                        </div>
+
+                        <div>
 
                         <span class="stat-title">
 
@@ -353,13 +348,12 @@ Dashboard
 
                         </span>
 
-                                <h3>
+                            <h3>
 
-                                    324
+                                <?= $data['customerCount'] ?>
 
-                                </h3>
 
-                            </div>
+                            </h3>
 
                         </div>
 
@@ -367,160 +361,154 @@ Dashboard
 
                 </div>
 
-                <!--=========================
-                Latest Orders
-                =========================-->
+            </div>
 
-                <div class="dashboard-section mt-5">
+            <!--=========================
+            Latest Orders
+            =========================-->
 
-                    <div class="section-header">
+            <div class="dashboard-section mt-5">
 
-                        <h4>
+                <div class="section-header">
 
-                            آخرین درخواست‌ها
+                    <h4>
 
-                        </h4>
+                        آخرین درخواست‌ها
 
-                        <a
-                                href="<?=URL?>adminOrder"
-                                class="btn btn-outline-main btn-sm">
+                    </h4>
 
-                            مشاهده همه
+                    <a
+                            href="<?= URL ?>admin/orders"
+                            class="btn btn-outline-main btn-sm">
 
-                        </a>
+                        مشاهده همه
 
-                    </div>
+                    </a>
 
-                    <div class="table-responsive">
+                </div>
 
-                        <table class="table align-middle latest-table">
+                <div class="table-responsive">
 
-                            <thead>
+                    <table class="table align-middle latest-table mt-2">
 
+                        <thead >
+
+                        <tr>
+
+                            <th>
+
+                                کد
+
+                            </th>
+
+                            <th>
+
+                                نام
+
+                            </th>
+
+                            <th>
+
+                                خدمت
+
+                            </th>
+
+                            <th>
+
+                                وضعیت
+
+                            </th>
+
+                            <th>
+
+                                تاریخ ثبت
+
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+                        <?php foreach ($data['last10Orders'] as $order) {
+                            switch ($order['status']){
+                                case 'PENDING':
+                                    $badgeClass='bg-secondary';
+                                    break;
+                                    case 'REVIEWING':
+                                    $badgeClass='bg-warning';
+                                    break;
+                                    case 'IN_PROGRESS':
+                                    $badgeClass='bg-primary';
+                                    break;
+                                    case 'COMPLETED':
+                                    $badgeClass='bg-success';
+                                    break;
+                                    case 'CANCELED':
+                                    $badgeClass='bg-danger';
+                                    break;
+                            }
+                            ?>
                             <tr>
 
-                                <th>
-
-                                    کد
-
-                                </th>
-
-                                <th>
-
-                                    نام
-
-                                </th>
-
-                                <th>
-
-                                    خدمت
-
-                                </th>
-
-                                <th>
-
-                                    وضعیت
-
-                                </th>
-
-                                <th>
-
-                                    تاریخ
-
-                                </th>
-
-                            </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                            <tr>
-
                                 <td>
 
-                                    UY-258741
+                                    <?=htmlspecialchars($order['tracking_code'])?>
 
                                 </td>
 
                                 <td>
 
-                                    علی رضایی
+                                    <?=htmlspecialchars($order['full_name'])?>
+
 
                                 </td>
 
                                 <td>
+                                    <?=htmlspecialchars(constant($order['service_type'])) ?>
 
-                                    پروژه برنامه‌نویسی
-
+                                    <?php if (!empty($order['project_type'])): ?>
+                                        - <?=htmlspecialchars(constant($order['project_type'])) ?>
+                                    <?php endif; ?>
                                 </td>
 
                                 <td>
 
-                            <span class="badge bg-warning">
+                            <span class="badge <?=$badgeClass?>">
 
-                                درحال بررسی
+                                <?=htmlspecialchars($order['status'])?>
 
                             </span>
 
                                 </td>
 
                                 <td>
+                                    <?= htmlspecialchars(
+                                            Helper::jaliliDate(
+                                        Helper::MiladiTojalili(
+                                            date('Y-m-d', strtotime($order['submission_date']))
+                                        )
+                                    )) ?>
 
-                                    1406/05/20
-
-                                </td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td>
-
-                                    UY-258742
-
-                                </td>
-
-                                <td>
-
-                                    سارا احمدی
-
-                                </td>
-
-                                <td>
-
-                                    رفع اشکال
-
-                                </td>
-
-                                <td>
-
-                            <span class="badge bg-success">
-
-                                انجام شد
-
-                            </span>
-
-                                </td>
-
-                                <td>
-
-                                    1406/05/20
 
                                 </td>
 
                             </tr>
 
-                            </tbody>
+                            <?php
+                        }
+                        ?>
 
-                        </table>
+                        </tbody>
 
-                    </div>
+                    </table>
 
                 </div>
 
             </div>
 
-        </main>
+        </div>
+
+    </main>
 
 </div>
