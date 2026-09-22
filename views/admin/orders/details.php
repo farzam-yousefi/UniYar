@@ -385,13 +385,75 @@ Admin Management
 
     }
 </style>
+<script src="<?= URL ?>public/js/validation.js"></script>
+
+<?php
+if (isset($_SESSION['alert-resultOperationFromAdmin'])) {
+
+    $operationResult =
+        $_SESSION['alert-resultOperationFromAdmin'] ?? null;
+
+    if ($operationResult['type'] !== 'success') { ?>
+        <script>
+
+            myAlert.<?= $operationResult['type'] ?>(
+                <?= json_encode($operationResult['title']) ?>,
+                <?= json_encode($operationResult['message']) ?>
+            );
+
+        </script>
+
+        <?php
+    }
+    unset($_SESSION['alert-resultOperationFromAdmin']);
+    unset($_SESSION['OperationFromAdmin']);
+}
+?>
+
+
+
 <?php
 $mode = $data['mode'];
+
 $disabled = ($mode == "view") ? "disabled" : "";
 $readOnly = ($mode == "view") ? "readonly" : "";
-$title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخواست";
+$title = ($mode == "view") ? "جزییات درخواست" : "ویرایش درخواست";
+
+if (isset($data['errors'])) {
+    $errors = $data['errors'];
+    ?>
+    <script>
+        myAlert.error('خطا' , 'لطفا فیلدهای خطادار را تصحیح کنید')
+    </script>
+<?php
+}
+
+if (isset($data['files']))
+    $files = $data['files'];
+
+if (isset($data['order'])) {
+    $order = $data['order'];
+    switch ($order['status']) {
+        case 'PENDING':
+            $badgeClass = 'bg-secondary';
+            break;
+        case 'REVIEWING':
+            $badgeClass = 'bg-warning';
+            break;
+        case 'IN_PROGRESS':
+            $badgeClass = 'bg-primary';
+            break;
+        case 'COMPLETED':
+            $badgeClass = 'bg-success';
+            break;
+        case 'CANCELED':
+            $badgeClass = 'bg-danger';
+            break;
+    }
+}
 ?>
-<title><?=$title?></title>
+
+<title><?= $title ?></title>
 <div class="admin-layout">
     <?php require "views/layout/adminPanel/sidebar.php"; ?>
     <main class="admin-content">
@@ -454,7 +516,7 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
 
                                 <div>
 
-                                    UY258741
+                                    <?= htmlspecialchars($order['tracking_code'] ?? '') ?>
 
                                 </div>
 
@@ -474,7 +536,12 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
 
                                 <div>
 
-                                    1405/05/21
+                                    <?= htmlspecialchars(
+                                        Helper::jaliliDate(
+                                            Helper::MiladiTojalili(
+                                                date('Y-m-d', strtotime($order['submission_date'] ?? ''))
+                                            )
+                                        )) ?>
 
                                 </div>
 
@@ -493,8 +560,11 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
                                 </label>
 
                                 <div>
+                                    <?= htmlspecialchars(constant($order['service_type'] ?? '')) ?>
 
-                                    پروژه برنامه نویسی
+                                    <?php if (!empty($order['project_type'])): ?>
+                                        - <?= htmlspecialchars(constant($order['project_type'] ?? '')) ?>
+                                    <?php endif; ?>
 
                                 </div>
 
@@ -512,9 +582,15 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
 
                                 </label>
 
-                                <span class="badge bg-warning">
+                                <span class="badge <?= $badgeClass ?>">
+                                     <?php if (isset($errors['status'])) { ?>
 
-                                در حال بررسی
+                                         مقدار نامعتبر
+                                         <?php
+                                     } else {
+
+                                         echo htmlspecialchars(constant($order['status'] ?? ''));
+                                     } ?>
 
                             </span>
 
@@ -549,7 +625,7 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
 
                     <div class="row g-4">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                             <label class="form-label">
 
@@ -560,12 +636,12 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
                             <input
                                     type="text"
                                     class="form-control-custom"
-                                    value="علی رضایی"
+                                    value="<?= htmlspecialchars($order['full_name'] ?? '') ?>"
                                     readonly>
 
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                             <label class="form-label">
 
@@ -576,13 +652,11 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
                             <input
                                     type="text"
                                     class="form-control-custom"
-                                    value="09123456789"
+                                    value="<?= htmlspecialchars($order['mobile'] ?? '') ?>"
                                     readonly>
 
                         </div>
-
-                        <div class="col-md-6">
-
+                        <div class="col-md-4">
                             <label class="form-label">
 
                                 ایمیل
@@ -592,7 +666,7 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
                             <input
                                     type="text"
                                     class="form-control-custom"
-                                    value="test@gmail.com"
+                                    value="<?= htmlspecialchars($order['email'] ?? '') ?>"
                                     readonly>
 
                         </div>
@@ -608,8 +682,53 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
                             <input
                                     type="text"
                                     class="form-control-custom"
-                                    value="شبکه"
+                                    value="<?= htmlspecialchars($order['major'] ?? '') ?>"
                                     readonly>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">
+
+                                مقطع
+
+                            </label>
+                            <select
+                                    id="serviceSearch"
+                                    class="form-control-custom"
+                                    disabled
+                            >
+                                <option value="ASSOCIATE"
+                                    <?= ($order['level'] ?? '') === 'ASSOCIATE' ? 'selected' : '' ?>>
+                                    کاردانی
+
+                                </option>
+
+
+                                <option value="BACHELOR"
+                                    <?= ($order['level'] ?? '') === 'BACHELOR' ? 'selected' : '' ?>>
+                                    کارشناسی
+
+                                </option>
+
+
+                                <option value="MASTER"
+                                    <?= ($order['level'] ?? '') === 'MASTER' ? 'selected' : '' ?>>
+                                    کارشناسی ارشد
+
+                                </option>
+
+                                <option value="PHD"
+                                    <?= ($order['level'] ?? '') === 'PHD' ? 'selected' : '' ?>>
+                                    دکترا
+
+                                </option>
+
+                                <option value="OTHER"
+                                    <?= ($order['level'] ?? '') === 'OTHER' ? 'selected' : '' ?>>
+                                    سایر
+
+                                </option>
+                            </select>
 
                         </div>
 
@@ -623,118 +742,109 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
             <!--==================================
             Project Info
             ===================================-->
+            <form action="admin/orders/manageOrderByAdmin/<?= $order['id'] ?>"
+                  id="manageOrderForm" method="post">
+                <input type="hidden" value="<?=$order['service_type']?>" name="service_type" />
+                <div class="card shadow-sm border-0 mb-4">
 
-            <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white">
 
-                <div class="card-header bg-white">
+                        <h5>
 
-                    <h5>
+                            اطلاعات پروژه
 
-                        اطلاعات پروژه
+                        </h5>
 
-                    </h5>
+                    </div>
 
-                </div>
+                    <div class="card-body">
 
-                <div class="card-body">
+                        <div class="row g-4">
 
-                    <div class="row g-4">
+                            <div class="col-lg-12">
 
-                        <div class="col-lg-12">
+                                <label class="form-label">
 
-                            <label class="form-label">
+                                    عنوان پروژه
 
-                                عنوان پروژه
+                                </label>
 
-                            </label>
+                                <input
+                                        type="text" name="title"
+                                        class="form-control-custom"
+                                        value="<?= htmlspecialchars($order['order_title'] ?? '') ?>"
+                                    <?= $readOnly ?>
+                                >
 
-                            <input
-                                    type="text"
-                                    class="form-control-custom"
-                                    value="طراحی فروشگاه اینترنتی"
-                                <?= $readOnly ?>
-                            >
+                            </div>
 
-                        </div>
+                            <div class="col-md-6">
 
-                        <div class="col-md-4">
+                                <label class="form-label">
 
-                            <label class="form-label">
+                                    بودجه
 
-                                بودجه
+                                </label>
 
-                            </label>
+                                <input
+                                        type="number" name="first_price" min="0"
+                                        class="form-control-custom"
+                                        placeholder="مثلاً 3500000"
+                                        value="<?=($order['first_price']!==0)  ?
+                                         htmlspecialchars($order['first_price'] ?? '')
+                                        :
+                                            ''
+                                        ?>"
+                                    <?php
+                                    if ($order['service_type'] !== "DEBUG")
+                                        echo "readonly";
+                                    ?>
+                                >
+                                <?php if (isset($errors['first_price'])): ?>
 
-                            <input
-                                    type="text"
-                                    class="form-control-custom"
-                                    value="3,000,000"
-                                <?= $readOnly ?>
-                            >
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['first_price'] ?>
+                                    </div>
 
-                        </div>
+                                <?php endif; ?>
+                            </div>
 
-                        <div class="col-md-4">
+                            <div class="col-md-6">
 
-                            <label class="form-label">
+                                <label class="form-label">
 
-                                زمان تحویل
+                                    زمان تحویل
 
-                            </label>
+                                </label>
 
-                            <input
-                                    type="text"
-                                    class="form-control-custom"
-                                    value="7 روز"
-                                <?= $readOnly ?>
-                            >
+                                <input
+                                        type="text" name="delivery_date"
+                                        class="form-control-custom first-jalali-date"
+                                        value="<?= $order['delivery_date'] !== null
+                                            ? htmlspecialchars(
+                                                Helper::jaliliDate(
+                                                    Helper::MiladiTojalili(
+                                                        date('Y-m-d', strtotime($order['delivery_date']))
+                                                    )
+                                                )
+                                            )
+                                            : null
+                                        ?>"
+                                        placeholder="-----"
+                                    <?php
+                                    if ($order['service_type'] !== "DEBUG")
+                                        echo "readonly";
+                                    ?> >
+                                <?php if (isset($errors['delivery_date'])): ?>
 
-                        </div>
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['delivery_date'] ?>
+                                    </div>
 
-                        <div class="col-md-4">
+                                <?php endif; ?>
 
-                            <label class="form-label">
+                            </div>
 
-                                مقطع
-
-                            </label>
-                            <select
-                                    id="serviceSearch"
-                                    class="form-control-custom"
-                                <?= $disabled ?>
-                            >
-                                <option value="">
-
-                                    کاردانی
-
-                                </option>
-
-                                <option>
-
-                                    کارشناسی
-
-                                </option>
-
-                                <option>
-
-                                    کارشناسی ارشد
-
-                                </option>
-
-                                <option>
-
-                                    دکترا
-
-                                </option>
-
-                                <option>
-
-                                    سایر
-
-                                </option>
-
-
-                            </select>
 
                         </div>
 
@@ -742,354 +852,435 @@ $title=($mode == "view") ? "جزییات درخواست" : "ویرایش درخ�
 
                 </div>
 
-            </div>
 
+                <!--==================================
+                Description
+                ===================================-->
 
-            <!--==================================
-            Description
-            ===================================-->
+                <div class="card shadow-sm border-0 mb-4">
 
-            <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white">
 
-                <div class="card-header bg-white">
+                        <h5>
 
-                    <h5>
+                            شرح درخواست
 
-                        شرح درخواست
+                        </h5>
 
-                    </h5>
+                    </div>
 
-                </div>
-
-                <div class="card-body">
+                    <div class="card-body">
 
                 <textarea
-                        class="form-control-custom"
+                        class="form-control-custom" name="description"
                         rows="8"
                     <?= $readOnly ?>
-                >
-
-کاربر توضیحات پروژه را اینجا نوشته است...
-
+                ><?= htmlspecialchars($order['description'] ?? '') ?>
                 </textarea>
 
-                </div>
-
-            </div>
-
-
-            <!--==================================
-            Attachments
-            ===================================-->
-
-            <div class="card shadow-sm border-0 mb-4">
-
-                <div class="card-header bg-white">
-
-                    <h5>
-
-                        فایل‌های پیوست
-
-                    </h5>
-
-                </div>
-
-                <div class="card-body">
-
-                    <div class="attachment-list">
-
-                        <div class="attachment-item">
-
-                            <div>
-
-                                <i class="bi bi-file-earmark-word"></i>
-
-                                project.docx
-
-                            </div>
-
-                            <a href="#"
-                               class="btn btn-outline-main btn-sm">
-
-                                دانلود
-
-                            </a>
-
-                        </div>
-
-                        <div class="attachment-item">
-
-                            <div>
-
-                                <i class="bi bi-file-earmark-pdf"></i>
-
-                                report.pdf
-
-                            </div>
-
-                            <a href="#"
-                               class="btn btn-outline-main btn-sm">
-
-                                دانلود
-
-                            </a>
-
-                        </div>
-
                     </div>
 
                 </div>
 
-            </div>
-            <!--==================================
-            Admin Management
-            ===================================-->
 
-            <div class="card shadow-sm border-0 mb-4">
+                <!--==================================
+                Attachments
+                ===================================-->
 
-                <div class="card-header bg-white">
+                <div class="card shadow-sm border-0 mb-4">
 
-                    <h5>
+                    <div class="card-header bg-white">
 
-                        مدیریت درخواست
+                        <h5>
 
-                    </h5>
+                            فایل‌های پیوست
 
-                </div>
-
-                <div class="card-body">
-
-                    <div class="row g-4">
-
-                        <!-- Status -->
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-
-                                وضعیت درخواست
-
-                            </label>
-
-                            <select
-                                    class="form-control-custom"
-                                <?= $disabled ?>
-                            >
-
-                                <option>
-
-                                    در انتظار بررسی
-
-                                </option>
-
-                                <option>
-
-                                    در حال انجام
-
-                                </option>
-
-                                <option>
-
-                                    تکمیل شده
-
-                                </option>
-
-                                <option>
-
-                                    لغو شده
-
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- Expert -->
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-
-                                کارشناس مسئول
-
-                            </label>
-
-                            <select
-                                    class="form-control-custom"
-                                <?= $disabled ?>
-                            >
-
-                                <option>
-
-                                    انتخاب کارشناس...
-
-                                </option>
-
-                                <option>
-
-                                    علی رضایی
-
-                                </option>
-
-                                <option>
-
-                                    محمد احمدی
-
-                                </option>
-
-                                <option>
-
-                                    سارا کریمی
-
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- Agreed Price -->
-
-                        <div class="col-md-4">
-
-                            <label class="form-label">
-
-                                قیمت توافقی (تومان)
-
-                            </label>
-
-                            <input
-                                    type="text"
-                                    class="form-control-custom"
-                                    placeholder="مثلاً 3500000"
-                                <?= $readOnly ?>
-                            >
-
-                        </div>
-
-                        <!-- Deadline -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-
-                                تاریخ تحویل نهایی
-
-                            </label>
-
-                            <input
-                                    type="text"
-                                    class="form-control-custom jalali-date"
-                                <?= $readOnly ?>
-                            >
-
-                        </div>
-
-                        <!-- Progress -->
-
-                        <div class="col-md-6">
-
-                            <label class="form-label">
-
-                                درصد پیشرفت
-
-                            </label>
-
-                            <select
-                                    class="form-control-custom"
-                                <?= $disabled ?>
-                            >
-
-                                <option>0%</option>
-                                <option>10%</option>
-                                <option>20%</option>
-                                <option>30%</option>
-                                <option>40%</option>
-                                <option>50%</option>
-                                <option>60%</option>
-                                <option>70%</option>
-                                <option>80%</option>
-                                <option>90%</option>
-                                <option>100%</option>
-
-                            </select>
-
-                        </div>
-
-                        <!-- Manager Note -->
-
-                        <div class="col-12">
-
-                            <label class="form-label">
-
-                                توضیحات مدیر
-
-                            </label>
-
-                            <textarea
-                                    rows="6"
-                                    class="form-control-custom"
-                                    placeholder="یادداشت داخلی مدیر..."
-                                <?= $readOnly ?>
-                            ></textarea>
-
-                        </div>
+                        </h5>
 
                     </div>
 
-                </div>
+                    <div class="card-body">
 
-            </div>
+                        <div class="attachment-list">
 
-            <!--==================================
-            Action Buttons
-            ===================================-->
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-body">
-
-                    <div class="d-flex flex-wrap justify-content-between gap-3">
-
-                        <div class="d-flex gap-2">
                             <?php
-                            if ($mode == 'edit') {
-                                ?>
-                                <button
-                                        class="btn btn-main px-4">
+                            if (!empty($files))
+                                foreach ($files as $file) {
+                                    ?>
 
-                                    <i class="bi bi-check-lg ms-2"></i>
+                                    <div class="attachment-item">
 
-                                    ذخیره تغییرات
+                                        <div>
+                                            <i class="bi <?= Helper::getFileIcon($file['original_name']) ?> file-icon"></i>
 
-                                </button>
-                                <?php
-                            }
+                                            <?= htmlspecialchars($file['original_name'] ?? '') ?>
+
+                                        </div>
+
+                                        <a href="<?= URL ?>admin/orders/downloadOrderFile/<?= $file['id'] ?>"
+                                           class="btn btn-outline-main btn-sm">
+
+                                            دانلود
+
+                                        </a>
+
+                                    </div>
+
+                                    <?php
+                                }
                             ?>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--==================================
+                Admin Management
+                ===================================-->
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-white">
+
+                        <h5>
+
+                            مدیریت درخواست
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-4">
+
+                            <!-- Status -->
+
+                            <div class="col-md-4">
+
+                                <label class="form-label">
+
+                                    وضعیت درخواست
+
+                                </label>
+
+                                <select name="status" id="status"
+                                        class="form-control-custom"
+                                    <?= $disabled ?>
+                                >
+                                    <option value="PENDING"
+                                        <?= ($order['status'] ?? '') === 'PENDING' ? 'selected' : '' ?>>
+                                        در انتظار
+                                    </option>
+                                    <option value="REVIEWING"
+                                        <?= ($order['status'] ?? '') === 'REVIEWING' ? 'selected' : '' ?>>
+                                        در حال بررسی
+
+                                    </option>
 
 
-                            <button class="btn btn-primary return-btn px-4">
-                                <a href="<?= URL ?>admin/orders">
-                                    بازگشت
-                                    <i class="bi bi-arrow-return-right ms-2 align-middle"></i>
-                                </a>
-                            </button>
+                                    <option value="IN_PROGRESS"
+                                        <?= ($order['status'] ?? '') === 'IN_PROGRESS' ? 'selected' : '' ?>>
+                                        در حال انجام
+
+                                    </option>
+
+
+                                    <option value="COMPLETED"
+                                        <?= ($order['status'] ?? '') === 'COMPLETED' ? 'selected' : '' ?>>
+                                        تکمیل شده
+                                    </option>
+
+                                    <option value="CANCELED"
+                                        <?= ($order['status'] ?? '') === 'CANCELED' ? 'selected' : '' ?>>
+                                        لغو شده
+                                    </option>
+                                    <?php if (isset($errors['status'])): ?>
+                                        <option value="" selected>
+                                            مقدار نامعتبر
+                                        </option>
+                                    <?php endif; ?>
+                                </select>
+                                <?php if (isset($errors['status'])): ?>
+
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['status'] ?>
+                                    </div>
+
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Expert -->
+
+                            <div class="col-md-4">
+
+                                <label class="form-label">
+
+                                    کارشناس مسئول
+
+                                </label>
+
+                                <select
+                                        class="form-control-custom"
+                                    <?= $disabled ?>
+                                >
+
+                                    <option>
+
+                                        انتخاب کارشناس...
+
+                                    </option>
+
+                                    <option>
+
+                                        علی رضایی
+
+                                    </option>
+
+                                    <option>
+
+                                        محمد احمدی
+
+                                    </option>
+
+                                    <option>
+
+                                        سارا کریمی
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- Agreed Price -->
+
+                            <div class="col-md-4">
+                                <label class="form-label">
+
+                                    درصد پیشرفت
+
+                                </label>
+
+                                <select name="progress_percent"
+                                        class="form-control-custom" <?= $disabled ?> >
+
+                                    <option value="0%"
+                                        <?= ($order['progress_percent'] ?? '') === '0%' ? 'selected' : '' ?>>
+                                        0%
+                                    </option>
+                                    <option value="25%"
+                                        <?= ($order['progress_percent'] ?? '') === '25%' ? 'selected' : '' ?>>
+                                        25%
+                                    </option>
+                                    <option value="50%"
+                                        <?= ($order['progress_percent'] ?? '') === '50%' ? 'selected' : '' ?>>
+                                        50%
+                                    </option>
+                                    <option value="75%"
+                                        <?= ($order['progress_percent'] ?? '') === '75%' ? 'selected' : '' ?>>
+                                        75%
+                                    </option>
+                                    <option value="100%"
+                                        <?= ($order['progress_percent'] ?? '') === '100%' ? 'selected' : '' ?>>
+                                        100%
+                                    </option>
+                                    <?php if (isset($errors['progress_percent'])): ?>
+                                        <option value="" selected>
+                                            مقدار نامعتبر
+                                        </option>
+                                    <?php endif; ?>
+                                </select>
+                                <?php if (isset($errors['progress_percent'])): ?>
+
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['progress_percent'] ?>
+                                    </div>
+
+                                <?php endif; ?>
+
+
+                            </div>
+
+                            <!-- Deadline -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    تاریخ تحویل نهایی (پایان سفارش)
+
+                                </label>
+
+                                <input id="final_delivery_date"
+                                       type="text" name="final_delivery_date"
+                                       class="form-control-custom jalali-date"
+                                       value="<?= $order['final_delivery_date'] !== null
+                                           ? htmlspecialchars(
+                                               Helper::jaliliDate(
+                                                   Helper::MiladiTojalili(
+                                                       date('Y-m-d', strtotime($order['final_delivery_date']))
+                                                   )
+                                               )
+                                           )
+                                           : null
+                                       ?>"
+                                       placeholder="-----"
+                                    <?= $readOnly ?>
+                                >
+                                <?php if (isset($errors['final_delivery_date'])): ?>
+
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['final_delivery_date'] ?>
+                                    </div>
+
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Progress -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+
+                                    قیمت توافقی (تومان)
+
+                                </label>
+
+                                <input
+                                        type="number" name="agreed_price" min="0"
+                                        class="form-control-custom"
+                                        placeholder="مثلاً 3500000"
+                                        value="<?=($order['agreed_price']!==0)  ?
+                                            htmlspecialchars($order['agreed_price'] ?? '')
+                                            :
+                                            ''
+                                        ?>"
+                                    <?= $readOnly ?>
+                                >
+                                <?php if (isset($errors['agreed_price'])): ?>
+
+                                    <div class="form-error general-form-error">
+                                        <?= $errors['agreed_price'] ?>
+                                    </div>
+
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Manager Note -->
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+
+                                    توضیحات مدیر
+
+                                </label>
+
+                                <textarea
+                                        rows="6" name="admin_note"
+                                        class="form-control-custom"
+                                        placeholder="یادداشت داخلی مدیر..."
+                                    <?= $readOnly ?>
+                                ><?= htmlspecialchars($order['admin_note'] ?? '') ?>
+                            </textarea>
+
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                <!--==================================
+                Action Buttons
+                ===================================-->
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <div class="d-flex flex-wrap justify-content-between gap-3">
+
+                            <div class="d-flex gap-2">
+                                <?php
+                                if ($mode == 'edit') {
+                                    ?>
+                                    <button type="submit"
+                                            class="btn btn-main px-4">
+
+                                        <i class="bi bi-check-lg ms-2"></i>
+
+                                        ذخیره تغییرات
+
+                                    </button>
+                                    <?php
+                                }
+                                ?>
+
+
+                                <button class="btn btn-primary return-btn px-4" type="button">
+                                    <a href="<?= URL ?>admin/orders">
+                                        بازگشت
+                                        <i class="bi bi-arrow-return-right ms-2 align-middle"></i>
+                                    </a>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
         </div>
 
     </main>
 </div>
 
 <script>
-    $(function () {
-        $(".jalali-date").persianDatepicker({
-            format: "YYYY/MM/DD",
-            autoClose: true
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const form = document.getElementById('manageOrderForm');
+
+        form.addEventListener('submit', function (e) {
+            if (!validationAdminOrderForm(form)) {
+
+                e.preventDefault();
+            }
         });
     });
+
+    const textareas = document.querySelectorAll('textarea');
+
+    textareas.forEach(textarea => {
+
+        textarea.addEventListener('click', function () {
+
+            this.setSelectionRange(0, 0);
+
+        });
+
+    });
+
+    $(function () {
+
+        $(".jalali-date").persianDatepicker({
+            format: "YYYY/MM/DD",
+            autoClose: true,
+            initialValue: false
+        });
+
+        $(".first-jalali-date").persianDatepicker({
+            format: "YYYY/MM/DD",
+            autoClose: true,
+            initialValue: false
+        });
+
+
+    });
+
 </script>

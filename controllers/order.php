@@ -1,6 +1,6 @@
 <?php
-require_once 'core/helper.php';
-require_once 'core/const.php';
+//require_once 'core/helper.php';
+//require_once 'core/const.php';
 
 class Order extends Controller
 {
@@ -419,7 +419,7 @@ class Order extends Controller
             $postResult['data']['delivery_date'] =
                 (isset($postResult['data']['delivery_date'])) ?
                     Helper::jaliliToMiladi($postResult['data']['delivery_date']) :
-                    date('Y-m-d');;
+                    date('Y-m-d');
 
             return ['validation' => false, 'dataResult' => $postResult['data']];
 

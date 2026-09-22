@@ -1,14 +1,7 @@
 <?php
-require_once 'core/helper.php';
-require_once 'core/const.php';
+//require_once 'core/helper.php';
+//require_once 'core/const.php';
 $orders=$data['orders'];
-if(isset($data['totalFilteredCount'])) {
-    $totalFilteredPages = max(1, ceil($data['totalFilteredCount'] / ItemsPerPage));
-    $data['totalPages']=$totalFilteredPages;
-}
-else
-    $totalFilteredPages = max(1, ceil($data['totalCount']  / ItemsPerPage));
-
 
 foreach ($data['orders'] as $order) {
     switch ($order['status']) {
@@ -54,7 +47,7 @@ foreach ($data['orders'] as $order) {
         <td>
             <span class="badge <?= $badgeClass ?>">
 
-                <?= htmlspecialchars($order['status']) ?>
+                <?= htmlspecialchars(constant($order['status'])) ?>
 
             </span>
         </td>

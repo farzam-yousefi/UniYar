@@ -43,13 +43,6 @@ Page
 
     }
 
-    .gray{
-        color: gray;!important;
-    }
-    .gray ::selection{
-        color: gray;!important;
-    }
-
     /*==================================
     Status Filter
     ==================================*/
@@ -187,28 +180,6 @@ Page
     }
 </style>
 
-<?php
-if (isset($_SESSION['alert-resultOperationFromAdmin'])) {
-
-    $operationResult =
-        $_SESSION['alert-resultOperationFromAdmin'] ?? null;
-
-    if ( $operationResult['type'] === 'success'){ ?>
-        <script>
-
-            myAlert.<?= $operationResult['type'] ?>(
-                <?= json_encode($operationResult['title']) ?>,
-                <?= json_encode($operationResult['message']) ?>
-            );
-
-        </script>
-
-        <?php
-    }
-    unset($_SESSION['alert-resultOperationFromAdmin']);
-    unset($_SESSION['OperationFromAdmin']);
-}
-?>
 <?php
 $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 ?>
@@ -365,7 +336,6 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
                             <input
                                     type="text"
                                     id="trackingSearch"
-                                    name="tracking"
                                     class="form-control-custom"
                                     placeholder="کد پیگیری...">
 
@@ -382,7 +352,6 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
                             <input
                                     type="text"
                                     id="userSearch"
-                                    name="full_name"
                                     class="form-control-custom"
                                     placeholder="نام کاربر...">
 
@@ -398,34 +367,33 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 
                             <select
                                     id="serviceSearch"
-                                    name="service"
                                     class="form-control-custom">
 
-                                <option class="gray" value="ALL" >
+                                <option value="">
 
-                                    نوع خدمت .....
+                                    همه خدمات
 
                                 </option>
 
-                                <option value="PROJECT">
+                                <option>
 
                                     انجام پروژه
 
                                 </option>
 
-                                <option value="TEACH">
+                                <option>
 
                                     تدریس خصوصی
 
                                 </option>
 
-                                <option value="DEBUG">
+                                <option>
 
                                     رفع اشکال
 
                                 </option>
 
-                                <option value="CONSULT">
+                                <option>
 
                                     مشاوره
 
@@ -532,20 +500,16 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 
                             <tbody id="ordersTableBody">
                             <?php require "views/admin/orders/_orderRows.php"; ?>
+
+
                             </tbody>
 
                         </table>
 
                     </div>
 
-                    <div id="ordersPagination">
-                        <?php
-                        $totalPages = max(1, (int)ceil($data['totalCount'] / ItemsPerPage));
-                        $currentPage = 1;
-                        $windowSize = PaginationWindowSize;
-                        require "views/pagination.php";
-                        ?>
-                    </div>
+                    <?php require "views/pagination2.php"; ?>
+
 
                 </div>
 
@@ -571,54 +535,9 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
    Search Section
    ==================================*/
 
-    function searchOrders(page = 1, search) {
-        const params = new URLSearchParams({
-            tracking: search.tracking,
-            user: search.user,
-            service: search.service
-        });
+    function searchOrders(page, search) {
 
-
-       // فقط اطلاعات جستجو ارسال شود
-        let url = "admin/orders/searchOrders/" + page + "?" + params.toString();
-
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "json",//text or json
-
-            beforeSend: function () {
-                //$('#imgSpinner1').show();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-                console.error(jqXHR.status, errorThrown);
-                console.error("HTTP Status:", jqXHR.status);
-                console.error("Text Status:", textStatus);
-                console.error("Error:", errorThrown);
-                console.error("Response:", jqXHR.responseText);
-                myAlert.error(
-                    'خطا',
-                    'دریافت درخواست ها با خطا مواجه شد.'
-                );
-            },
-            success: function (data) {
-                if (data.type == 'success') {
-                    $("#ordersTableBody").html(data.orders);
-                    const totalPages = Math.max(
-                        1,
-                        Math.ceil(
-                            data.totalCount / <?= ItemsPerPage ?>
-                        )
-                    );
-                    ordersPagination.setTotalPages(totalPages);
-                }
-                else{
-                    myAlert.error('خطا', data.errorMsg);
-                }
-            }
-        });
-
+        // فقط اطلاعات جستجو ارسال شود
     }
 
     document.getElementById("btnSearch")
@@ -631,15 +550,14 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
                 user: document.getElementById("userSearch").value.trim(),
                 service: document.getElementById("serviceSearch").value
             };
-            if(currentSearch.tracking==''
-            && currentSearch.user=='' && currentSearch.service=='ALL')
-                myAlert.error( 'خطا',"برای جستجو باید حداقل یک فیلد را پر کنید.")
 
-                else
-            {
-                ordersPagination.setPage(1);
-                searchOrders(1, currentSearch);
-            }
+            currentPage = 1;
+            pageStart = 1;
+
+            updatePages();
+            updatePagination();
+
+            searchOrders(1, currentSearch);
         });
 
     /*==================================
@@ -653,7 +571,7 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
         $.ajax({
             url: url,
             type: "GET",
-            dataType: "json",//text or json
+            dataType: "text",//'text or json
 
 
             beforeSend: function () {
@@ -663,10 +581,6 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
             error: function (jqXHR, textStatus, errorThrown) {
 
                 console.error(jqXHR.status, errorThrown);
-                console.error("HTTP Status:", jqXHR.status);
-                console.error("Text Status:", textStatus);
-                console.error("Error:", errorThrown);
-                console.error("Response:", jqXHR.responseText);
 
                 myAlert.error(
                     'خطا',
@@ -675,19 +589,11 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 
             },
             success: function (data) {
+                $("#ordersTableBody").html(data);
+                updatePages();
+                updatePagination();
+            },
 
-                $("#ordersTableBody").html(data.orders);
-
-                const totalPages = Math.max(
-                    1,
-                    Math.ceil(
-                        data.totalCount / <?= ItemsPerPage ?>
-                    )
-                );
-
-                ordersPagination.setTotalPages(totalPages);
-
-            }
         });
 
     }
@@ -709,7 +615,13 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
             this.classList.add("btn-main", "active");
 
             currentStatus = this.dataset.status;
-            ordersPagination.setPage(1);
+
+            currentPage = 1;
+            pageStart = 1;
+
+            updatePages();
+            updatePagination();
+
             filterOrders(1, currentStatus);
         });
     });
@@ -718,32 +630,216 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
   Pagination
 ==================================*/
 
-    //   let currentPage = 1;
-    //   let pageStart = 1;
-
-    // ====================
-    const paginationElement =
-        document.querySelector(
-            ".pagination-wrapper"
-        );
+    let currentPage = 1;
+    let totalPages = <?= $data['totalPages']?>;
+    let pageStart = 1;
 
 
-    const ordersPagination =
-        new Pagination(
-            paginationElement
-        );
+    /*==================================
+      Update Previous / Next
+    ==================================*/
+    function updatePagination() {
+
+        const first = document.querySelector(".pagination-first").parentElement;
+        const prev = document.querySelector(".pagination-prev").parentElement;
+
+        const next = document.querySelector(".pagination-next").parentElement;
+        const last = document.querySelector(".pagination-last").parentElement;
 
 
-    paginationElement.addEventListener(
-        "pagination:change",
-        function (event) {
+        // First / Previous
 
-            changePage(
-                event.detail.page
+        const atFirstPage = currentPage === 1;
+
+        first.classList.toggle("disabled", atFirstPage);
+        prev.classList.toggle("disabled", atFirstPage);
+
+
+        // Next / Last
+
+        const atLastPage = currentPage === totalPages;
+
+        next.classList.toggle("disabled", atLastPage);
+        last.classList.toggle("disabled", atLastPage);
+
+    }
+
+
+    function updatePages() {
+
+        const buttons = document.querySelectorAll(".page-btn");
+
+        buttons.forEach((btn, index) => {
+
+            const page = pageStart + index;
+
+            btn.dataset.page = page;
+            btn.textContent = page;
+
+            if (page <= totalPages) {
+
+                btn.parentElement.style.display = "";
+
+            } else {
+
+                btn.parentElement.style.display = "none";
+
+            }
+
+            btn.classList.toggle(
+                "active",
+                page === currentPage
+            );
+
+        });
+    }
+
+    function updatePageWindow() {
+
+        // اگر به ابتدای لیست رسیده‌ایم
+        if (currentPage <= 3) {
+
+            pageStart = 1;
+
+        }
+
+        // اگر به انتهای لیست نزدیک شده‌ایم
+        else if (currentPage >= totalPages - 2) {
+
+            pageStart = Math.max(
+                1,
+                totalPages - <?=PaginationWindowSize?> + 1
             );
 
         }
-    );
+
+        // حالت عادی: صفحه جاری وسط پنجره باشد
+        else {
+
+            pageStart = currentPage - 2;
+
+        }
+
+    }
+
+    /*==================================
+      Page Buttons
+    ==================================*/
+
+    document.querySelectorAll(".page-btn")
+        .forEach(btn => {
+
+            btn.addEventListener("click", function (e) {
+
+                e.preventDefault();
+
+                const page = Number(this.dataset.page);
+
+                if (page < 1 || page > totalPages) {
+                    return;
+                }
+
+                currentPage = page;
+
+                updatePageWindow();
+                updatePages();
+                updatePagination();
+
+                changePage(currentPage);
+
+            });
+
+        });
+
+    /*==================================
+      Previous
+    ==================================*/
+
+    document.querySelector(".pagination-prev")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === 1) {
+                return;
+            }
+
+            currentPage--;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+      Next
+    ==================================*/
+
+    document.querySelector(".pagination-next")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === totalPages) {
+                return;
+            }
+
+            currentPage++;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+     First
+   ==================================*/
+    document.querySelector(".pagination-first")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === 1) {
+                return;
+            }
+
+            currentPage = 1;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
+
+    /*==================================
+     Last
+   ==================================*/
+    document.querySelector(".pagination-last")
+        .addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            if (currentPage === totalPages) {
+                return;
+            }
+
+            currentPage = totalPages;
+
+            updatePageWindow();
+            updatePages();
+            updatePagination();
+
+            changePage(currentPage);
+
+        });
 
     /*==================================
       Change Page
@@ -751,7 +847,7 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 
     function changePage(page) {
 
-        if (currentMode === "search") {
+        if (currentMode === 'search') {
 
             searchOrders(
                 page,
@@ -769,10 +865,13 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
 
     }
 
+
     /*==================================
       Initial State
     ==================================*/
 
-    ordersPagination.update();
+    updatePageWindow();
+    updatePages();
+    updatePagination();
 
 </script>

@@ -552,8 +552,9 @@ if (isset($_SESSION['alert-resultOperationFromSite'])) {
     }
     unset($_SESSION['alert-resultOperationFromSite']);
     unset($_SESSION['OperationFromSite']);
-} ?>
-<pre>
+}
+?>
+
 
 <?php
 
@@ -575,7 +576,6 @@ else
 $hasError = !empty($errors) || $hasErr;
 
 ?>
-    </pre>
 <form action="<?= URL ?>order/action/<?= $mode ?>" method="post"
       novalidate class="order-form"
       enctype="multipart/form-data" data-validate id="addEditOrderForm">
@@ -1015,7 +1015,7 @@ $hasError = !empty($errors) || $hasErr;
 
                                 <label>بودجه تقریبی(تومان)</label>
                                 <input
-                                        type="number"
+                                        type="number" min="0"
                                         id="first_price"
                                         name="first_price"
                                         value="<?= htmlspecialchars($order['first_price'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
@@ -1068,7 +1068,7 @@ $hasError = !empty($errors) || $hasErr;
 
                                         <small>
 
-                                            PDF • Word • ZIP • Image
+                                            PDF • Word • Xls • Txt • ZIP • Image
 
                                             <br>
 
@@ -1158,7 +1158,7 @@ $hasError = !empty($errors) || $hasErr;
 
                                     <small>
 
-                                        PDF • Word • ZIP • Image
+                                        PDF • Word • Xls • Txt • ZIP • Image
 
                                         <br>
 
@@ -1679,33 +1679,31 @@ Success Modal
                 .toLowerCase();
 
         if (ext === "pdf") {
-            return "bi-file-earmark-pdf";
+            return "bi-file-earmark-pdf text-danger";
         }
 
         if (["doc", "docx"].includes(ext)) {
-            return "bi-file-earmark-word";
+            return "bi-file-earmark-word text-primary";
         }
 
         if (["xls", "xlsx"].includes(ext)) {
-            return "bi-file-earmark-excel";
+            return "bi-file-earmark-excel text-success";
         }
 
         if (["zip", "rar", "7z"].includes(ext)) {
-            return "bi-file-earmark-zip";
+            return "bi-file-earmark-zip text-warning";
         }
 
         if (
-            ["png", "jpg", "jpeg", "gif", "webp"]
-                .includes(ext)
+            ["png", "jpg", "jpeg", "gif", "webp"].includes(ext)
         ) {
-            return "bi-file-earmark-image";
+            return "bi-file-earmark-image text-info";
         }
 
         if (
-            ["txt", "csv"]
-                .includes(ext)
+            ["txt", "csv"].includes(ext)
         ) {
-            return "bi-file-earmark-text";
+            return "bi-file-earmark-text text-secondary";
         }
 
         return "bi-file-earmark";
@@ -2761,8 +2759,10 @@ Success Modal
         const form = document.getElementById('addEditOrderForm');
 
         form.addEventListener('submit', function (e) {
-            if (!validateOrderForm(form))
+            if (!validateOrderForm(form)) {
                 e.preventDefault();
+                myAlert.error('خطا', 'لطفا فیلدهای ضروری را پر کنید')
+            }
         });
     });
 

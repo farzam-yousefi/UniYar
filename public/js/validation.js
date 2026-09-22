@@ -261,7 +261,7 @@ function validateOrderForm(form) {
             }
 
         }
-        if (service_id.value.trim() === 'TEACH'){
+        if (service_id.value.trim() === 'TEACH') {
             const teaching_type = form.querySelector('#teaching_type');
             if (teaching_type.value.trim() == '') {
                 makeErr(teaching_type, 'لطفا نحوه برگزاری را مشخص کنید.');
@@ -269,6 +269,61 @@ function validateOrderForm(form) {
                 isValid = false;
             }
         }
-            }
+    }
     return (generalValidation && isValid);
+}
+
+function validationAdminOrderForm(form) {
+
+    const status =
+        form.querySelector('#status');
+
+    const StatusValue = status.value.trim();
+
+    const final_delivery_date =
+        form.querySelector('#final_delivery_date');
+
+    const value = final_delivery_date.value.trim();
+    console.log(value);
+    // اگر تاریخ وارد نشده، اعتبارسنجی اختصاصی نداریم
+    if (value === '') {
+        return true;
+    }
+
+    const englishValue = toEnglishDigits(value);
+
+    const [year, month, day] =
+        englishValue.split('/').map(Number);
+
+    const finalDeliveryDate = new persianDate([
+        year,
+        month,
+        day
+    ]);
+
+    const today = new persianDate();
+
+    // حذف ساعت از مقایسه
+    finalDeliveryDate.hour(0);
+    finalDeliveryDate.minute(0);
+    finalDeliveryDate.second(0);
+    finalDeliveryDate.millisecond(0);
+
+    today.hour(0);
+    today.minute(0);
+    today.second(0);
+    today.millisecond(0);
+
+
+    if ((finalDeliveryDate < today) && (StatusValue!=='COMPLETED')) {
+
+        myAlert.warning(
+            'هشدار',
+            'تاریخ تحویل نمی‌تواند قبل از تاریخ امروز باشد.'
+        );
+
+        return false;
+    }
+
+    return true;
 }

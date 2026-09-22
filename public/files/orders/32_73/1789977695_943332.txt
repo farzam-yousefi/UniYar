@@ -1,0 +1,32 @@
+    jQuery('.myPageLink').click(function () {
+        var cat = jQuery(this).parent().parent().data('cat');
+        var pageNo = jQuery(this).text();
+        var data_;
+        $.ajax({
+            url: '<?=URL?>comment/getCommentAjaxPagination',
+            type: "POST",
+            dataType: "text",//'text or json
+            data: {cat: cat, pageNo: pageNo},
+
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Error has occured when submitting the job : " + jqXHR.status +
+                    " Contact IT Dep")
+            },
+            success: function (data) {
+                data_ = data;
+            },
+            complete: function () {
+
+                //imporrrrrrtaaaaaaaanttttttttttt
+                var TargetBody = '.tbodyComment' + cat;
+                $(TargetBody).html('');
+                $(TargetBody).html(data_);
+
+            },
+        });
+    });

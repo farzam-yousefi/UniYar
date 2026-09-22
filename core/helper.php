@@ -80,7 +80,7 @@ class Helper
         return self::uploadFile(
             $file,
             $dir,
-            ['img', 'pdf', 'word', 'zip', 'rar', 'txt'],
+            ['img', 'pdf', 'word', 'zip', 'rar', 'txt','excel'],
             40
         );
     }
@@ -551,7 +551,52 @@ class Helper
                             "فایل WORD {$file['name']}معتبر نیست.";
                     }
 
-                } /*
+                }
+
+                /*
+             =========================
+              EXCEL
+             =========================
+             */
+
+                elseif ($ext === 'xls') {
+
+                    if ($mime !== 'application/vnd.ms-excel') {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][] =
+                            "فایل EXCEL {$file['name']} معتبر نیست.";
+                    }
+                }
+                elseif ($ext === 'xlsx') {
+
+                    $validMime = (
+                        $mime ===
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    );
+
+                    /*
+                     * در بعضی محیط‌ها مثل XAMPP،
+                     * fileinfo ممکن است XLSX را octet-stream تشخیص دهد.
+                     */
+                    if (
+                        !$validMime &&
+                        $mime === 'application/octet-stream'
+                    ) {
+                        $validMime = self::isValidXlsx($fileTmp);
+                    }
+
+                    if (!$validMime) {
+
+                        $uploadOk = 0;
+
+                        $errors['file'][] =
+                            "فایل EXCEL {$file['name']} معتبر نیست.";
+                    }
+                }
+
+                /*
                 =========================
                 ZIP
                 =========================
@@ -827,6 +872,9 @@ class Helper
             if ($format === 'pdf' && $ext === 'pdf')
                 return true;
 
+            if ($format === 'excel' && in_array($ext, ['xls', 'xlsx'], true))
+                return true;
+
             if (
                 $format === 'word' &&
                 in_array($ext, ['doc', 'docx'], true)
@@ -869,6 +917,40 @@ class Helper
                 'image/jpeg',
                 'image/png'
             ]
+        );
+    }
+
+    public static function isValidXlsx($path)
+    {
+        if (!class_exists('ZipArchive')) {
+            return false;
+        }
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($path) !== true) {
+            return false;
+        }
+
+        /*
+         * یک فایل XLSX معتبر باید این ساختارهای اصلی
+         * را داشته باشد.
+         */
+        $hasContentTypes =
+            $zip->locateName('[Content_Types].xml') !== false;
+
+        $hasWorkbook =
+            $zip->locateName('xl/workbook.xml') !== false;
+
+        $hasRels =
+            $zip->locateName('_rels/.rels') !== false;
+
+        $zip->close();
+
+        return (
+            $hasContentTypes &&
+            $hasWorkbook &&
+            $hasRels
         );
     }
 
@@ -1073,6 +1155,80 @@ GENERAL
             $randstring .= $characters[rand(0, strlen($characters))];
         }
         return $randstring;
+    }
+
+    /*
+       ==================================================
+       Get File Icon
+       ==================================================
+       */
+
+    public static function getFileIcon($filename)
+    {
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        if ($ext === 'pdf') {
+            return 'bi-file-earmark-pdf text-danger';
+        }
+
+        if (in_array($ext, ['doc', 'docx'])) {
+            return 'bi-file-earmark-word text-primary';
+        }
+
+        if (in_array($ext, ['xls', 'xlsx'])) {
+            return 'bi-file-earmark-excel text-success';
+        }
+
+        if (in_array($ext, ['zip', 'rar', '7z'])) {
+            return 'bi-file-earmark-zip text-warning';
+        }
+
+        if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp'])) {
+            return 'bi-file-earmark-image text-info';
+        }
+
+        if (in_array($ext, ['txt', 'csv'])) {
+            return 'bi-file-earmark-text text-secondary';
+        }
+
+        return 'bi-file-earmark';
+    }
+
+    /*
+      ==================================================
+      Download File
+      ==================================================
+      */
+
+    public static function downloadFile($file)
+    {
+        if (!$file) {
+            throw new Exception('فایل مورد نظر پیدا نشد.');
+        }
+
+        $filePath = ROOT_PATH . $file['path'];
+
+        if (!file_exists($filePath)) {
+            throw new Exception('فایل روی سرور وجود ندارد.');
+        }
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+//        header(
+//            'Content-Disposition: attachment; filename="' .
+//            basename($file['original_name']) . '"'
+//        );
+        header(
+            "Content-Disposition: attachment; filename*=UTF-8''" .
+            rawurlencode($file['original_name'])
+        );
+        header('Content-Length: ' . filesize($filePath));
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: public');
+
+
+        readfile($filePath);
+        exit;
     }
 
 }
