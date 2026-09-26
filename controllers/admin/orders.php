@@ -307,4 +307,9 @@ class orders extends Controller
         return $data;
     }
 
+    function delete($id){
+        $this->model->delete($id);
+        header("Location:" . URL . "admin/orders");
+    }
+
 }

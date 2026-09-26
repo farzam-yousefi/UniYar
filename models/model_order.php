@@ -673,4 +673,9 @@ orders.title as title,tracking_code,
             ];
         }
     }
+    function delete($id){
+        $sql="delete from orders where id=?";
+        $this->doQuery($sql,[$id]);
+
+    }
 }

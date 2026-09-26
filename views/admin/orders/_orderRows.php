@@ -66,7 +66,8 @@ foreach ($data['orders'] as $order) {
 
             </a>
 
-            <a href="<?= URL ?>admin/orders/delete/<?= $order['id'] ?? '' ?>" class="table-action text-danger">
+            <a href="<?= URL ?>admin/orders/delete/<?= $order['id'] ?? '' ?>"
+               class="table-action text-danger btn-delete">
 
                 <i class="bi bi-trash"></i>
 
@@ -77,5 +78,17 @@ foreach ($data['orders'] as $order) {
     </tr>
 
 <?php } ?>
+<script>
+    /*==========================================
+     Delete
+     ==========================================*/
+    $(document).on('click', '.btn-delete', function (event) {
+
+        event.preventDefault();
+
+        myAlert.delete(this.href);
+
+    });
+</script>
 
 
