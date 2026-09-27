@@ -678,4 +678,9 @@ orders.title as title,tracking_code,
         $this->doQuery($sql,[$id]);
 
     }
+
+    function getCustomerOrders($customerId){
+        $sql=self::ORDER_LIST_QUERY ." where customer_id=? ";
+        return $this->myFetchAll($sql,[$customerId]);
+    }
 }

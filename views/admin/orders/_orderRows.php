@@ -1,7 +1,7 @@
 <?php
 //require_once 'core/helper.php';
 //require_once 'core/const.php';
-$orders=$data['orders'];
+$orders = $data['orders'];
 
 foreach ($data['orders'] as $order) {
     switch ($order['status']) {
@@ -20,6 +20,9 @@ foreach ($data['orders'] as $order) {
         case 'CANCELED':
             $badgeClass = 'bg-danger';
             break;
+        default :
+            $badgeClass = 'bg-secondary';
+            break;
     }
     ?>
     <tr>
@@ -33,7 +36,7 @@ foreach ($data['orders'] as $order) {
         <td> <?= htmlspecialchars(constant($order['service_type'])) ?>
 
             <?php if (!empty($order['project_type'])): ?>
-                <br> <?=htmlspecialchars(constant($order['project_type'])) ?>
+                <br> <?= htmlspecialchars(constant($order['project_type'])) ?>
             <?php endif; ?>
         </td>
 
@@ -42,7 +45,8 @@ foreach ($data['orders'] as $order) {
                     Helper::MiladiTojalili(
                         date('Y-m-d', strtotime($order['submission_date']))
                     )
-                )) ?></td>
+                )) ?>
+        </td>
 
         <td>
             <span class="badge <?= $badgeClass ?>">

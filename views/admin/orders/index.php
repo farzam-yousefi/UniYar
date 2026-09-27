@@ -90,19 +90,7 @@ Page
 
     }
 
-    /*==================================
-    Responsive
-    ==================================*/
 
-    @media (max-width: 992px) {
-
-        .filter-buttons {
-
-            justify-content: center;
-
-        }
-
-    }
 
     /*========================================
     Table
@@ -185,6 +173,7 @@ Page
         }
 
     }
+
 </style>
 
 <?php

@@ -3,160 +3,154 @@
  Header
  ==================================*/
 
-    .admin-main{
-        width: 95%;
-        padding: 20px;
-    }
-    .users-header{
+    .users-header {
 
-        display:flex;
+        display: flex;
 
-        justify-content:space-between;
+        justify-content: space-between;
 
-        align-items:center;
+        align-items: center;
 
-        margin-bottom:25px;
+        margin-bottom: 25px;
 
-        gap:20px;
+        gap: 20px;
 
     }
 
-    .users-title h2{
+    .users-title h2 {
 
-        color:#17335C;
+        color: #17335C;
 
-        font-weight:700;
+        font-weight: 700;
 
-        margin:0;
-
-    }
-
-    .users-title p{
-
-        margin-top:6px;
-
-        color:#6C757D;
+        margin: 0;
 
     }
 
+    .users-title p {
+
+        margin-top: 6px;
+
+        color: #6C757D;
+
+    }
 
     /*==================================
     Stats
     ==================================*/
 
-    .users-stats{
+    .users-stats {
 
-        display:flex;
+        display: flex;
 
-        gap:18px;
-
-    }
-
-    .stat-card{
-
-        min-width:170px;
-
-        background:#fff;
-
-        border:1px solid #E8ECEF;
-
-        border-radius:16px;
-
-        padding:18px 22px;
+        gap: 18px;
 
     }
 
-    .stat-card span{
+    .stat-card {
 
-        display:block;
+        min-width: 170px;
 
-        color:#6C757D;
+        background: #fff;
 
-        font-size:.9rem;
+        border: 1px solid #E8ECEF;
 
-    }
+        border-radius: 16px;
 
-    .stat-card h3{
-
-        margin-top:8px;
-
-        color:#0EA47A;
-
-        font-size:1.8rem;
-
-        font-weight:700;
+        padding: 18px 22px;
 
     }
 
+    .stat-card span {
+
+        display: block;
+
+        color: #6C757D;
+
+        font-size: .9rem;
+
+    }
+
+    .stat-card h3 {
+
+        margin-top: 8px;
+
+        color: #0EA47A;
+
+        font-size: 1.8rem;
+
+        font-weight: 700;
+
+    }
 
     /*==================================
     Sort
     ==================================*/
 
-    .users-sort{
+    .users-sort {
 
-        display:flex;
+        display: flex;
 
-        align-items:center;
+        align-items: center;
 
-        gap:15px;
-
-    }
-
-    .users-sort label{
-
-        margin:0;
-
-        color:#17335C;
-
-        font-weight:600;
+        gap: 15px;
 
     }
 
-    .users-sort select{
+    .users-sort label {
 
-        width:220px;
+        margin: 0;
+
+        color: #17335C;
+
+        font-weight: 600;
 
     }
 
+    .users-sort select {
+
+        width: 220px;
+
+    }
 
     /*==================================
     Table
     ==================================*/
 
-    .admin-table th{
+    .admin-table th {
 
-        white-space:nowrap;
-
-    }
-
-    .admin-table td{
-
-        vertical-align:middle;
+        white-space: nowrap;
 
     }
 
-    .request-count{
+    .admin-table td {
 
-        color:#0EA47A;
-
-        font-weight:600;
-
-        text-decoration:none;
+        vertical-align: middle;
 
     }
 
-    .request-count:hover{
+    .request-count {
 
-        text-decoration:underline;
+        color: #0EA47A;
 
-    }
-    .todayCustomers a{
+        font-weight: 600;
+
         text-decoration: none;
-        color: black;
+
     }
-    .todayCustomers :hover{
-        color:#0EA47A;
+
+    .request-count:hover {
+
+        text-decoration: underline;
+
+    }
+
+    #todayCustomers :hover {
+        cursor: pointer;
+    }
+
+    .todayCustomers :hover {
+        color: #0EA47A;
         font-weight: bold;
         font-size: large;
     }
@@ -165,57 +159,58 @@
     Responsive
     ==================================*/
 
-    @media(max-width:992px){
+    @media (max-width: 992px) {
 
-        .users-header{
+        .users-header {
 
-            flex-direction:column;
+            flex-direction: column;
 
-            align-items:flex-start;
+            align-items: flex-start;
 
         }
 
     }
 
-    @media(max-width:576px){
+    @media (max-width: 576px) {
 
-        .users-stats{
+        .users-stats {
 
-            width:100%;
+            width: 100%;
 
-            flex-direction:column;
-
-        }
-
-        .stat-card{
-
-            width:100%;
+            flex-direction: column;
 
         }
 
-        .users-sort{
+        .stat-card {
 
-            flex-direction:column;
-
-            align-items:flex-start;
+            width: 100%;
 
         }
 
-        .users-sort select{
+        .users-sort {
 
-            width:100%;
+            flex-direction: column;
+
+            align-items: flex-start;
+
+        }
+
+        .users-sort select {
+
+            width: 100%;
 
         }
 
     }
 </style>
+<title> کاربران </title>
 <div class="admin-layout">
 
-<?php require "views/layout/adminPanel/sidebar.php"; ?>
+    <?php require "views/layout/adminPanel/sidebar.php"; ?>
     <main class="admin-content">
 
 
-    <div class="container-fluid">
+        <div class="container-fluid">
 
             <!--==================================
             Header
@@ -251,26 +246,26 @@
 
                         <h3>
 
-                            145
+                            <?= htmlspecialchars($data['totalCount'] ?? '') ?>
 
                         </h3>
 
                     </div>
 
-                    <div class="stat-card todayCustomers">
-                        <a href="">
+                    <div class="stat-card todayCustomers" id="todayCustomers" >
+
                     <span>
 
                         ثبت‌نام امروز
 
                     </span>
 
-                        <h3>
+                            <h3>
 
-                            4
+                                <?= htmlspecialchars($data['newCount'] ?? '') ?>
 
-                        </h3>
-                        </a>
+                            </h3>
+
                     </div>
 
                 </div>
@@ -294,21 +289,21 @@
 
                         </label>
 
-                        <select class="form-control-custom">
+                        <select class="form-control-custom" id="customer-sort">
 
-                            <option>
+                            <option value="newest">
 
                                 جدیدترین
 
                             </option>
 
-                            <option>
+                            <option value="oldest">
 
                                 قدیمی‌ترین
 
                             </option>
 
-                            <option>
+                            <option value="most_orders">
 
                                 بیشترین سفارش
 
@@ -377,57 +372,21 @@
 
                         </thead>
 
-                        <tbody>
+                        <tbody id="customerTableBody">
 
-                        <tr>
-
-                            <td>
-
-                                علی رضایی
-
-                            </td>
-
-                            <td>
-
-                                09123456789
-
-                            </td>
-
-                            <td>
-
-                                ali@gmail.com
-
-                            </td>
-
-                            <td>
-
-                                <a href="<?=URL?>admin/orders?user=15"
-                                   class="request-count">
-
-                                    12 درخواست
-
-                                </a>
-
-                            </td>
-
-                            <td>
-
-                                1405/05/01
-
-                            </td>
-
-                            <td>
-
-                                1405/05/20
-
-                            </td>
-
-                        </tr>
-
+                        <?php require "views/admin/customers/_customerRows.php"; ?>
                         </tbody>
 
                     </table>
 
+                </div>
+                <div id="customersPagination">
+                    <?php
+                    $totalPages = max(1, (int)ceil($data['totalCount'] / ItemsPerPage));
+                    $currentPage = 1;
+                    $windowSize = PaginationWindowSize;
+                    require "views/pagination.php";
+                    ?>
                 </div>
 
             </div>
@@ -438,3 +397,113 @@
 
 
 </div>
+<script>
+
+    /*==================================
+  Pagination
+==================================*/
+    let currentMode = "newest";
+
+    // ====================
+    const paginationElement =
+        document.querySelector(
+            ".pagination-wrapper"
+        );
+
+
+    const customersPagination =
+        new Pagination(
+            paginationElement
+        );
+
+
+    paginationElement.addEventListener(
+        "pagination:change",
+        function (event) {
+
+            changePage(event.detail.page);
+
+        }
+    );
+
+    /*==================================
+      Change Page
+    ==================================*/
+
+    function changePage(page) {
+
+        changeCustomers(currentMode, page)
+
+    }
+
+    /*==================================
+      Initial State
+    ==================================*/
+
+    customersPagination.update();
+
+
+    /*==========================================
+    select oldest/newest Filter
+   ==========================================*/
+    $(document).on('change', '#customer-sort', function () {
+        currentMode = this.value;
+        customersPagination.setPage(1);
+        changeCustomers(currentMode, 1)
+    });
+
+    $(document).on('click','#todayCustomers',function () {
+        currentMode = 'todayCustomers';
+        customersPagination.setPage(1);
+        changeCustomers(currentMode, 1)
+
+    });
+
+    function changeCustomers(currentMode, page) {
+
+      let url;
+        if(currentMode=='todayCustomers')
+          url="admin/customers/getTodayCustomers/"  + page;
+        else
+            url= "admin/customers/getCustomers/" + currentMode + "/" + page;
+
+        $.ajax({
+            url :url,
+            type: "GET",
+            dataType: "json",//text or json
+
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+
+
+                myAlert.error(
+                    'خطا',
+                    'دریافت اطلاعات کاربران با خطا مواجه شد.'
+                );
+
+            },
+            success: function (data) {
+
+                $("#customerTableBody").html(data.customers);
+
+                const totalPages = Math.max(
+                    1,
+                    Math.ceil(
+                        data.totalCount / <?= ItemsPerPage ?>
+                    )
+                );
+
+                customersPagination.setTotalPages(totalPages);
+
+            }
+        });
+
+
+    }
+
+</script>

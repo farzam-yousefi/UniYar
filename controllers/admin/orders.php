@@ -259,14 +259,14 @@ class orders extends Controller
                     $isValid = false;
                     $errors['delivery_date'] = 'تاریخ تحویل معتبر نیست.';
 
-                } else{
+                } else {
                     if ($deliveryDateObj < $today && $post['status'] !== "COMPLETED") {
                         $isValid = false;
                         $errors['delivery_date'] =
                             'تاریخ تحویل نمی‌تواند قبل از امروز باشد.';
                     }
-                $post['delivery_date'] = $miladiDeliveryDate;
-            }
+                    $post['delivery_date'] = $miladiDeliveryDate;
+                }
 
             } else {
 
@@ -307,9 +307,16 @@ class orders extends Controller
         return $data;
     }
 
-    function delete($id){
+    function delete($id)
+    {
         $this->model->delete($id);
         header("Location:" . URL . "admin/orders");
     }
 
+    function getCustomerOrders($customerId)
+    {
+        $data['orders']=$this->model->getCustomerOrders($customerId);
+        $this->view("admin/customers/customerOrders", $data,
+            "admin", "admin");
+    }
 }
