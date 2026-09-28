@@ -824,7 +824,7 @@ if (isset($data['order'])) {
                                             ? htmlspecialchars(
                                                 Helper::jaliliDate(
                                                     Helper::MiladiTojalili(
-                                                        date('Y-m-d', strtotime($order['delivery_date']))
+                                                        date('Y-m-d', strtotime($order['delivery_date'] ?? ''))
                                                     )
                                                 )
                                             )
@@ -1119,7 +1119,7 @@ if (isset($data['order'])) {
                                            ? htmlspecialchars(
                                                Helper::jaliliDate(
                                                    Helper::MiladiTojalili(
-                                                       date('Y-m-d', strtotime($order['final_delivery_date']))
+                                                       date('Y-m-d', strtotime($order['final_delivery_date'] ?? ''))
                                                    )
                                                )
                                            )

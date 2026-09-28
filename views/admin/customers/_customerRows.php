@@ -6,19 +6,19 @@ foreach ($customers as $customer) {
 
         <td>
 
-            <?= htmlspecialchars($customer['full_name']) ?>
+            <?= htmlspecialchars($customer['full_name'] ?? '') ?>
 
         </td>
 
         <td>
 
-            <?= htmlspecialchars($customer['mobile']) ?>
+            <?= htmlspecialchars($customer['mobile'] ?? '') ?>
 
         </td>
 
         <td>
 
-            <?= htmlspecialchars($customer['email']) ?>
+            <?= htmlspecialchars($customer['email'] ?? '') ?>
 
         </td>
 
@@ -27,7 +27,7 @@ foreach ($customers as $customer) {
             <a href="<?= URL ?>admin/orders/getCustomerOrders/<?=$customer['id']?>"
                class="request-count">
 
-                <?= htmlspecialchars($customer['customer_orders_count']) ?> درخواست
+                <?= htmlspecialchars($customer['customer_orders_count'] ?? '') ?> درخواست
 
             </a>
 
@@ -37,7 +37,7 @@ foreach ($customers as $customer) {
             <?= htmlspecialchars(
                 Helper::jaliliDate(
                     Helper::MiladiTojalili(
-                        date('Y-m-d', strtotime($customer['created_at']))
+                        date('Y-m-d', strtotime($customer['created_at'] ?? ''))
                     )
                 )) ?>
         </td>

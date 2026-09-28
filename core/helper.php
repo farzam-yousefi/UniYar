@@ -80,7 +80,7 @@ class Helper
         return self::uploadFile(
             $file,
             $dir,
-            ['img', 'pdf', 'word', 'zip', 'rar', 'txt','excel'],
+            ['img', 'pdf', 'word', 'zip', 'rar', 'txt', 'excel'],
             40
         );
     }
@@ -551,9 +551,7 @@ class Helper
                             "فایل WORD {$file['name']}معتبر نیست.";
                     }
 
-                }
-
-                /*
+                } /*
              =========================
               EXCEL
              =========================
@@ -568,8 +566,7 @@ class Helper
                         $errors['file'][] =
                             "فایل EXCEL {$file['name']} معتبر نیست.";
                     }
-                }
-                elseif ($ext === 'xlsx') {
+                } elseif ($ext === 'xlsx') {
 
                     $validMime = (
                         $mime ===
@@ -594,9 +591,7 @@ class Helper
                         $errors['file'][] =
                             "فایل EXCEL {$file['name']} معتبر نیست.";
                     }
-                }
-
-                /*
+                } /*
                 =========================
                 ZIP
                 =========================
@@ -1230,6 +1225,8 @@ GENERAL
         readfile($filePath);
         exit;
     }
+
+
 
 }
 

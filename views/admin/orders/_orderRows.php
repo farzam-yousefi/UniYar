@@ -27,23 +27,23 @@ foreach ($data['orders'] as $order) {
     ?>
     <tr>
 
-        <td><?= htmlspecialchars($order['tracking_code']) ?></td>
+        <td><?= htmlspecialchars($order['tracking_code'] ?? '') ?></td>
 
-        <td><?= htmlspecialchars($order['full_name']) ?></td>
+        <td><?= htmlspecialchars($order['full_name'] ?? '') ?></td>
 
-        <td><?= htmlspecialchars($order['order_title']) ?></td>
+        <td><?= htmlspecialchars($order['order_title'] ?? '') ?></td>
 
-        <td> <?= htmlspecialchars(constant($order['service_type'])) ?>
+        <td> <?= htmlspecialchars(constant($order['service_type'] ?? '')) ?>
 
             <?php if (!empty($order['project_type'])): ?>
-                <br> <?= htmlspecialchars(constant($order['project_type'])) ?>
+                <br> <?= htmlspecialchars(constant($order['project_type'] ?? '')) ?>
             <?php endif; ?>
         </td>
 
         <td>  <?= htmlspecialchars(
                 Helper::jaliliDate(
                     Helper::MiladiTojalili(
-                        date('Y-m-d', strtotime($order['submission_date']))
+                        date('Y-m-d', strtotime($order['submission_date'] ?? ''))
                     )
                 )) ?>
         </td>
@@ -51,7 +51,7 @@ foreach ($data['orders'] as $order) {
         <td>
             <span class="badge <?= $badgeClass ?>">
 
-                <?= htmlspecialchars(constant($order['status'])) ?>
+                <?= htmlspecialchars(constant($order['status'] ?? '')) ?>
 
             </span>
         </td>

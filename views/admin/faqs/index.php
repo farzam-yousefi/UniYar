@@ -1,51 +1,53 @@
 <style>
-    .accordion-header{
+    .accordion-header {
 
-        overflow:hidden;
-
-    }
-    .drag-handle{
-
-        width:55px;
-
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
-
-        cursor:grab;
-        user-select:none;
-    }
-    .faq-header{
-
-        display:flex;
-
-        align-items:stretch;
+        overflow: hidden;
 
     }
 
+    .drag-handle {
 
-    .drag-handle:active{
+        width: 55px;
 
-        cursor:grabbing;
+        display: flex;
 
-    }
-    .faq-ghost{
+        justify-content: center;
 
-        opacity:.4;
+        align-items: center;
 
-    }
-
-    .faq-chosen{
-
-        background:#eef7ff;
-
+        cursor: grab;
+        user-select: none;
     }
 
-    .faq-drag{
+    .faq-header {
 
-        box-shadow:0 10px 25px rgba(0,0,0,.2);
+        display: flex;
+
+        align-items: stretch;
+
+    }
+
+    .drag-handle:active {
+
+        cursor: grabbing;
+
+    }
+
+    .faq-ghost {
+
+        opacity: .4;
+
+    }
+
+    .faq-chosen {
+
+        background: #eef7ff;
+
+    }
+
+    .faq-drag {
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
 
     }
 
@@ -55,15 +57,45 @@
 
         align-items: stretch;
     }
-    .accordion-button{
-        background:#E7F1FF;
-        padding:16px 0px  16px 10px;
+
+    .accordion-button {
+        background: #E7F1FF;
+        padding: 16px 0px 16px 10px;
     }
-    .drag-handle : hover{
+
+    .drag-handle:hover {
         background: #E7F1FF;
 
     }
+
+    .aNonLink {
+        text-decoration: none;
+        color: white;
+    }
+
+    .cancel-btn:hover {
+        background: rgb(75, 75, 75);
+    }
+
+
 </style>
+<?php
+$faqs = $data['faqs'] ?? [];
+if (isset($_SESSION['alert-resultOperation'])) { ?>
+    <script>
+        myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+            <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+            <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
+        );
+
+    </script>
+
+    <?php
+    unset($_SESSION['alert-resultOperation']);
+    unset($_SESSION['operation']);
+}
+?>
+
 <div class="admin-layout">
 
     <?php require "views/layout/adminPanel/sidebar.php"; ?>
@@ -73,221 +105,82 @@
         <div class="container-fluid">
 
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <div>
-            <h3 class="mb-1 fw-bold">
-                سوالات متداول
-            </h3>
+                <div>
+                    <h3 class="mb-1 fw-bold">
+                        سوالات متداول
+                    </h3>
 
-            <p class="text-muted mb-0">
-                مدیریت سوالات متداول سایت
-            </p>
-        </div>
-
-        <button
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#addFaqModal">
-
-            <i class="bi bi-plus-circle me-1"></i>
-
-            افزودن سوال
-
-        </button>
-
-    </div>
-
-
-
-    <!-- Filters -->
-
-    <div class="card shadow-sm mb-4">
-
-        <div class="card-body">
-
-            <div class="row g-3">
-
-                <div class="col-lg-8">
-
-                    <div class="position-relative">
-
-                        <input
-                            type="text"
-                            class="form-control pe-5"
-                            placeholder="جستجو...">
-
-                        <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-secondary"></i>
-
-                    </div>
-
+                    <p class="text-muted mb-0">
+                        مدیریت سوالات متداول سایت
+                    </p>
                 </div>
+                <div class="d-flex gap-2">
 
-                <div class="col-lg-4">
+                    <button type="button" class="btn btn-primary" id="sort-faqs"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-html="true"
+                            data-bs-title="جهت مرتب سازی سوالات را با کمک آیکن
+                            <i class='bi bi-justify'></i>
+                             جابجا کنید و در انتها دکمه ذخیره ترتیب را بزنید."
+                    >
+                        <i class="bi bi-sort-numeric-down me-1"></i>
 
-                    <select class="form-select">
-
-                        <option>همه وضعیت ها</option>
-
-                        <option>فعال</option>
-
-                        <option>غیرفعال</option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-
-    <!-- FAQ LIST -->
-
-    <div
-        class="accordion"
-        id="faqAccordion">
-
-
-
-        <!-- item -->
-
-        <div class="accordion-item shadow-sm mb-3" data-id="15">
-
-            <h2 class="accordion-header">
-
-                <div class="d-flex align-items-center">
-
-
-                    <!-- Accordion -->
-                    <button
-                        class="accordion-button collapsed"
-
-                        data-bs-toggle="collapse"
-
-                        data-bs-target="#faq1">
-
-                        <i class="bi bi bi-justify drag-handle"></i>
-
-
-                        چگونه سفارش ثبت کنم؟
-
+                        مرتب سازی
                     </button>
 
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addFaqModal">
+
+                        <i class="bi bi-plus-circle me-1"></i>
+
+                        افزودن سوال
+
+                    </button>
                 </div>
-
-            </h2>
-
-            <div
-
-                id="faq1"
-
-                class="accordion-collapse collapse"
-
-                data-bs-parent="#faqAccordion">
-
-                <div class="accordion-body">
-
-                    <p class="mb-4">
-
-                        ابتدا فرم ثبت درخواست را تکمیل کرده و سپس اطلاعات لازم را وارد نمایید.
-                        پس از بررسی، کارشناسان با شما تماس خواهند گرفت.
-
-                    </p>
+            </div>
 
 
+            <!-- Filters -->
 
-                    <hr>
+            <div class="card shadow-sm mb-4">
 
+                <div class="card-body">
 
+                    <div class="row g-3">
 
-                    <div class="row align-items-center gy-3">
+                        <div class="col-lg-8">
+                            <form id="faqSearchForm">
+                                <div class="position-relative">
 
-                        <div class="col-md-4 col-sm-6">
-
-                            <strong>
-
-                                وضعیت
-
-                            </strong>
-
-                            <br>
-
-                            <div class="form-check form-switch mt-2">
-
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    checked>
-
-                            </div>
-
+                                    <input
+                                            type="search" id="faqSearch" name="search"
+                                            class="form-control pe-5"
+                                            placeholder="جستجو...">
+                                    <button
+                                            type="submit"
+                                            class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0">
+                                        <i class="bi bi-search text-secondary"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
 
+                        <div class="col-lg-4">
 
+                            <select class="form-select" id="statusFilter">
 
-                        <div class="col-md-4 col-sm-6">
+                                <option value="all">همه وضعیت ها</option>
 
-                            <strong>
+                                <option value="active">فعال</option>
 
-                                آخرین بروزرسانی
+                                <option value="nonActive">غیرفعال</option>
 
-                            </strong>
-
-                            <br>
-
-                            <span class="text-muted">
-
-                                1405/05/11
-
-                            </span>
-
-                        </div>
-
-
-
-                        <div class="col-md-4">
-
-                            <div
-                                class="
-                                    d-flex
-                                    flex-wrap
-                                    justify-content-lg-end
-                                    gap-2">
-
-                                <button
-                                    class="btn btn-warning"
-
-                                    data-bs-toggle="modal"
-
-                                    data-bs-target="#editFaqModal">
-                                    ویرایش
-
-                                    <i class="bi bi-pen"></i>
-
-
-                                </button>
-
-
-
-                                <button
-                                    class="btn btn-danger"
-
-                                    data-bs-toggle="modal"
-
-                                    data-bs-target="#deleteFaqModal">
-
-                                    حذف
-                                    <i class="bi bi-trash"></i>
-
-                                </button>
-
-                            </div>
+                            </select>
 
                         </div>
 
@@ -297,178 +190,198 @@
 
             </div>
 
-        </div>
+
+            <!-- FAQ LIST -->
+            <form action="<?= URL ?>admin/faqs/saveSort"
+                  method="post" id="sortForm">
+                <input type="hidden" name="sortData" id="sortData">
+
+                <div
+                        class="accordion"
+                        id="faqAccordion">
+
+                    <?php
+                    foreach ($faqs as $faq) {
+                        ?>
+                        <!-- item -->
+
+                        <div class="accordion-item shadow-sm mb-3"
+                             data-status="<?= $faq['is_active'] ? 'active' : 'nonActive' ?>"
+                             data-id="<?= $faq['id'] ?>">
+
+                            <h2 class="accordion-header">
+
+                                <div class="d-flex align-items-center">
 
 
+                                    <!-- Accordion -->
+                                    <button type="button"
+                                            class="accordion-button collapsed"
+
+                                            data-bs-toggle="collapse"
+
+                                            data-bs-target="#faq-<?= $faq['id'] ?>">
+
+                                        <i class="bi bi bi-justify drag-handle"></i>
+
+                                        <?= htmlspecialchars($faq['question'] ?? '') ?>
+
+                                    </button>
+
+                                </div>
+
+                            </h2>
+
+                            <div
+
+                                    id="faq-<?= $faq['id'] ?>"
+                                    data-bs-parent="#faqAccordion"
+                                    class="accordion-collapse collapse"
+
+                            >
+
+                                <div class="accordion-body">
+
+                                    <p class="mb-4">
+                                        <?= htmlspecialchars($faq['answer'] ?? '') ?>
+                                    </p>
 
 
-
-        <!-- item -->
-
-        <div class="accordion-item shadow-sm mb-3" data-id="16">
-
-            <h2 class="accordion-header">
-
-                <button
-                    class="accordion-button collapsed"
-
-                    data-bs-toggle="collapse"
-
-                    data-bs-target="#faq2">
-
-                    <i class="bi bi bi-justify drag-handle"></i>
+                                    <hr>
 
 
-                    هزینه پروژه چگونه محاسبه می‌شود؟
+                                    <div class="row align-items-center gy-3">
 
-                </button>
+                                        <div class="col-md-4 col-sm-6">
 
-            </h2>
+                                            <strong>
 
-            <div
+                                                وضعیت
 
-                id="faq2"
+                                            </strong>
 
-                class="accordion-collapse collapse"
+                                            <br>
 
-                data-bs-parent="#faqAccordion">
+                                            <div class="form-check form-switch mt-2">
 
-                <div class="accordion-body">
+                                                <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                    <?= (($faq['is_active'] ?? '') == 1) ? 'checked' : '' ?>
+                                                        data-id="<?= $faq['id'] ?>"
+                                                >
 
-                    هزینه هر پروژه بر اساس زمان، حجم کار و تخصص مورد نیاز تعیین می‌شود.
+                                            </div>
 
-                    <hr>
-
-                    <div class="row align-items-center gy-3">
-
-                        <div class="col-md-4 col-sm-6">
-
-                            <strong>
-
-                                وضعیت
-
-                            </strong>
-
-                            <br>
-
-                            <div class="form-check form-switch mt-2">
-
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox">
-
-                            </div>
-
-                        </div>
+                                        </div>
 
 
+                                        <div class="col-md-4 col-sm-6">
 
-                        <div class="col-md-4 col-sm-6">
+                                            <strong>
 
-                            <strong>
+                                                آخرین بروزرسانی
 
-                                آخرین بروزرسانی
+                                            </strong>
 
-                            </strong>
+                                            <br>
 
-                            <br>
+                                            <span class="text-muted">
 
-                            <span class="text-muted">
-
-                                1405/05/09
+                                <?= htmlspecialchars(
+                                    Helper::jaliliDate(
+                                        Helper::MiladiTojalili(
+                                            date('Y-m-d', strtotime($faq['updated_at'] ?? ''))
+                                        )
+                                    )) ?>
 
                             </span>
 
-                        </div>
+                                        </div>
 
 
+                                        <div class="col-md-4">
 
-                        <div class="col-md-4">
-
-                            <div
-                                class="
+                                            <div
+                                                    class="
                                     d-flex
                                     flex-wrap
                                     justify-content-lg-end
                                     gap-2">
 
-                                <button
-                                    class="btn btn-warning"
-
-                                    data-bs-toggle="modal"
-
-                                    data-bs-target="#editFaqModal">
-
-                                    ویرایش
-                                    <i class="bi bi-pen"></i>
-                                </button>
+                                                <button type="button"
+                                                        data-id="<?= $faq['id'] ?>"
+                                                        data-question="<?= htmlspecialchars($faq['question'] ?? '', ENT_QUOTES) ?>"
+                                                        data-answer="<?= htmlspecialchars($faq['answer'] ?? '', ENT_QUOTES) ?>"
 
 
+                                                        class="btn btn-warning edit-faq-btn"
 
-                                <button
-                                    class="btn btn-danger"
+                                                        data-bs-toggle="modal"
 
-                                    data-bs-toggle="modal"
+                                                        data-bs-target="#editFaqModal">
+                                                    ویرایش
 
-                                    data-bs-target="#deleteFaqModal">
+                                                    <i class="bi bi-pen"></i>
 
-                                    حذف
-                                    <i class="bi bi-trash"></i>
-                                </button>
+
+                                                </button>
+
+
+                                                <button data-id="<?= $faq['id'] ?>" type="button"
+                                                        class="btn btn-danger delete-faq-btn"
+
+                                                        data-bs-toggle="modal"
+
+                                                        data-bs-target="#deleteFaqModal">
+
+                                                    حذف
+                                                    <i class="bi bi-trash"></i>
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </div>
+                        <?php
+                    }
+                    ?>
+
+
+                </div>
+
+
+                <!-- Footer Buttons -->
+
+                <div class="position-sticky  bottom-0 bg-white border-top py-3 mt-4">
+
+                    <div class="justify-content-end d-flex gap-2">
+
+
+                        <a href="<?= URL ?>admin/faqs"
+                           class="aNonLink btn btn-secondary cancel-btn">
+                            انصراف
+                        </a>
+
+                        <button class="btn btn-success" type="submit">
+
+                            ذخیره ترتیب سوالات
+
+                        </button>
 
                     </div>
 
                 </div>
-
-            </div>
-
+            </form>
         </div>
-
-
-
-
-    </div>
-
-
-
-    <!-- Footer Buttons -->
-
-    <div
-        class="
-            position-sticky
-            bottom-0
-            bg-white
-            border-top
-            py-3
-            mt-4">
-
-        <div
-            class="
-                d-flex
-                justify-content-end
-                gap-2">
-
-            <button class="btn btn-main-cancel">
-
-                انصراف
-
-            </button>
-
-            <button class="btn btn-success">
-
-                ذخیره تغییرات
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
 
     </main>
 
@@ -477,16 +390,17 @@
 <!-- Add FAQ Modal -->
 
 <div
-    class="modal fade"
-    id="addFaqModal"
-    tabindex="-1"
-    aria-hidden="true">
+        class="modal fade faq-modal"
+        id="addFaqModal"
+        tabindex="-1"
+        aria-hidden="true">
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
         <div class="modal-content">
 
-            <form>
+            <form id="addForm" novalidate data-validate
+                  action="<?= URL ?>admin/faqs/add" method="post">
 
                 <div class="modal-header">
 
@@ -497,9 +411,9 @@
                     </h5>
 
                     <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
                     </button>
 
                 </div>
@@ -515,12 +429,18 @@
 
                         </label>
 
-                        <input
-                            type="text"
-                            class="form-control">
+                        <input data-required="متن سوال"
+                               data-action="پر کنید"
+                               type="text" name="question"
+                               class="form-control">
+                        <?php if (isset($errors['add']['question'])): ?>
 
+                            <div class="form-error general-form-error">
+                                <?= $errors['add']['question'] ?>
+                            </div>
+
+                        <?php endif; ?>
                     </div>
-
 
                     <div class="mb-3">
 
@@ -530,9 +450,17 @@
 
                         </label>
 
-                        <textarea
-                            rows="6"
-                            class="form-control"></textarea>
+                        <textarea name="answer" data-required="پاسخ سوال"
+                                  data-action="پر کنید"
+                                  rows="6"
+                                  class="form-control"></textarea>
+                        <?php if (isset($errors['add']['answer'])): ?>
+
+                            <div class="form-error general-form-error">
+                                <?= $errors['add']['answer'] ?>
+                            </div>
+
+                        <?php endif; ?>
 
                     </div>
 
@@ -545,9 +473,9 @@
 
                         </label>
 
-                        <select class="form-select">
+                        <select class="form-select" name="is_active">
 
-                            <option value="1">
+                            <option value="1" selected>
 
                                 فعال
 
@@ -568,9 +496,9 @@
 
                 <div class="modal-footer">
 
-                    <button
-                        class="btn btn-main-cancel"
-                        data-bs-dismiss="modal">
+                    <button type="button"
+                            class="btn btn-main-cancel"
+                            data-bs-dismiss="modal">
 
                         انصراف
 
@@ -578,8 +506,8 @@
 
 
                     <button
-                        type="submit"
-                        class="btn btn-primary">
+                            type="submit"
+                            class="btn btn-primary">
 
                         ذخیره
 
@@ -598,16 +526,20 @@
 <!-- Edit FAQ Modal -->
 
 <div
-    class="modal fade"
-    id="editFaqModal"
-    tabindex="-1"
-    aria-hidden="true">
+        class="modal fade faq-modal"
+        id="editFaqModal"
+        tabindex="-1"
+        aria-hidden="true">
 
     <div class="modal-dialog modal-lg modal-dialog-centered">
 
         <div class="modal-content">
 
-            <form>
+            <form id="editForm" novalidate data-validate
+                  action="<?= URL ?>admin/faqs/edit" method="post">
+
+                <input name="id" type="hidden"
+                       id="editFaqId">
 
                 <div class="modal-header">
 
@@ -618,13 +550,12 @@
                     </h5>
 
                     <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal">
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
                     </button>
 
                 </div>
-
 
 
                 <div class="modal-body">
@@ -637,13 +568,21 @@
 
                         </label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            value="چگونه سفارش ثبت کنم؟">
+                        <input data-required="متن سوال"
+                               data-action="پر کنید"
+                               id="editFaqQuestion"
+                               type="text" name="question"
+                               class="form-control"
+                        >
 
                     </div>
+                    <?php if (isset($errors['edit']['question'])): ?>
 
+                        <div class="form-error general-form-error">
+                            <?= $errors['edit']['question'] ?>
+                        </div>
+
+                    <?php endif; ?>
 
                     <div>
 
@@ -653,33 +592,37 @@
 
                         </label>
 
-                        <textarea
-                            rows="6"
-                            class="form-control">
+                        <textarea data-required="پاسخ سوال"
+                                  data-action="پر کنید"
+                                  id="editFaqAnswer"
+                                  rows="6" name="answer"
+                                  class="form-control"></textarea>
 
-ابتدا فرم ثبت درخواست را تکمیل نمایید...
+                        <?php if (isset($errors['edit']['answer'])): ?>
 
-                        </textarea>
+                            <div class="form-error general-form-error">
+                                <?= $errors['edit']['answer'] ?>
+                            </div>
 
+                        <?php endif; ?>
                     </div>
 
                 </div>
 
 
-
                 <div class="modal-footer">
 
-                    <button
-                        class="btn btn-main-cancel"
-                        data-bs-dismiss="modal">
+                    <button type="button"
+                            class="btn btn-main-cancel"
+                            data-bs-dismiss="modal">
 
                         انصراف
 
                     </button>
 
 
-                    <button
-                        class="btn btn-warning">
+                    <button type="submit"
+                            class="btn btn-warning">
 
                         ذخیره تغییرات
 
@@ -698,10 +641,10 @@
 <!-- Delete FAQ Modal -->
 
 <div
-    class="modal fade"
-    id="deleteFaqModal"
-    tabindex="-1"
-    aria-hidden="true">
+        class="modal fade"
+        id="deleteFaqModal"
+        tabindex="-1"
+        aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-centered">
 
@@ -716,18 +659,17 @@
                 </h5>
 
                 <button
-                    class="btn-close"
-                    data-bs-dismiss="modal">
+                        class="btn-close" type="button"
+                        data-bs-dismiss="modal">
                 </button>
 
             </div>
 
 
-
             <div class="modal-body text-center">
 
                 <i
-                    class="fa-solid fa-circle-exclamation
+                        class="fa-solid fa-circle-exclamation
                         text-danger
                         fs-1
                         mb-3">
@@ -748,23 +690,22 @@
             </div>
 
 
-
             <div class="modal-footer justify-content-center">
 
-                <button
-                    class="btn btn-main-cancel"
-                    data-bs-dismiss="modal">
-
+                <button type="button"
+                        class="btn btn-secondary cancel-btn"
+                        data-bs-dismiss="modal">
                     انصراف
 
                 </button>
 
 
                 <button
-                    class="btn btn-danger">
-
-                    حذف
-
+                        type="button"
+                        class="btn btn-danger">
+                    <a id="target" class="aNonLink">
+                        حذف
+                    </a>
                 </button>
 
             </div>
@@ -776,33 +717,197 @@
 </div>
 
 <script>
-    const faqList = document.getElementById("faqAccordion");
+    /*==================================================
+SORT
+==================================================*/
 
-    new Sortable(faqList, {
+    document.addEventListener("DOMContentLoaded", function () {
 
-        animation: 200,
+        const faqList = document.getElementById("faqAccordion");
 
-        handle: ".drag-handle",
+        new Sortable(faqList, {
 
-        draggable: ".accordion-item",
+            animation: 200,
 
-        ghostClass: "faq-ghost",
+            handle: ".drag-handle",
 
-        chosenClass: "faq-chosen",
+            draggable: ".accordion-item",
 
-        dragClass: "faq-drag"
+            ghostClass: "faq-ghost",
+
+            chosenClass: "faq-chosen",
+
+            dragClass: "faq-drag"
+
+        });
+        document.getElementById("sortForm").addEventListener("submit", function () {
+            let result = [];
+
+            document.querySelectorAll(".accordion-item").forEach(function (item, index) {
+
+                result.push({
+                    id: item.dataset.id,
+                    sort_order: index + 1
+                });
+            });
+
+            document.getElementById("sortData").value = JSON.stringify(result);
+        });
 
     });
 
-    const order = [];
+    const sortFaqs = document.getElementById('sort-faqs');
+    const sortTooltip = new bootstrap.Tooltip(sortFaqs, {
+        boundary: document.body
+    });
 
-    document
-        .querySelectorAll(".accordion-item")
-        .forEach(item=>{
+    /*==================================================
+   APPLY BOTH OF SEARCH AND STATUS
+   ==================================================*/
+    function applyFaqFilters() {
 
-            order.push(item.dataset.id);
+        const statusValue =
+            document.getElementById('statusFilter').value;
+
+        const searchValue =
+            normalizePersian(
+                document.getElementById('faqSearch').value
+            );
+
+        document.querySelectorAll('#faqAccordion .accordion-item')
+            .forEach(item => {
+
+                const statusMatch =
+                    statusValue === 'all' ||
+                    item.dataset.status === statusValue;
+
+                const text =
+                    normalizePersian(item.textContent);
+
+                const searchMatch =
+                    text.includes(searchValue);
+
+                item.style.display =
+                    statusMatch && searchMatch
+                        ? ''
+                        : 'none';
+            });
+    }
+
+    /*==================================================
+  STATUS FILTER
+  ==================================================*/
+    const statusFilter = document.querySelector('#statusFilter');
+
+    statusFilter.addEventListener('change', applyFaqFilters);
+    /*==================================================
+     SEARCH
+     ==================================================*/
+
+    document.getElementById('faqSearchForm')
+        .addEventListener('submit', function (e) {
+
+            e.preventDefault();
+
+            applyFaqFilters();
+        });
+
+    /*==================================================
+ADD/EDIT/DELETE FAQ
+==================================================*/
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll(
+            '#addForm, #editForm'
+        ).forEach(form => {
+
+            form.addEventListener('submit', function (e) {
+
+                if (!validateFaqForm(form)) {
+                    e.preventDefault();
+                }
+
+            });
 
         });
 
-    console.log(order);
+    });
+
+    $(document).on('click', '.edit-faq-btn', function () {
+
+        document.getElementById('editFaqId').value =
+            this.dataset.id;
+
+        document.getElementById('editFaqQuestion').value =
+            this.dataset.question;
+
+        document.getElementById('editFaqAnswer').value =
+            this.dataset.answer;
+
+    });
+
+    $(document).on('show.bs.modal', '.faq-modal', function () {
+
+        this.querySelectorAll('.form-error')
+            .forEach(error => error.remove());
+
+        this.querySelectorAll('.is-invalid')
+            .forEach(input => input.classList.remove('is-invalid'));
+
+    });
+
+    $(document).on('show.bs.modal', '#addFaqModal', function () {
+
+        document.getElementById('addForm').reset();
+
+    });
+
+    $(document).on('click', '.delete-faq-btn', function () {
+        document.getElementById('target').href =
+            "<?= URL ?>admin/faqs/delete/" + this.dataset.id;
+
+    });
+
+    /*==================================================
+CHANGING STATUS(IS_ACTIVE) of FAQS
+==================================================*/
+    $(document).on('change', '.form-check-input', function () {
+
+        const checkbox = this;
+        const id = checkbox.dataset.id;
+        const value = checkbox.checked ? 1 : 0;
+
+        $.ajax({
+            url: "<?= URL ?>admin/faqs/changeActiveState/" + id,
+            type: "POST",
+            dataType: "text",//'text or json
+            data: {value: value},
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                console.error(jqXHR.status, errorThrown);
+                // برگرداندن checkbox به وضعیت قبلی
+                checkbox.checked = !checkbox.checked;
+                myAlert.error(
+                    'خطا',
+                    'تغییر وضعیت با خطا مواجه شد .دوباره تلاش کنید.'
+                );
+
+            },
+            success: function (data) {
+                const item = checkbox.closest('.accordion-item');
+
+                item.dataset.status =
+                    value === 1 ? 'active' : 'nonActive';
+
+                applyFaqFilters();
+            },
+
+        });
+
+    });
 </script>

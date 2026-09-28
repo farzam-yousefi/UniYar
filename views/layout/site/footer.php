@@ -29,7 +29,7 @@
 
                     <li><a href="<?= URL ?>portfolio">نمونه کارها</a></li>
 
-                    <li><a href="<?= URL ?>fag">سوالات متداول</a></li>
+                    <li><a href="<?= URL ?>faq">سوالات متداول</a></li>
 
                     <li><a href="<?= URL ?>about">درباره ما</a></li>
 

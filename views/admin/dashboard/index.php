@@ -453,22 +453,22 @@ Dashboard
 
                                 <td>
 
-                                    <?=htmlspecialchars($order['tracking_code'])?>
+                                    <?=htmlspecialchars($order['tracking_code'] ?? '')?>
 
                                 </td>
 
                                 <td>
 
-                                    <?=htmlspecialchars($order['full_name'])?>
+                                    <?=htmlspecialchars($order['full_name'] ?? '')?>
 
 
                                 </td>
 
                                 <td>
-                                    <?=htmlspecialchars(constant($order['service_type'])) ?>
+                                    <?=htmlspecialchars(constant($order['service_type'] ?? '')) ?>
 
                                     <?php if (!empty($order['project_type'])): ?>
-                                        - <?=htmlspecialchars(constant($order['project_type'])) ?>
+                                        - <?=htmlspecialchars(constant($order['project_type'] ?? '')) ?>
                                     <?php endif; ?>
                                 </td>
 
@@ -476,7 +476,7 @@ Dashboard
 
                             <span class="badge <?=$badgeClass?>">
 
-                                <?=htmlspecialchars($order['status'])?>
+                                <?=htmlspecialchars($order['status'] ?? '')?>
 
                             </span>
 
@@ -486,7 +486,7 @@ Dashboard
                                     <?= htmlspecialchars(
                                             Helper::jaliliDate(
                                         Helper::MiladiTojalili(
-                                            date('Y-m-d', strtotime($order['submission_date']))
+                                            date('Y-m-d', strtotime($order['submission_date'] ?? ''))
                                         )
                                     )) ?>
 

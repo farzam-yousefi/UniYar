@@ -120,7 +120,7 @@ Tracking Request Modal
 
                         <input type="hidden"
                                name="return_url"
-                               value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
+                               value="<?= htmlspecialchars($_SERVER['REQUEST_URI'] ?? '') ?>">
 
                         <div class="tracking-icon">
 
