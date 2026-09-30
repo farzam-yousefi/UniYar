@@ -114,6 +114,22 @@
 
     }
 </style>
+<?php
+if (isset($_SESSION['alert-resultOperation'])) { ?>
+    <script>
+        myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+            <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+            <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
+        );
+
+    </script>
+
+    <?php
+    unset($_SESSION['alert-resultOperation']);
+    unset($_SESSION['operation']);
+}
+
+?>
 <div class="admin-layout">
 
     <?php require "views/layout/adminPanel/sidebar.php"; ?>
@@ -211,3 +227,11 @@
     </main>
 
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const textareas = document.querySelectorAll('textarea');
+
+        textareas.forEach(textarea =>focusTextarea(textarea) )
+
+    });
+</script>

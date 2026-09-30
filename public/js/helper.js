@@ -45,3 +45,14 @@ function normalizePersian(text) {
         // =========================
         .trim();
 }
+
+function focusTextarea(textarea){
+
+
+    textarea.addEventListener('click', function () {
+
+        this.setSelectionRange(0, 0);
+
+    });
+
+}

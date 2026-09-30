@@ -31,5 +31,6 @@
     <script src="<?=URL?>public/js/alerts.js"></script>
 
     <script src="<?= URL ?>public/js/loadingOverlay.js"></script>
+    <script src="<?= URL ?>public/js/helper.js"></script>
     <link rel="stylesheet" href="<?= URL ?>public/css/loadingOverlay.css">
 

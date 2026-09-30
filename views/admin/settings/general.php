@@ -1,3 +1,12 @@
+
+<?php
+$settingsInfo = $data['settings'] ?? [];
+$settings = [];
+foreach ($settingsInfo as $row) {
+    $settings[$row['setting_key']] = $row['setting_value'];
+}
+?>
+
 <div class="tab-pane fade show active"
      id="general">
 
@@ -38,15 +47,13 @@
                             </label>
 
                             <input
+                                    name="phone"
+                                    type="text"
+                                    minlength="11" maxlength="11"
+                                    class="form-control-custom"
 
-                                type="text"
-
-                                class="form-control-custom"
-
-                                name="phone"
-
-                                value="<?= $settings['phone'] ?? '' ?>">
-
+                                    value="<?= htmlspecialchars($settings['phone'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
                         </div>
 
                         <div class="mb-4">
@@ -58,14 +65,13 @@
                             </label>
 
                             <input
+                                    name="email"
 
-                                type="email"
+                                    type="email"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                name="email"
-
-                                value="<?= $settings['email'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
                         </div>
 
@@ -77,13 +83,13 @@
 
                             </label>
 
-                            <textarea
+                            <textarea name="address"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                rows="5"
+                                    rows="5"
 
-                                name="address"><?= $settings['address'] ?? '' ?></textarea>
+                                    ><?= htmlspecialchars($settings['address'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
 
                         </div>
 
@@ -124,15 +130,15 @@
 
                             <input
 
-                                type="text"
+                                    type="text"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                placeholder="uniyar"
+                                    placeholder="uniyar"
 
-                                name="instagram"
+                                    name="instagram"
 
-                                value="<?= $settings['instagram'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['instagram'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
                         </div>
 
@@ -146,15 +152,15 @@
 
                             <input
 
-                                type="text"
+                                    type="text"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                placeholder="uniyar"
+                                    placeholder="uniyar"
 
-                                name="telegram"
+                                    name="telegram"
 
-                                value="<?= $settings['telegram'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['telegram'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
                         </div>
 
@@ -166,17 +172,17 @@
 
                             </label>
 
-                            <input
+                            <input name="whatsapp"
 
-                                type="text"
+                                    type="text"
 
-                                class="form-control-custom"
+                                   minlength="11" maxlength="11"
+                                    class="form-control-custom"
 
-                                placeholder="98912xxxxxxx"
+                                    placeholder="98912xxxxxxx"
 
-                                name="whatsapp"
-
-                                value="<?= $settings['whatsapp'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['whatsapp'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
 
                         </div>
 
@@ -188,17 +194,16 @@
 
                             </label>
 
-                            <input
+                            <input name="eitaa"
 
-                                type="text"
+                                    type="text"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                placeholder="uniyar"
+                                    placeholder="uniyar"
 
-                                name="eitaa"
-
-                                value="<?= $settings['eitaa'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['eitaa'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
 
                         </div>
 
@@ -210,17 +215,16 @@
 
                             </label>
 
-                            <input
+                            <input name="bale"
 
-                                type="text"
+                                    type="text"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                placeholder="uniyar"
+                                    placeholder="uniyar"
 
-                                name="bale"
-
-                                value="<?= $settings['bale'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['bale'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
 
                         </div>
 
@@ -234,15 +238,16 @@
 
                             <input
 
-                                type="url"
+                                    type="url"
 
-                                class="form-control-custom"
+                                    class="form-control-custom"
 
-                                placeholder="https://linkedin.com/in/..."
+                                    placeholder="https://linkedin.com/in/..."
 
-                                name="linkedin"
+                                    name="linkedin"
 
-                                value="<?= $settings['linkedin'] ?? '' ?>">
+                                    value="<?= htmlspecialchars($settings['linkedin'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
 
                         </div>
 
@@ -263,9 +268,9 @@
 
             <button
 
-                type="submit"
+                    type="submit"
 
-                class="btn btn-main px-5">
+                    class="btn btn-main px-5">
 
                 <i class="bi bi-check-circle ms-2"></i>
 

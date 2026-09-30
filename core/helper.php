@@ -1227,6 +1227,37 @@ GENERAL
     }
 
 
+    public static function socialUrl($type, $value)
+    {
+        $value = trim($value);
 
+        if ($value === '') {
+            return '';
+        }
+
+        switch ($type) {
+
+            case 'instagram':
+                return 'https://instagram.com/' . ltrim($value, '@');
+
+            case 'telegram':
+                return 'https://t.me/' . ltrim($value, '@');
+
+            case 'eitaa':
+                return 'https://eitaa.com/' . ltrim($value, '@');
+
+            case 'bale':
+                return 'https://ble.ir/' . ltrim($value, '@');
+
+            case 'whatsapp':
+                return 'https://wa.me/' . preg_replace('/\D/', '', $value);
+
+            case 'linkedin':
+                return $value;
+
+            default:
+                return '';
+        }
+    }
 }
 
