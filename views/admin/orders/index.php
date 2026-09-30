@@ -532,7 +532,7 @@ $data['totalPages'] = max(1, ceil($data['totalCount'] / ItemsPerPage));
                         $totalPages = max(1, (int)ceil($data['totalCount'] / ItemsPerPage));
                         $currentPage = 1;
                         $windowSize = PaginationWindowSize;
-                        require "views/pagination.php";
+                        require "views/shared/pagination.php";
                         ?>
                     </div>
 

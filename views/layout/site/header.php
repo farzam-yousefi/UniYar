@@ -94,6 +94,7 @@ if ($openTrackingModal): ?>
         </div>
     </nav>
 </header>
+<?php include ROOT_PATH . '/views/shared/loadingOverlay.php'; ?>
 
 <!--==================================
 Tracking Request Modal

@@ -168,6 +168,7 @@ orders.title as title,tracking_code,
                 $customerId = $customer['id'];
             else {
                 self::$conn->rollBack();
+                //remove selected files by the customer
                 if (!empty($files)) {
                     $oldDirRelative = 'public/files/orders/' .
                         $post['full_name'] . '_' . $post ['title'];

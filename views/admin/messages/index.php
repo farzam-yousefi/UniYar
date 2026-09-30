@@ -81,33 +81,35 @@ Messages Header
 
     }
 
-    .filter-unread.active{
+    .filter-new.active {
 
-        background:#EF4444!important;
+        background: rgb(13, 202, 240);
+    !important;
 
-        border-color:#EF4444!important;
+        border-color: rgb(13, 202, 240);
+    !important;
 
-        color:#fff!important;
-
-    }
-
-    .filter-waiting.active{
-
-        background:#F59E0B!important;
-
-        border-color:#F59E0B!important;
-
-        color:#fff!important;
+        color: #fff !important;
 
     }
 
-    .filter-answered.active{
+    .filter-expecting.active {
 
-        background:#18A66E!important;
+        background: #F59E0B !important;
 
-        border-color:#18A66E!important;
+        border-color: #F59E0B !important;
 
-        color:#fff!important;
+        color: #fff !important;
+
+    }
+
+    .filter-replied.active {
+
+        background: #18A66E !important;
+
+        border-color: #18A66E !important;
+
+        color: #fff !important;
 
     }
 
@@ -216,13 +218,16 @@ Messages Header
     .bg-warning {
 
         background: #F59E0B !important;
+        color: white;
+    !important;
 
     }
 
     .bg-success {
 
         background: #18A66E !important;
-
+        color: white;
+    !important;
     }
 
     /*==========================================
@@ -261,8 +266,8 @@ Messages Header
 
     }
 
-    .status-span{
-        width:100px;
+    .message-status {
+        width: 100px;
     }
 
     /*==========================================
@@ -390,6 +395,22 @@ Messages Header
 
     }
 </style>
+<pre>
+<?php
+$totalCount = $data['totalCount'] ?? 0;
+
+if (!empty($data['openResponseModal'])): ?>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    new bootstrap.Modal(
+        document.getElementById('responseModal')
+    ).show();
+});
+</script>
+<?php endif;
+?>
+</pre>
 <div class="admin-layout">
 
     <?php require "views/layout/adminPanel/sidebar.php"; ?>
@@ -439,7 +460,7 @@ Messages Header
 
                     <h3>
 
-                        58
+                        <?= $totalCount ?>
 
                     </h3>
 
@@ -450,18 +471,34 @@ Messages Header
 
                     <span>
 
-                        خوانده نشده
+                        جدید(خوانده نشده)
 
                     </span>
 
-                    <h3>
+                    <h3 id="newCount">
 
-                        7
+                        <?= $data['newCount'] ?? '' ?>
 
                     </h3>
 
                 </div>
 
+
+                <div class="stat-card">
+
+                    <span>
+
+                        در انتظار پاسخ
+
+                    </span>
+
+                    <h3 id="expectingCount">
+
+                        <?= $data['expectingCount'] ?? '' ?>
+
+                    </h3>
+
+                </div>
 
                 <div class="stat-card">
 
@@ -471,9 +508,9 @@ Messages Header
 
                     </span>
 
-                    <h3>
+                    <h3 id="repliedCount">
 
-                        33
+                        <?= $data['repliedCount'] ?? '' ?>
 
                     </h3>
 
@@ -492,7 +529,7 @@ Messages Header
 
                     <div class="messages-filter">
 
-                        <button
+                        <button type="button"
 
                                 class="filter-btn active"
 
@@ -502,31 +539,31 @@ Messages Header
 
                         </button>
 
-                        <button
+                        <button type="button"
 
-                                class="filter-btn filter-unread"
+                                class="filter-btn filter-new"
 
-                                data-filter="new">
+                                data-filter="NEW">
 
-                            خوانده نشده
-
-                        </button>
-
-                        <button
-
-                                class="filter-btn filter-waiting"
-
-                                data-filter="waiting">
-
-                            بدون پاسخ
+                            جدید(خوانده نشده)
 
                         </button>
 
-                        <button
+                        <button type="button"
 
-                                class="filter-btn filter-answered"
+                                class="filter-btn filter-expecting"
 
-                                data-filter="answered">
+                                data-filter="EXPECTING">
+
+                            درانتظار پاسخ
+
+                        </button>
+
+                        <button type="button"
+
+                                class="filter-btn filter-replied"
+
+                                data-filter="REPLIED">
 
                             پاسخ داده شده
 
@@ -543,15 +580,15 @@ Messages Header
 
                         </label>
 
-                        <select class="form-control-custom">
+                        <select class="form-control-custom" id="message-sort">
 
-                            <option>
+                            <option value="newest">
 
                                 جدیدترین
 
                             </option>
 
-                            <option>
+                            <option value="oldest">
 
                                 قدیمی‌ترین
 
@@ -620,293 +657,24 @@ Messages Header
 
                         </thead>
 
-                        <tbody>
+                        <tbody id="messageTableBody">
 
                         <!--========================-->
-
-                        <tr class="message-row"
-
-                            data-status="new"
-
-                            data-name="علی رضایی"
-
-                            data-email="ali@gmail.com"
-
-                            data-phone="09121234567"
-
-                            data-subject="درخواست همکاری"
-
-                            data-date="1405/05/18"
-
-                            data-body="متن کامل پیام"
-                            data-response=""
-                            data-repdate=""
-                        >
-
-                            <td>
-
-                                علی رضایی
-
-                            </td>
-
-                            <td>
-
-                                درخواست همکاری
-
-                            </td>
-
-                            <td class="message-preview">
-
-                                سلام
-
-                                برای طراحی سایت فروشگاهی
-
-                                نیاز به مشاوره داشتم...
-
-                            </td>
-
-                            <td>
-
-                                1405/05/18
-
-                            </td>
-
-                            <td>
-
-                                <span class="badge bg-danger status-span">
-
-                                    خوانده نشده
-
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-
-                                            class="btn btn-sm btn-outline-primary btn-view-message"
-
-                                            data-bs-toggle="modal"
-
-                                            data-bs-target="#messageModal">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </button>
-                                    <a
-
-                                            href="<?= URL ?>admin/messages/delete/15"
-
-                                            class="btn btn-sm btn-outline-danger btn-delete-message">
-
-                                        <i class="bi bi-trash"></i>
-
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-
+                        <?php require "views/admin/messages/_messageRows.php"; ?>
                         <!--========================-->
 
-                        <tr class="message-row"
-
-                            data-status="waiting"
-
-                            data-name="مریم احمدی"
-
-                            data-email="matr@gmail.com"
-
-                            data-phone="09121234567"
-
-                            data-subject="قیمت پروژه"
-
-                            data-date="1405/05/18"
-
-                            data-body="متن کامل پیام"
-                            data-response=""
-                            data-repdate=""
-                        >
-
-                            <td>
-
-                                مریم احمدی
-
-                            </td>
-
-                            <td>
-
-                                قیمت پروژه
-
-                            </td>
-
-                            <td class="message-preview">
-
-                                لطفا هزینه انجام پروژه
-
-                                مدیریت انبار را اعلام بفرمایید...
-
-                            </td>
-                            <td>
-
-                                1405/05/15
-
-                            </td>
-
-                            <td>
-
-                                <span class="badge bg-warning text-dark status-span">
-
-                                   در انتظار پاسخ
-
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-
-                                            class="btn btn-sm btn-outline-primary btn-view-message"
-
-                                            data-bs-toggle="modal"
-
-                                            data-bs-target="#messageModal">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </button>
-                                    <a
-
-                                            href="<?= URL ?>admin/messages/delete/15"
-
-                                            class="btn btn-sm btn-outline-danger btn-delete-message">
-
-                                        <i class="bi bi-trash"></i>
-
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-
-                        <!--========================-->
-
-                        <tr class="message-row"
-
-                            data-status="answered"
-
-                            data-name="رضا محمدی"
-
-                            data-email="ali@gmail.com"
-
-                            data-phone="09121234567"
-
-                            data-subject="سوال فنی"
-
-                            data-date="1405/10/08"
-
-                            data-body="متن کاملدر مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                               در مورد اتصال درگاه پرداخت
-
-                                پیام"
-                            data-response="در مورد اتصال درگ pg an offjefenf
-                                ferferf
-                                vrfref
-                                اه پردا                                "
-                            data-repdate="1405/05/12 - 14:30">
-                            <td>
-
-                                رضا محمدی
-
-                            </td>
-
-                            <td>
-
-                                سوال فنی
-
-                            </td>
-
-                            <td class="message-preview">
-
-                                در مورد اتصال درگاه پرداخت
-
-                                سوال داشتم...
-
-                            </td>
-
-                            <td>
-
-                                1405/05/10
-
-                            </td>
-
-                            <td>
-
-                                <span class="badge bg-success status-span">
-
-                                    پاسخ داده شده
-
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-
-                                            class="btn btn-sm btn-outline-primary btn-view-message"
-
-                                            data-bs-toggle="modal"
-
-                                            data-bs-target="#messageModal">
-
-                                        <i class="bi bi-eye"></i>
-
-                                    </button>
-                                    <a
-
-                                            href="<?= URL ?>admin/messages/delete/15"
-
-                                            class="btn btn-sm btn-outline-danger btn-delete-message">
-
-                                        <i class="bi bi-trash"></i>
-
-                                    </a>
-                                </div>
-
-                            </td>
-
-                        </tr>
 
                         </tbody>
 
                     </table>
-
+                    <div id="messagesPagination">
+                        <?php
+                        $totalPages = max(1, (int)ceil($data['totalCount'] / ItemsPerPage));
+                        $currentPage = 1;
+                        $windowSize = PaginationWindowSize;
+                        require "views/shared/pagination.php";
+                        ?>
+                    </div>
                 </div>
 
             </div>
@@ -916,7 +684,6 @@ Messages Header
     </main>
 
 </div>
-
 
 <!--=========================================
 Message Modal
@@ -942,7 +709,7 @@ Message Modal
 
                 </h5>
 
-                <button
+                <button type="button"
 
                         class="btn-close"
 
@@ -968,7 +735,7 @@ Message Modal
 
                                class="form-control"
 
-                               value="علی رضایی"
+                               value=""
 
                                readonly>
 
@@ -985,7 +752,7 @@ Message Modal
                         <input id="msgEmail"
                                class="form-control"
 
-                               value="ali@gmail.com"
+                               value=""
 
                                readonly>
 
@@ -1002,7 +769,7 @@ Message Modal
                         <input id="msgPhone"
                                class="form-control"
 
-                               value="0912..."
+                               value=""
 
                                readonly>
 
@@ -1017,10 +784,10 @@ Message Modal
                         </label>
 
                         <input
-                                id="msgSubject"
+                                id="msgDate"
                                 class="form-control"
 
-                                value="1405/05/18"
+                                value=""
 
                                 readonly>
 
@@ -1034,11 +801,11 @@ Message Modal
 
                         </label>
 
-                        <input id="msgDate"
+                        <input id="msgSubject"
 
                                class="form-control"
 
-                               value="درخواست همکاری"
+                               value=""
 
                                readonly>
 
@@ -1057,7 +824,7 @@ Message Modal
 
                                   class="form-control"
 
-                                  readonly>متن کامل پیام...</textarea>
+                                  readonly></textarea>
 
                     </div>
                     <div id="replySection" class="d-none">
@@ -1070,7 +837,7 @@ Message Modal
 
                                    class="form-control"
 
-                                   value="sdsd"
+                                   value=""
 
                                    readonly>
                         </div>
@@ -1100,16 +867,15 @@ Message Modal
 
             <div class="modal-footer">
 
-                <a id="replyEmailBtn"
-                   href="mailto:ali@gmail.com"
-
-                   class="btn btn-success">
-
+                <button id="replyEmailBtn"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#responseModal"
+                        class="btn btn-success">
                     پاسخ با ایمیل
+                </button>
 
-                </a>
-
-                <button
+                <button type="button"
 
                         class="btn btn-outline-secondary"
 
@@ -1126,7 +892,185 @@ Message Modal
     </div>
 
 </div>
+
+
+<!--=========================================
+Response Modal
+==========================================-->
+<div
+
+        class="modal fade"
+
+        id="responseModal"
+
+        tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    پاسخ پیام
+
+                </h5>
+                <button type="button"
+
+                        class="btn-close"
+
+                        data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+            <form id="responseForm">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label>گیرنده</label>
+                        <input id="replyTo" name="replyTo"
+                               class="form-control"
+                               readonly
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label>موضوع</label>
+                        <input id="replySubject" name="replySubject"
+                               class="form-control"
+                               data-required="موضوع"
+                               data-action="پر کنید"
+
+                        >
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label>متن پاسخ</label>
+                        <textarea id="replyMessage" name="replyMessage"
+                                  data-required="متن پاسخ"
+                                  data-action="پر کنید"
+                                  class="form-control"
+                                  rows="8"></textarea>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button"
+                            id="sendReplyBtn"
+                            class="btn btn-success">
+                        ارسال پاسخ
+                    </button>
+
+                    <button type="button"
+
+                            class="btn btn-outline-secondary"
+
+                            data-bs-dismiss="modal">
+
+                        بستن
+
+                    </button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <script>
+    /*==================================
+Pagination
+==================================*/
+    let currentMode = "newest";
+    let currentType = "all";
+
+    let currentMessageRow = null;
+    // ====================
+    const paginationElement =
+        document.querySelector(
+            ".pagination-wrapper"
+        );
+
+
+    const messagesPagination =
+        new Pagination(
+            paginationElement
+        );
+
+
+    paginationElement.addEventListener(
+        "pagination:change",
+        function (event) {
+
+            changePage(event.detail.page);
+
+        }
+    );
+
+    /*==================================
+      Change Page
+    ==================================*/
+
+    function changePage(page) {
+
+        changeMessages(currentType, currentMode, page)
+
+    }
+
+    /*==================================
+      Initial State
+    ==================================*/
+
+    messagesPagination.update();
+
+
+    function changeMessages(type, currentMode, page) {
+
+        let url = "<?= URL ?>admin/messages/getMessages/"
+            + type + "/" + currentMode + "/" + page;
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",//text or json
+
+
+            beforeSend: function () {
+                //$('#imgSpinner1').show();
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+
+                myAlert.error(
+                    'خطا',
+                    'دریافت پیامها با خطا مواجه شد.'
+                );
+
+            },
+            success: function (data) {
+
+                $("#messageTableBody").html(data.messages);
+
+                const totalPages = Math.max(
+                    1,
+                    Math.ceil(
+                        data.totalCount / <?= ItemsPerPage ?>
+                    )
+                );
+
+                messagesPagination.setTotalPages(totalPages);
+
+            }
+        });
+
+
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
 
         /*==========================================
@@ -1134,8 +1078,6 @@ Message Modal
         ==========================================*/
 
         const filterButtons = document.querySelectorAll(".filter-btn");
-
-        const rows = document.querySelectorAll(".message-row");
 
         filterButtons.forEach(btn => {
 
@@ -1145,150 +1087,301 @@ Message Modal
 
                 this.classList.add("active");
 
-                const filter = this.dataset.filter;
-
-                rows.forEach(row => {
-
-                    if (
-
-                        filter === "all" ||
-
-                        row.dataset.status === filter
-
-                    ) {
-
-                        row.style.display = "";
-
-                    } else {
-
-                        row.style.display = "none";
-
-                    }
-
-                });
+                currentType = this.dataset.filter;
+                messagesPagination.setPage(1);
+                changeMessages(currentType, currentMode, 1)
 
             });
+        });
 
+        /*==========================================
+       select oldest/newest MODE
+       ==========================================*/
+        $(document).on('change', '#message-sort', function () {
+            currentMode = this.value;
+            messagesPagination.setPage(1);
+            changeMessages(currentType, currentMode, 1)
         });
 
 
-        /*==========================================
-        Modal
-        ==========================================*/
-
-        const modal = document.getElementById("messageModal");
-
-        const txtName = modal.querySelector("#msgName");
-
-        const txtEmail = modal.querySelector("#msgEmail");
-
-        const txtPhone = modal.querySelector("#msgPhone");
-
-        const txtSubject = modal.querySelector("#msgSubject");
-
-        const txtDate = modal.querySelector("#msgDate");
-
-        const txtBody = modal.querySelector("#msgBody");
-
-        const replySection = document.getElementById("replySection");
-
-        const txtResponse = document.getElementById("msgReply");
-
-        const replyDate = document.getElementById("replyDate");
-
-        const replyBtn = document.getElementById("replyEmailBtn");
-
-        document.querySelectorAll(".btn-view-message").forEach(btn => {
-
-            btn.addEventListener("click", function () {
-
-                const row = this.closest(".message-row");
+    });
 
 
-                txtName.value = row.dataset.name;
+    /*==========================================
+    Modal
+    ==========================================*/
 
-                txtEmail.value = row.dataset.email;
+    const modal = document.getElementById("messageModal");
 
-                txtPhone.value = row.dataset.phone;
+    const txtName = modal.querySelector("#msgName");
 
-                txtSubject.value = row.dataset.subject;
+    const txtEmail = modal.querySelector("#msgEmail");
 
-                txtDate.value = row.dataset.date;
+    const txtPhone = modal.querySelector("#msgPhone");
 
-                txtBody.value = row.dataset.body;
+    const txtSubject = modal.querySelector("#msgSubject");
+
+    const txtDate = modal.querySelector("#msgDate");
+
+    const txtBody = modal.querySelector("#msgBody");
+
+    const replySection = document.getElementById("replySection");
+
+    const txtResponse = document.getElementById("msgReply");
+
+    const replyDate = document.getElementById("replyDate");
+
+    const replyBtn = document.getElementById("replyEmailBtn");
+
+    $(document).on('click', '.btn-view-message', function () {
+
+        const row = this.closest(".message-row");
+
+        currentMessageRow = row;
+
+        txtName.value = row.dataset.name;
+
+        txtEmail.value = row.dataset.email;
+
+        txtPhone.value = row.dataset.phone;
+
+        txtSubject.value = row.dataset.subject;
+
+        txtDate.value = row.dataset.date;
+
+        txtBody.value = row.dataset.body;
 
 
-                replyBtn.href =
+        replyBtn.href =
 
-                    "mailto:" +
+            "mailto:" +
 
-                    row.dataset.email +
+            row.dataset.email +
 
-                    "?subject=" +
+            "?subject=" +
 
-                    encodeURIComponent(row.dataset.subject)
+            encodeURIComponent(row.dataset.subject);
 
-                const status = row.dataset.status;
+        const status = row.dataset.status;
 
-                if (status === "answered") {
+        if (status === "REPLIED") {
 
-                    replySection.classList.remove("d-none");
+            replySection.classList.remove("d-none");
 
-                    txtResponse.value = row.dataset.response;
+            txtResponse.value = row.dataset.response;
 
-                    replyDate.value = row.dataset.repdate;
+            replyDate.value = row.dataset.repdate;
 
-                    replyBtn.classList.add("d-none");
+            replyBtn.classList.add("d-none");
 
-                }
-                else {
+        }
+        else {
 
-                    replySection.classList.add("d-none");
+            replySection.classList.add("d-none");
 
-                    txtResponse.value = "";
-                    replyDate.value = "";
+            txtResponse.value = "";
+            replyDate.value = "";
+            $('#replyTo').val(row.dataset.email);
+            $('#replySubject').val('پاسخ به: ' + row.dataset.subject);
 
-                    replyBtn.classList.remove("d-none");
+            replyBtn.classList.remove("d-none");
 
-                }
-                /*======================================
-                Change Status
-                ======================================*/
+        }
+        /*======================================
+        Change Status
+        ======================================*/
 
-                if (row.dataset.status === "new") {
+        if (row.dataset.status === "NEW") {
 
-                    row.dataset.status = "waiting";
+            let newStatus = "EXPECTING";
+            row.dataset.status = newStatus;
+            const id = row.dataset.id;
 
+            $.ajax({
+                url: "<?= URL ?>admin/messages/changeMessageStatus/" + newStatus
+                + "/" + id,
+                type: "POST",
+                dataType: "text",//text or json
+
+
+                beforeSend: function () {
+                    //$('#imgSpinner1').show();
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+
+                    myAlert.error(
+                        'خطا',
+                        'عملیات با خطا مواجه شد.'
+                    );
+
+                },
+                success: function () {
                     const badge = row.querySelector(".message-status");
 
                     badge.className =
 
                         "badge bg-warning text-dark message-status";
 
-                    badge.innerText = "بدون پاسخ";
+                    badge.innerText = "درانتظار پاسخ";
 
+                    $('#newCount').text((parseInt($('#newCount').text()) || 0) - 1);
+                    $('#expectingCount').text((parseInt($('#expectingCount').text()) || 0) + 1);
+                }
+            });
+
+
+        }
+    });
+    /*==========================================
+    send Response
+    ==========================================*/
+
+    $('#sendReplyBtn').on('click', function () {
+        const row = currentMessageRow;
+
+        if (!row) {
+            return;
+        }
+        const form = document.getElementById('responseForm');
+        if (validateMessageForm(form)) {
+
+            $.ajax({
+                url: "<?= URL ?>admin/messages/sendReply",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: row.dataset.id,
+                    email: $('#replyTo').val(),
+                    full_name: row.dataset.name,
+                    replySubject: $('#replySubject').val(),
+                    replyMessage: $('#replyMessage').val()
+                },
+                beforeSend: function () {
+                    $('#sendReplyBtn')
+                        .prop('disabled', true);
+                    LoadingOverlay.show('در حال ارسال پاسخ...');
+                    //$('#imgSpinner1').show();
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                    console.log('textStatus:', textStatus);
+                    console.log('errorThrown:', errorThrown);
+                    console.log('status:', jqXHR.status);
+                    console.log('response:', jqXHR.responseText);
+
+                    myAlert.error(
+                        'خطا',
+                        'عملیات ارسال پاسخ با خطا مواجه شد.'
+                    );
+
+                },
+
+                success: function (data) {
+
+                    if (data.type === 'validation') {
+
+                        // حذف خطاهای قبلی
+                        $('#responseForm .form-error').remove();
+
+                        if (data.errors.replySubject) {
+                            $('#replySubject').after(
+                                '<div class="form-error general-form-error">' +
+                                data.errors.replySubject +
+                                '</div>'
+                            );
+                        }
+
+                        if (data.errors.replyMessage) {
+                            $('#replyMessage').after(
+                                '<div class="form-error general-form-error">' +
+                                data.errors.replyMessage +
+                                '</div>'
+                            );
+                        }
+
+                        return;
+                    }
+
+                    if (data.type === 'success') {
+
+                        myAlert.success(
+                            'عملیات موفق',
+                            data.message
+                        );
+                        const badge = row.querySelector(".message-status");
+
+                        badge.className =
+
+                            "badge bg-success text-dark message-status";
+
+                        badge.innerText = "پاسخ داده شده";
+
+                        $('#expectingCount').text((parseInt($('#expectingCount').text()) || 0) - 1);
+                        $('#repliedCount').text((parseInt($('#repliedCount').text()) || 0) + 1);
+
+                        // بستن responseModal
+                        const responseModal =
+                            bootstrap.Modal.getInstance(
+                                document.getElementById('responseModal')
+                            );
+
+                        if (responseModal) {
+                            responseModal.hide();
+                        }
+
+                        // بستن messageModal
+                        const messageModal =
+                            bootstrap.Modal.getInstance(
+                                document.getElementById('messageModal')
+                            );
+
+                        if (messageModal) {
+                            messageModal.hide();
+                        }
+
+                    }
+
+                },
+                complete: function () {
+
+                    $('#sendReplyBtn')
+                        .prop('disabled', false);
+                    LoadingOverlay.hide();
                 }
 
             });
-
-        });
-
-
-        /*==========================================
-        Delete
-        ==========================================*/
-
-        document.querySelectorAll(".btn-delete-message").forEach(btn => {
-
-            btn.addEventListener("click", function (e) {
-
-                e.preventDefault();
-
-                myAlert.delete(this.href);
-
-            });
-
-        });
+        }
 
     });
+
+
+    $('#responseModal').on('hidden.bs.modal', function () {
+
+        const form = document.getElementById('responseForm');
+
+        form.reset();
+
+        form.querySelectorAll('.form-error')
+            .forEach(error => error.remove());
+
+        $('#replyTo').val('');
+        $('#replySubject').val('');
+        $('#replyMessage').val('');
+    });
+
+    /*==========================================
+    Delete
+    ==========================================*/
+    $(document).on('click', '.btn-delete-message', function (e) {
+
+        e.preventDefault();
+
+        myAlert.delete(this.href);
+
+    });
+
+
 </script>

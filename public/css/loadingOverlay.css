@@ -1,0 +1,43 @@
+/* =========================================
+   Loading Overlay
+========================================= */
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+}
+
+.loading-box {
+    min-width: 220px;
+    padding: 28px 32px;
+
+    background: #ffffff;
+    border-radius: 16px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+}
+
+.loading-spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    color: #0EA47A;
+}
+
+.loading-message {
+    margin-top: 15px;
+
+    color: #17335C;
+    font-size: 14px;
+    font-weight: 600;
+}

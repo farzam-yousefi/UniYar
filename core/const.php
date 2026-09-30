@@ -33,6 +33,9 @@ define("CONSULT", "مشاوره آموزشی");
 define("ItemsPerPage", 10);
 define("PaginationWindowSize", 5);
 
+define("NEW", "جدید");
+define("EXPECTING", "درانتظار پاسخ");
+define("REPLIED", "پاسخ داده شده");
 
 define("type", "نوع خدمت");
 define("PROJECT_CATEGORY", "نوع پروژه");
@@ -82,8 +85,12 @@ define('ALLOWED_ORDER_STATUSES', [
     'IN_PROGRESS', 'CANCELED', 'COMPLETED'
 ]);
 
-define('ALLOWED_ORDER_PRPGRESS_PERCENT', [
+define('ALLOWED_ORDER_PROGRESS_PERCENT', [
 '0%','25%','50%','75%','100%'
+]);
+
+define('ALLOWED_MESSAGE_STATUSES', [
+    'NEW', 'EXPECTING','REPLIED'
 ]);
 
 ?>

@@ -29,3 +29,7 @@
     <link rel="stylesheet" href="<?= URL ?>public/css/alerts.css">
     <script src="<?=URL?>public/js/sweetalert2.all.min.js"></script>
     <script src="<?=URL?>public/js/alerts.js"></script>
+
+    <script src="<?= URL ?>public/js/loadingOverlay.js"></script>
+    <link rel="stylesheet" href="<?= URL ?>public/css/loadingOverlay.css">
+

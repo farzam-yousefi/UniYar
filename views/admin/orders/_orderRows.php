@@ -1,6 +1,4 @@
 <?php
-//require_once 'core/helper.php';
-//require_once 'core/const.php';
 $orders = $data['orders'];
 
 foreach ($data['orders'] as $order) {

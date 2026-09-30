@@ -344,3 +344,21 @@ function validationAdminOrderForm(form) {
         return generalValidation;
 
     }
+
+    function validateMessageForm(form) {
+
+        // اول validation عمومی
+        const generalValidation = generalValidateForm(form);
+
+        //clean server-side errs
+        const errorList = form.querySelector('.errorList');
+
+        if (errorList) {
+            errorList.innerHTML = '';
+        }
+
+        return generalValidation;
+
+    }
+
+

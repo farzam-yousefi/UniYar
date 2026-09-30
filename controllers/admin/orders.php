@@ -186,7 +186,7 @@ class orders extends Controller
             $isValid = false;
         }
 
-        if ($post['progress_percent'] !== '' && !in_array($post['progress_percent'], ALLOWED_ORDER_PRPGRESS_PERCENT, true)) {
+        if ($post['progress_percent'] !== '' && !in_array($post['progress_percent'], ALLOWED_ORDER_PROGRESS_PERCENT, true)) {
             $errors['progress_percent'] = 'میزان پیشرفت انتخاب شده؛ معتبر نیست.';
             $isValid = false;
 

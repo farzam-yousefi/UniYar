@@ -353,3 +353,4 @@ require_once('core/lib/changePass.php');
 
 </header>
 
+<?php include ROOT_PATH . '/views/shared/loadingOverlay.php'; ?>

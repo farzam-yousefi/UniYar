@@ -248,7 +248,23 @@
 
 
 </style>
+<?php
+$messageInfo = $data['messageInfo'] ?? [];
+$errors=$data['errors'] ?? [];
+if (isset($_SESSION['alert-resultOperation'])) { ?>
+    <script>
+        myAlert.<?= $_SESSION['alert-resultOperation']['type'] ?>(
+            <?= json_encode($_SESSION['alert-resultOperation']['title']) ?>,
+            <?= json_encode($_SESSION['alert-resultOperation']['message']) ?>
+        );
 
+    </script>
+
+    <?php
+    unset($_SESSION['alert-resultOperation']);
+    unset($_SESSION['operation']);
+}
+?>
 <section class="hero-section py-5">
 
     <div class="container">
@@ -525,7 +541,8 @@
 
                     </p>
 
-                    <form>
+                    <form method="post" novalidate id="messageForm"
+                          action="<?= URL ?>contact/add" data-validate >
 
                         <div class="row g-4">
 
@@ -540,9 +557,22 @@
                                     </label>
 
                                     <input
+                                            data-required="نام و نام خانوادگی"
+                                            data-action="پر کنید"
                                             type="text"
+                                            name="full_name"
                                             class="form-control-custom"
+                                            value="<?= htmlspecialchars($messageInfo['full_name'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                             placeholder="نام خود را وارد کنید">
+
+                                    <?php if (isset($errors['full_name'])): ?>
+
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['full_name'] ?>
+                                        </div>
+
+                                    <?php endif; ?>
+
 
                                 </div>
 
@@ -559,10 +589,23 @@
                                     </label>
 
                                     <input
+                                            data-required="شماره موبایل"
+                                            data-action="پر کنید"
                                             type="text"
+                                            name="mobile" id="mobile"
+                                            minlength="11" maxlength="11"
                                             class="form-control-custom"
+                                            value="<?= htmlspecialchars($messageInfo['mobile'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                             placeholder="09xxxxxxxxx">
 
+                                    <?php if (isset($errors['mobile'])): ?>
+
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['mobile'] ?>
+                                        </div>
+
+                                    <?php endif; ?>
+
                                 </div>
 
                             </div>
@@ -573,15 +616,24 @@
 
                                     <label>
 
-                                        ایمیل
+                                        ایمیل *
 
                                     </label>
 
-                                    <input
+                                    <input data-required="ایمیل"
+                                           data-action="پر کنید"
                                             type="email"
+                                            name="email"  id="email"
                                             class="form-control-custom"
-                                            placeholder="example@email.com">
+                                           value="<?= htmlspecialchars($messageInfo['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                           placeholder="example@email.com">
+                                    <?php if (isset($errors['email'])): ?>
 
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['email'] ?>
+                                        </div>
+
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
@@ -592,15 +644,26 @@
 
                                     <label>
 
-                                        موضوع
+                                        موضوع *
 
                                     </label>
 
                                     <input
+                                            data-required="موضوع پیام"
+                                            data-action="پر کنید"
                                             type="text"
+                                            name="subject"
                                             class="form-control-custom"
+                                            value="<?= htmlspecialchars($messageInfo['subject'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                             placeholder="موضوع پیام">
 
+                                    <?php if (isset($errors['subject'])): ?>
+
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['subject'] ?>
+                                        </div>
+
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
@@ -614,11 +677,20 @@
                                         پیام *
 
                                     </label>
+                                    <textarea data-required="متن پیام"
+                                              data-action="پر کنید"
+                                              name="message"
+                                              rows="7"
+                                              class="form-control-custom"
+                                              placeholder="پیام خود را بنویسید..."
+                                    ><?= htmlspecialchars($messageInfo['message'] ?? '', ENT_QUOTES, 'UTF-8')?></textarea>
+                                    <?php if (isset($errors['message'])): ?>
 
-                                    <textarea
-                                            rows="7"
-                                            class="form-control-custom"
-                                            placeholder="پیام خود را بنویسید..."></textarea>
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['message'] ?>
+                                        </div>
+
+                                    <?php endif; ?>
 
                                 </div>
 
@@ -628,7 +700,7 @@
 
 
                         <button
-                                id="contactBtn"
+                                id="contactBtn" type="submit"
                                 class="btn btn-main px-5 mt-3">
 
                             ارسال پیام
@@ -647,3 +719,28 @@
 
 </section>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const form = document.getElementById('messageForm');
+
+        form.addEventListener('submit', function (e) {
+            if (!validateMessageForm(form)) {
+                e.preventDefault();
+                myAlert.error('خطا', 'لطفا فیلدهای ضروری را پر کنید')
+            }
+        });
+    });
+
+    const textareas = document.querySelectorAll('textarea');
+
+    textareas.forEach(textarea => {
+
+        textarea.addEventListener('click', function () {
+
+            this.setSelectionRange(0, 0);
+
+        });
+
+    });
+</script>

@@ -8,8 +8,8 @@ class Faq extends Controller
     }
     function index()
     {
-        $data["faqs"]=$this->model->getAllFaqs();
-        $this->view("faqs/index",$data);
+        $data["faqs"]=$this->model->getFaqs("all");
+        $this->view("faq/index",$data);
 
 	}
 

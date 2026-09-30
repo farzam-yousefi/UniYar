@@ -476,7 +476,7 @@ Dashboard
 
                             <span class="badge <?=$badgeClass?>">
 
-                                <?=htmlspecialchars($order['status'] ?? '')?>
+                                <?=constant(htmlspecialchars($order['status'] ?? ''))?>
 
                             </span>
 
