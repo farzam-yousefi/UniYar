@@ -155,7 +155,7 @@
 
                     <div class="portfolio-card">
 
-                        <img src="<?= URL ?>public/images/portfolio/CPR.png"
+                        <img src="<?= URL ?>public/images/portfolios/WEBSITE/CPR.png"
                              class="img-fluid portfolio-image"
                              alt="">
 

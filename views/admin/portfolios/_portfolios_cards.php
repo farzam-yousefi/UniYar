@@ -6,10 +6,10 @@ if (isset($data['portfolios'])) {
     foreach ($portfolios as &$portfolio) {
 
         $portfolio['started_date'] =
-            Helper::MiladiTojalili((string)$portfolio['started_date'], '-');
+            Helper::MiladiTojalili((string)$portfolio['started_date'] ?? '', '-');
 
         $portfolio['completed_date'] =
-            Helper::MiladiTojalili((string)$portfolio['completed_date'], '-');
+            Helper::MiladiTojalili((string)$portfolio['completed_date'] ?? '', '-');
     }
 
     unset($portfolio);
@@ -22,45 +22,49 @@ if (isset($data['portfolios'])) {
 
 
 <?php foreach ($portfolios as $portfolio) {
-    $cat = strtolower($portfolio['category']);
+    $cat = strtolower($portfolio['category'] ?? '');
     ?>
 
     <div class="portfolio-item <?= $cat ?>"
         <?php
-        $started = Helper::jaliliToMiladi($portfolio['started_date'])
+        $started = Helper::jaliliToMiladi($portfolio['started_date'] ?? '')
         ?>
 
          data-started-at="<?= $started ?>  "
-         data-display-order="<?= $portfolio['display_order'] ?>">
+         data-display-order="<?= $portfolio['display_order'] ?? '' ?>">
         <div class="portfolio-card card-<?= $cat ?>"
             <?php
-            $created = Helper::jaliliToMiladi($portfolio['started_date'])
+            $created = Helper::jaliliToMiladi($portfolio['started_date'] ?? '')
             ?>
 
              data-createdAt="<?= $created ?>"
              data-category="<?= $cat ?>">
+            <?php if ($portfolio['cover_image'] != null) {
+                ?>
 
-            <img src="<?= URL ?>public/images/portfolios/<?=$portfolio['category']?>/<?= $portfolio['cover_image'] ?>">
-
+                <img src="<?= URL ?>public/images/portfolios/<?= $portfolio['category'] ?>/<?= $portfolio['cover_image'] ?>">
+                <?php
+            }
+            ?>
 
             <div class="portfolio-body">
 
                              <span class="portfolio-category">
-                                 <?= constant($portfolio['category']) ?>
+                                 <?= constant($portfolio['category'] ?? '') ?>
                              </span>
 
                 <div class="portfolio-title-desc">
                     <h5>
                         <?= htmlspecialchars(
-                            $portfolio['title'],
+                            $portfolio['title'] ?? '',
                             ENT_QUOTES,
-                            'UTF-8') ?? '' ?>
+                            'UTF-8') ?>
                     </h5>
                     <p>
                         <?= htmlspecialchars(
-                            $portfolio['short_description'],
+                            $portfolio['short_description'] ?? '',
                             ENT_QUOTES,
-                            'UTF-8') ?? '' ?>
+                            'UTF-8') ?>
 
                     </p>
                 </div>
@@ -80,7 +84,7 @@ if (isset($data['portfolios'])) {
 
                         <div class="date-value">
 
-                            <?= $portfolio['started_date'] ?>
+                            <?= $portfolio['started_date'] ?? '' ?>
 
                         </div>
 
@@ -98,7 +102,7 @@ if (isset($data['portfolios'])) {
 
                         <div class="date-value">
 
-                            <?= $portfolio['completed_date'] ?>
+                            <?= $portfolio['completed_date'] ?? '' ?>
 
                         </div>
 
@@ -120,10 +124,10 @@ if (isset($data['portfolios'])) {
                     </a>
 
                     <span class="badge
-                                        <?= ($portfolio['status'] === 'COMPLETED') ? 'bg-success' : 'bg-secondary' ?>
+                                        <?= ($portfolio['status'] ?? '' === 'COMPLETED') ? 'bg-success' : 'bg-secondary' ?>
                                         ">
 
-                                     <?= constant($portfolio['status']) ?>
+                                     <?= constant($portfolio['status'] ?? '') ?>
 
                                   </span>
 

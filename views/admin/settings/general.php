@@ -60,6 +60,24 @@ foreach ($settingsInfo as $row) {
 
                             <label class="form-label">
 
+                                ساعات پاسخگویی
+
+                            </label>
+
+                            <input
+                                    name="phone"
+                                    type="text"
+                                    minlength="11" maxlength="11"
+                                    class="form-control-custom"
+
+                                    value="<?= htmlspecialchars($settings['contact_time'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            >
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
                                 ایمیل سایت
 
                             </label>

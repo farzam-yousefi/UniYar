@@ -11,7 +11,7 @@ class model_setting extends Model
 
     function getSettings()
     {
-        return $this->myFetchAll("select id,setting_key, setting_value from settings");
+        return $this->myFetchAll("select setting_key, setting_value from settings");
     }
 
     function saveGeneral($post)

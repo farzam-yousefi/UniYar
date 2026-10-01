@@ -438,7 +438,7 @@ if (isset($data['portfolios'])) {
     foreach ($portfolios as &$portfolio) {
 
         $portfolio['started_date'] =
-            Helper::MiladiTojalili((string)$portfolio['started_date']);
+            Helper::MiladiTojalili((string)$portfolio['started_date'] ?? '');
 
         $portfolio['completed_date'] =
             Helper::MiladiTojalili((string)$portfolio['completed_date']);

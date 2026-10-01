@@ -142,10 +142,12 @@ class orders extends Controller
             $this->model->manageOrderByAdmin($id, $adminId, $post);
         $_SESSION['operationFromAdmin'] = "manageOrder";
 
-
-        if ($_SESSION['alert-resultOperationFromAdmin']['type'] === 'success')
+        if ($_SESSION['alert-resultOperationFromAdmin']['type'] === 'success') {
+            if ($post['service_type'] == 'PROJECT' &&
+                ($post['project_type'] != "" || $post['project_type'] != "RESEARCH"))
+                Model::sessionSet("project", true);
             header("Location:" . URL . "admin/orders");
-        else {
+        } else {
 
             $data = $this->prepareForView($id, $post);
             $data['errors'] = [];
@@ -315,7 +317,7 @@ class orders extends Controller
 
     function getCustomerOrders($customerId)
     {
-        $data['orders']=$this->model->getCustomerOrders($customerId);
+        $data['orders'] = $this->model->getCustomerOrders($customerId);
         $this->view("admin/customers/customerOrders", $data,
             "admin", "admin");
     }

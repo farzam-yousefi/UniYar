@@ -249,6 +249,13 @@
 
 </style>
 <?php
+$footerInfo= Model::sessionGet("footerInfo") ?? [];
+
+$contactInfo = [];
+foreach ($footerInfo as $row) {
+    $contactInfo[$row['setting_key']] = $row['setting_value'];
+}
+
 $messageInfo = $data['messageInfo'] ?? [];
 $errors=$data['errors'] ?? [];
 if (isset($_SESSION['alert-resultOperation'])) { ?>
@@ -380,7 +387,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
                             <span>
 
-                                support@uniyar.ir
+                               <?=htmlspecialchars($contactInfo['email'] ?? '')?>
 
                             </span>
 
@@ -397,13 +404,13 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
                             <strong>شبکه‌های اجتماعی</strong>
 
                             <ul class="social-list">
+
                                 <li>
                                    <img src="<?= URL ?>public/images/social/telegram.png"
                                     class="social-icon"
                                     alt="telegram">
-<!--                                    <i class="bi bi-telegram"></i>-->
 
-                                    <a href="#">@UniYar</a>
+                                    <a href="#"><?=htmlspecialchars($contactInfo['telegram'] ?? '')?>@</a>
 
                                 </li>
 
@@ -411,7 +418,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
                                     <i class="bi bi-whatsapp"></i>
 
-                                    <a href="#">UniYar</a>
+                                    <a href="#"><?=htmlspecialchars($contactInfo['whatsapp'] ?? '')?></a>
 
                                 </li>
 
@@ -421,7 +428,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
                                          class="social-icon"
                                          alt="intagram">
 
-                                    <a href="#">@UniYar</a>
+                                    <a href="#"><?=htmlspecialchars($contactInfo['instagram'] ?? '')?>@</a>
 
                                 </li>
 
@@ -432,7 +439,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
                                             class="social-icon bale"
                                             alt="Bale">
 
-                                    <a href="#">UniYar</a>
+                                    <a href="#"><?=htmlspecialchars($contactInfo['bale'] ?? '')?></a>
 
                                 </li>
 
@@ -443,7 +450,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
                                             class="social-icon"
                                             alt="Eitaa">
 
-                                    <a href="#">UniYar</a>
+                                    <a href="#"><?=htmlspecialchars($contactInfo['eitaa'] ?? '')?></a>
 
                                 </li>
 
@@ -463,7 +470,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
                             <span>
 
-                                0912 000 0000
+                                <?=htmlspecialchars($contactInfo['phone'] ?? '')?>
 
                             </span>
 
@@ -485,9 +492,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
                             <span>
 
-                                شنبه تا پنجشنبه
-                                <br>
-                                ۹ الی ۱۸
+                                <?=htmlspecialchars($contactInfo['contact_time'] ?? '')?>
 
                             </span>
 
@@ -509,7 +514,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
                             <span>
 
-                                اصفهان
+                                <?=htmlspecialchars($contactInfo['address'] ?? '')?>
 
                             </span>
 

@@ -654,10 +654,12 @@ $hasError = !empty($errors);
         form.addEventListener('submit', function (e) {
 
 
-            if (!validateAdminPortfolioForm(form))
+            if (!validateAdminPortfolioForm(form)) {
 
                 e.preventDefault();
+                myAlert.error("خطا","لطفا فیلدهای خطادار را تصحیح کنید.")
 
+            }
         });
     });
 

@@ -1,5 +1,6 @@
 <?php
 
+define("",'');
 define("PENDING", "در انتظار");
 define("REVIEWING", "در حال بررسی");
 define("CANCELED", "لغو شد");

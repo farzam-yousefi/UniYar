@@ -28,7 +28,19 @@ class model_order extends Model
         return $service['id'];
     }
 
-    function findCustomer_id($full_name)
+    function findCustomer_id($mobile)
+    {
+        $customer = $this->myFetch(
+            "SELECT id FROM customers WHERE mobile=?", [$mobile]);
+
+        if (!$customer) {
+            throw new Exception("کابر معتبر نیست.");
+        }
+
+        return $customer['id'];
+    }
+
+    function findCustomer_idByName($full_name)
     {
         $customer = $this->myFetch(
             "SELECT id FROM customers WHERE full_name=?", [$full_name]);
@@ -85,16 +97,6 @@ orders.title as title,tracking_code,
         =========================
         */
 
-//        $service = $this->myFetch(
-//            "SELECT id FROM services WHERE type=?",
-//            [$post['service_id']]
-//        );
-//
-//        if (!$service) {
-//            throw new Exception("نوع خدمت معتبر نیست.");
-//        }
-//
-//        $service_id = $service['id'];
         $service_id = $this->findService_id($post['service_id']);
 
         /*
@@ -436,7 +438,7 @@ orders.title as title,tracking_code,
 
             // برای توسعه موقتاً:
             // error_log($e->getMessage());
-            echo $e;
+           // echo $e;
             return [
                 'type' => 'error',
                 'title' => 'عملیات ناموفق',
@@ -589,7 +591,7 @@ orders.title as title,tracking_code,
         $offset = ($page - 1) * ItemsPerPage;
 
         $service_id = $this->findService_id($service);
-        $customer_id = $this->findCustomer_id($full_name);
+        $customer_id = $this->findCustomer_idByName($full_name);
 
         $totalCount = $this->myFetch("select count(*) as totalCount from orders
                where service_id=? and customer_id=?", [$service_id, $customer_id])['totalCount'];
@@ -613,7 +615,7 @@ orders.title as title,tracking_code,
             $column = 'service_id';
         }
         if ($searchItem == 'user') {
-            $value_id = $this->findCustomer_id($value);
+            $value_id = $this->findCustomer_idByName($value);
             $column = 'customer_id';
         }
 
@@ -640,16 +642,16 @@ orders.title as title,tracking_code,
 
     function manageOrderByAdmin($id, $adminId, $post)
     {
+        self::$conn->beginTransaction();
         try {
-            if($post['service_type']==="DEBUG") {
+            if ($post['service_type'] === "DEBUG") {
                 $sql = "update orders set title=? , description=? , status=? , agreed_price=?,
             final_delivery_date= ? , progress_percent=? , admin_note=? , delivery_date=? ,
              first_price=? , handled_by_admin_id=? where id=?";
                 $this->doQuery($sql, [$post['title'], $post['description'], $post['status'],
                     $post['agreed_price'] ?? null, $post['final_delivery_date'], $post['progress_percent'],
                     $post['admin_note'], $post['delivery_date'], $post['first_price'], $adminId, $id]);
-            }
-            else{
+            } else {
                 $sql = "update orders set title=? , description=? , status=? , agreed_price=?,
             final_delivery_date= ? , progress_percent=? , admin_note=? , handled_by_admin_id=? where id=?";
                 $this->doQuery($sql, [$post['title'], $post['description'], $post['status'],
@@ -657,6 +659,47 @@ orders.title as title,tracking_code,
                     $post['admin_note'], $adminId, $id]);
 
             }
+            if ($post['service_type'] == "PROJECT" && $post['project_type'] != "RESEARCH") {
+                if ($post['status'] == 'IN_PROGRESS') {
+                    $prj = $this->myFetch("select * from projects where order_id=?", [$id]);
+                    //create project from the order if is not existed before
+                    if (empty($prj)) {
+
+                        $start = new DateTime();
+                        $end = new DateTime($post['final_delivery_date']);
+                        $duration = $start->diff($end)->days + 1;
+
+                        $display_order = $this->myFetch("select COALESCE(MAX(display_order), 0)
+                          + 1 as display_order from projects")['display_order'];
+
+                        $customer_id = $this->findCustomer_id($post['mobile']);
+                        $slug = Helper::removeSpecialCharacter($post['title']);
+
+                        $startedAt = date("Y-m-d H:i:s");
+
+                        $sql = "insert into projects(service_id,title,slug,description,is_featured ,
+                        is_active ,display_order,duration,level, category,handled_by_admin_id,
+                        started_date,completed_date,status,customer_id,order_id) values
+                         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                        $this->doQuery($sql, [1, $post['title'], $slug, $post['description'], 0,
+                            0, $display_order, $duration, $post['level'], $post['project_type'], $adminId,
+                            $startedAt, $post['final_delivery_date'], $post['status'], $customer_id, $id]);
+
+                    }
+                }
+
+                if ($post['status'] == 'COMPLETED') {
+                    $res = $this->myFetch("select started_date  from projects where order_id=?", [$id]);
+                    $start = new DateTime($res['started_date']);
+                    $end = new DateTime($post['final_delivery_date']);
+                    $duration = $start->diff($end)->days + 1;
+                    $this->doQuery("update projects set duration=?,handled_by_admin_id=? ,completed_date=?
+                     ,status=? where order_id=?", [$duration,$adminId,$post['final_delivery_date'],
+                        $post['status'],$id]);
+                }
+            }
+            self::$conn->commit();
             return [
                 'type' => 'success',
                 'title' => 'عملیات موفق',
@@ -664,7 +707,9 @@ orders.title as title,tracking_code,
             ];
 
         } catch (Exception $e) {
-
+            if (self::$conn->inTransaction()) {
+                self::$conn->rollBack();
+            }
             // برای توسعه موقتاً:
             // error_log($e->getMessage());
             return [
@@ -674,14 +719,17 @@ orders.title as title,tracking_code,
             ];
         }
     }
-    function delete($id){
-        $sql="delete from orders where id=?";
-        $this->doQuery($sql,[$id]);
+
+    function delete($id)
+    {
+        $sql = "delete from orders where id=?";
+        $this->doQuery($sql, [$id]);
 
     }
 
-    function getCustomerOrders($customerId){
-        $sql=self::ORDER_LIST_QUERY ." where customer_id=? ";
-        return $this->myFetchAll($sql,[$customerId]);
+    function getCustomerOrders($customerId)
+    {
+        $sql = self::ORDER_LIST_QUERY . " where customer_id=? ";
+        return $this->myFetchAll($sql, [$customerId]);
     }
 }

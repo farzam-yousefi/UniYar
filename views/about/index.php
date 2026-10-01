@@ -471,9 +471,9 @@ About Statistics
         </div>
 
 
-        <div class="timeline">
+        <div class="timeline row gy-2">
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon">
                     🎯
@@ -492,7 +492,7 @@ About Statistics
             </div>
 
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon">
                     ⚡
@@ -511,7 +511,7 @@ About Statistics
             </div>
 
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon timeline-icon-larger">
                     🤝
@@ -530,7 +530,7 @@ About Statistics
             </div>
 
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon">
                     🔒
@@ -549,7 +549,7 @@ About Statistics
             </div>
 
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon">
                     💬
@@ -568,7 +568,7 @@ About Statistics
             </div>
 
 
-            <div class="timeline-item">
+            <div class="timeline-item col-md-6">
 
                 <div class="timeline-icon">
                     ✨

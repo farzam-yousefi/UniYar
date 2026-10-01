@@ -177,6 +177,7 @@ Page
 </style>
 
 <?php
+
 if (isset($_SESSION['alert-resultOperationFromAdmin'])) {
 
     $operationResult =
@@ -191,8 +192,19 @@ if (isset($_SESSION['alert-resultOperationFromAdmin'])) {
             );
 
         </script>
-
         <?php
+        if(isset($_SESSION['project']))
+            if($_SESSION['project']){
+                ?>
+                <script>
+                    myAlert.info("توجه","با توجه به وجود پروژه معادل این سفارش، اطلاعات آن را از قسمت نمونه کارها بررسی کنید");
+                </script>
+
+
+                <?php
+                unset($_SESSION['project']);
+            }
+
     }
     unset($_SESSION['alert-resultOperationFromAdmin']);
     unset($_SESSION['OperationFromAdmin']);

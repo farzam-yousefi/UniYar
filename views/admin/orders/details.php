@@ -403,7 +403,7 @@ if (isset($_SESSION['alert-resultOperationFromAdmin'])) {
 
         </script>
 
-        <?php
+       <?php
     }
     unset($_SESSION['alert-resultOperationFromAdmin']);
     unset($_SESSION['OperationFromAdmin']);
@@ -423,9 +423,9 @@ if (isset($data['errors'])) {
     $errors = $data['errors'];
     ?>
     <script>
-        myAlert.error('خطا' , 'لطفا فیلدهای خطادار را تصحیح کنید')
+        myAlert.error('خطا', 'لطفا فیلدهای خطادار را تصحیح کنید')
     </script>
-<?php
+    <?php
 }
 
 if (isset($data['files']))
@@ -497,7 +497,8 @@ if (isset($data['order'])) {
             <!--==================================
             Top Card
             ===================================-->
-
+            <form action="admin/orders/manageOrderByAdmin/<?= $order['id'] ?>"
+                  id="manageOrderForm" method="post">
             <div class="card shadow-sm border-0 mb-4">
 
                 <div class="card-body">
@@ -562,9 +563,14 @@ if (isset($data['order'])) {
                                 <div>
                                     <?= htmlspecialchars(constant($order['service_type'] ?? '')) ?>
 
-                                    <?php if (!empty($order['project_type'])): ?>
+                                    <?php if (!empty($order['project_type'])) { ?>
                                         - <?= htmlspecialchars(constant($order['project_type'] ?? '')) ?>
-                                    <?php endif; ?>
+                                        <input type="hidden" name="project_type" value="<?=$order['project_type']?>">
+
+                                     <?php
+                                    }
+
+                                    ?>
 
                                 </div>
 
@@ -649,7 +655,7 @@ if (isset($data['order'])) {
 
                             </label>
 
-                            <input
+                            <input   name="mobile"
                                     type="text"
                                     class="form-control-custom"
                                     value="<?= htmlspecialchars($order['mobile'] ?? '') ?>"
@@ -692,43 +698,11 @@ if (isset($data['order'])) {
                                 مقطع
 
                             </label>
-                            <select
-                                    id="serviceSearch"
+                            <input name="level"
+                                    type="text"
                                     class="form-control-custom"
-                                    disabled
-                            >
-                                <option value="ASSOCIATE"
-                                    <?= ($order['level'] ?? '') === 'ASSOCIATE' ? 'selected' : '' ?>>
-                                    کاردانی
-
-                                </option>
-
-
-                                <option value="BACHELOR"
-                                    <?= ($order['level'] ?? '') === 'BACHELOR' ? 'selected' : '' ?>>
-                                    کارشناسی
-
-                                </option>
-
-
-                                <option value="MASTER"
-                                    <?= ($order['level'] ?? '') === 'MASTER' ? 'selected' : '' ?>>
-                                    کارشناسی ارشد
-
-                                </option>
-
-                                <option value="PHD"
-                                    <?= ($order['level'] ?? '') === 'PHD' ? 'selected' : '' ?>>
-                                    دکترا
-
-                                </option>
-
-                                <option value="OTHER"
-                                    <?= ($order['level'] ?? '') === 'OTHER' ? 'selected' : '' ?>>
-                                    سایر
-
-                                </option>
-                            </select>
+                                    value="<?=constant( htmlspecialchars($order['level'] ?? '')) ?>"
+                                    readonly>
 
                         </div>
 
@@ -742,9 +716,8 @@ if (isset($data['order'])) {
             <!--==================================
             Project Info
             ===================================-->
-            <form action="admin/orders/manageOrderByAdmin/<?= $order['id'] ?>"
-                  id="manageOrderForm" method="post">
-                <input type="hidden" value="<?=$order['service_type']?>" name="service_type" />
+
+                <input type="hidden" value="<?= $order['service_type'] ?>" name="service_type"/>
                 <div class="card shadow-sm border-0 mb-4">
 
                     <div class="card-header bg-white">
@@ -790,9 +763,9 @@ if (isset($data['order'])) {
                                         type="number" name="first_price" min="0"
                                         class="form-control-custom"
                                         placeholder="مثلاً 3500000"
-                                        value="<?=($order['first_price']!==0)  ?
-                                         htmlspecialchars($order['first_price'] ?? '')
-                                        :
+                                        value="<?= ($order['first_price'] !== 0) ?
+                                            htmlspecialchars($order['first_price'] ?? '')
+                                            :
                                             ''
                                         ?>"
                                     <?php
@@ -1151,7 +1124,7 @@ if (isset($data['order'])) {
                                         type="number" name="agreed_price" min="0"
                                         class="form-control-custom"
                                         placeholder="مثلاً 3500000"
-                                        value="<?=($order['agreed_price']!==0)  ?
+                                        value="<?= ($order['agreed_price'] !== 0) ?
                                             htmlspecialchars($order['agreed_price'] ?? '')
                                             :
                                             ''
@@ -1250,6 +1223,8 @@ if (isset($data['order'])) {
             if (!validationAdminOrderForm(form)) {
 
                 e.preventDefault();
+                myAlert.error("خطا","لطفا فیلدهای خطادار را تصحیح کنید.")
+
             }
         });
     });
