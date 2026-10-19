@@ -43,28 +43,7 @@ class portfolios extends Controller
 
         if ($field === 'is_featured' && $value === 1) {
             $tags = Helper::sanitize($post['tags'] ?? '');
-
-            if ($tags === '') {
-                $this->jsonError('تگ‌ها را برای پروژه ممتاز وارد کنید.');
-            }
-
-            // جداکننده‌های غیرمجاز
-            if (preg_match('/[,،;؛|\/\\\\]+/u', $tags)) {
-                $this->jsonError('برای جداسازی تگ‌ها فقط خط تیره (-) مجاز است.');
-            }
-
-            $items = explode('-', $tags);
-
-            if (count($items) > 4) {
-                $this->jsonError('حداکثر ۴ تگ مجاز است.');
-            }
-
-            foreach ($items as $item) {
-                if (trim($item) === '') {
-                    $this->jsonError('هیچ تگی نباید خالی باشد.');
-                }
-            }
-
+            $this->validateTags($tags);
             $post['tags'] = $tags;
         }
 
@@ -366,6 +345,13 @@ class portfolios extends Controller
         $post['is_active'] = isset($post['is_active']) ? 1 : 0;
 
 
+        if ($post['is_featured'] === 1) {
+            $tags = Helper::sanitize($post['tags'] ?? '');
+            $this->validateTags($tags);
+            $post['tags'] = $tags;
+        }
+
+
         //آدرس ها
         $post['project_url'] = trim($_POST['project_url'] ?? '');
 
@@ -440,14 +426,26 @@ class portfolios extends Controller
 
     function validateTags(string $tags)
     {
-        $tags = trim($tags);
-
         if ($tags === '') {
-            return false;
+            $this->jsonError('تگ‌ها را برای پروژه ممتاز وارد کنید.');
         }
 
+        // جداکننده‌های غیرمجاز
+        if (preg_match('/[,،;؛|\/\\\\]+/u', $tags)) {
+            $this->jsonError('برای جداسازی تگ‌ها فقط خط تیره (-) مجاز است.');
+        }
 
-        return true;
+        $items = explode('-', $tags);
+
+        if (count($items) > 4) {
+            $this->jsonError('حداکثر ۴ تگ مجاز است.');
+        }
+
+        foreach ($items as $item) {
+            if (trim($item) === '') {
+                $this->jsonError('هیچ تگی نباید خالی باشد.');
+            }
+        }
     }
 
 }

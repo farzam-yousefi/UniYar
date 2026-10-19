@@ -586,8 +586,6 @@ $hasError = !empty($errors);
 
                             <input  <?= empty($portfolio['is_featured']) ? 'disabled' : '' ?>
                                     id="tags"
-                                    data-required="تگ‌های پروژه"
-                                    data-action="پر کنید"
                                     type="text"
                                     name="tags"
                                     class="form-control"

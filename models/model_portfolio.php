@@ -57,8 +57,8 @@ class model_portfolio extends Model
         try {
 
             $sql = "insert into projects(service_id,title,slug,short_description,description,
-           cover_image,github_url,is_featured , is_active ,display_order,duration,level, category,
-           handled_by_admin_id,started_date,completed_date,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+           cover_image,github_url,is_featured,tags , is_active ,display_order,duration,level, category,
+           handled_by_admin_id,started_date,completed_date,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
             $sql0 = "select COALESCE(MAX(display_order), 0) + 1 as display_order from projects";
 
@@ -69,6 +69,7 @@ class model_portfolio extends Model
             $duration = $start->diff($end)->days + 1;
             $this->doQuery($sql, [1, $post['title'], $slug, $post['short_description'],
                 $post['description'], $imgName, $post['project_url'], $post['is_featured'] ?? 0,
+                $post['tags'],
                 $post['is_active'] ?? 0, $display_order, $duration, $post['level'], $post['category']
                 , $adminId, $post['started_date'], $post['completed_date'], $post['status']]);
             return true;
@@ -125,7 +126,7 @@ class model_portfolio extends Model
         try {
 
             $sql = "update projects set title=? ,slug=? ,short_description=? ,description=?,
-cover_image=?,github_url=?,is_featured=? , is_active=? ,duration=? ,level=? , category=?,
+cover_image=?,github_url=?,is_featured=? , tags=?, is_active=? ,duration=? ,level=? , category=?,
 handled_by_admin_id=?,started_date=?,completed_date=? ,status=? where id=? ";
 
 
@@ -135,7 +136,7 @@ handled_by_admin_id=?,started_date=?,completed_date=? ,status=? where id=? ";
             $duration = $start->diff($end)->days + 1;
             $this->doQuery($sql, [$post['title'], $slug, $post['short_description'],
                 $post['description'], $imgName, $post['project_url'], $post['is_featured'] ,
-                $post['is_active'] , $duration, $post['level'], $post['category']
+                $post['tags'],$post['is_active'] , $duration, $post['level'], $post['category']
                 , $adminId, $post['started_date'], $post['completed_date'],  $post['status'],$id]);
             return true;
         } catch (PDOException $e) {

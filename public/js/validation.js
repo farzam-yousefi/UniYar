@@ -81,12 +81,13 @@ function validateAdminPortfolioForm(form) {
 
     let start_date = null;
     let end_date = null;
+    let is_featured=false;
 
     const inputs = form.querySelectorAll('.validation-required');
 
-    // پیدا کردن تاریخ‌ها
-    inputs.forEach(input => {
 
+    inputs.forEach(input => {
+        // پیدا کردن تاریخ‌ها
         if (input.dataset.type === 'start_date') {
             start_date = input.value.trim();
         }
@@ -94,6 +95,9 @@ function validateAdminPortfolioForm(form) {
         if (input.dataset.type === 'end_date') {
             end_date = input.value.trim();
         }
+        //  تگ ها
+        const switchIs_featured = form.querySelector('#is_featured');
+        is_featured = switchIs_featured.checked;
 
     });
 
@@ -110,6 +114,19 @@ function validateAdminPortfolioForm(form) {
 
             isValid = false;
         }
+    }
+    const tags = form.querySelector('#tags');
+    if(is_featured) {
+
+        const tagsValue = tags.value.trim();
+        if(tagsValue==''){
+            makeErr(tags, 'تگ ها را برای پروژه ممتاز پر کنید.');
+            isValid = false;
+        }
+
+    }
+    else {
+        tags.classList.remove("is-invalid");
     }
 
     return generalValidation && isValid;
