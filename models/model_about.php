@@ -8,9 +8,6 @@ class model_about extends Model
     {
         parent::__construct();
     }
-    function test(){
-        $sql="select * from admins";
-        return $this->myFetch($sql);
-    }
+
 }
 

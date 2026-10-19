@@ -13,6 +13,8 @@ class model_index extends Model
     }
 
     function getSelectedPortfolios(){
-
+       $sql="select title, short_description , tags ,cover_image , category
+        from projects  where is_featured=1 order by display_order";
+       return $this->myFetchAll($sql);
     }
 }

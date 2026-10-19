@@ -155,4 +155,13 @@ handled_by_admin_id=?,started_date=?,completed_date=? ,status=? where id=? ";
         }
     }
 
+    /* ======================
+ WEBSITE OPERATIONS
+  ====================== */
+
+    function getActivePortfolios(){
+        $sql="select title , short_description , duration , level , category,
+        cover_image from projects where is_active=1 order by display_order";
+        return $this->myFetchAll($sql);
+    }
 }

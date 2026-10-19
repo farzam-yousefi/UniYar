@@ -1,7 +1,12 @@
-
+<?php
+$portfolios = [];
+if (isset($data['isFeaturedPortfolios'])) {
+    $portfolios = $data['isFeaturedPortfolios'];
+}
+?>
 <main>
 
-<!--    /* ================= HERO-SERVICES ================= */-->
+    <!--    /* ================= HERO-SERVICES ================= */-->
 
     <section class="hero">
         <div class="container">
@@ -14,7 +19,7 @@
                 <div class="col-lg-6">
 
 
-<!--                    services carts-->
+                    <!--                    services carts-->
                     <div class="row g-3">
                         <div class="col-12 col-sm-6">
                             <div class="service-card text-center">
@@ -47,7 +52,99 @@
         </div>
     </section>
 
-<!--    /* =============== WHY-UNIYAR SECTION================= */-->
+    <!--    /* =============== SOME PORTFOLIO SECTION================= */-->
+    <section class="portfolio-section py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="section-title">
+                    نمونه‌کارهای منتخب
+                </h2>
+
+                <p class="section-subtitle">
+                    بخشی از پروژه‌ها و خدمات انجام‌شده توسط UniYar
+                </p>
+
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Cards -->
+
+                <?php
+                foreach ($portfolios
+
+                as $portfolio) {
+                    ?>
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="portfolio-card">
+
+                            <img src="<?= URL ?>public/images/portfolios/<?= $portfolio['category'] ?>/<?= $portfolio['cover_image'] ?>"
+                                 class="img-fluid portfolio-image"
+                                 alt="<?= $portfolio['title'] . '-picture' ?>">
+
+                            <div class="portfolio-body">
+
+                        <span class="portfolio-category">
+
+                             <?=constant(htmlspecialchars($portfolio['category'] ?? ''))?>
+                        </span>
+
+                                <h5>
+
+                                    <?= htmlspecialchars($portfolio['title'] ?? '') ?>
+
+                                </h5>
+
+                                <p>
+
+                                    <?= htmlspecialchars($portfolio['short_description'] ?? '') ?>
+
+                                </p>
+
+                                <div class="portfolio-tech">
+
+                                    <?php
+                                    if (!empty($portfolio['tags'])) {
+                                        $items = explode('-', $portfolio['tags']);
+                                        foreach ($items as $item) {
+                                            ?>
+                                            <span><?= htmlspecialchars($item) ?></span>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <?php
+                }
+                ?>
+
+            </div>
+
+            <div class="text-center mt-5">
+
+                <a href="<?= URL ?>portfolio" class="btn btn-outline-main">
+
+                    مشاهده همه نمونه‌کارها
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--    /* =============== WHY-UNIYAR SECTION================= */-->
     <section class="why-section py-5">
         <div class="container">
 
@@ -71,7 +168,8 @@
                         <h5>پشتیبانی تا پایان پروژه</h5>
 
                         <p>
-                            حتی بعد از تحویل پروژه نیز در کنار شما هستیم و در صورت نیاز راهنمایی و اصلاحات لازم انجام می‌شود.
+                            حتی بعد از تحویل پروژه نیز در کنار شما هستیم و در صورت نیاز راهنمایی و اصلاحات لازم انجام
+                            می‌شود.
                         </p>
 
                     </div>
@@ -128,187 +226,6 @@
             </div>
 
         </div>
-    </section>
-
-    <!--    /* =============== SOME PORTFOLIO SECTION================= */-->
-    <section class="portfolio-section py-5">
-
-        <div class="container">
-
-            <div class="text-center mb-5">
-
-                <h2 class="section-title">
-                    نمونه‌کارهای منتخب
-                </h2>
-
-                <p class="section-subtitle">
-                    بخشی از پروژه‌ها و خدمات انجام‌شده توسط UniYar
-                </p>
-
-            </div>
-
-            <div class="row g-4">
-
-                <!-- Card 1 -->
-
-                <div class="col-md-6 col-lg-4">
-
-                    <div class="portfolio-card">
-
-                        <img src="<?= URL ?>public/images/portfolios/WEBSITE/CPR.png"
-                             class="img-fluid portfolio-image"
-                             alt="">
-
-                        <div class="portfolio-body">
-
-                        <span class="portfolio-category">
-
-                            پروژه برنامه نویسی
-
-                        </span>
-
-                            <h5>
-
-                                سامانه گزارش مشکلات شهری
-
-                            </h5>
-
-                            <p>
-
-                                طراحی و پیاده‌سازی سامانه ثبت و پیگیری گزارش‌های مردمی
-
-                            </p>
-
-                            <div class="portfolio-tech">
-
-                                <span>PHP</span>
-
-                                <span>MySQL</span>
-
-                                <span>MVC</span>
-
-                                <span>Bootstrap</span>
-
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Card 2 -->
-
-                <div class="col-md-6 col-lg-4">
-
-                    <div class="portfolio-card">
-
-                        <img src="<?= URL ?>public/images/portfolio/project2.jpg"
-                             class="img-fluid portfolio-image"
-                             alt="">
-
-                        <div class="portfolio-body">
-
-                        <span class="portfolio-category">
-
-                            طراحی سایت
-
-                        </span>
-
-                            <h5>
-
-                                فروشگاه اینترنتی
-
-                            </h5>
-
-                            <p>
-
-                                طراحی فروشگاه با Next.js و پنل مدیریت
-
-                            </p>
-
-                            <div class="portfolio-tech">
-
-                                <span>Next.js</span>
-
-                                <span>MongoDB</span>
-
-                                <span>Tailwind</span>
-
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Card 3 -->
-
-                <div class="col-md-6 col-lg-4">
-
-                    <div class="portfolio-card">
-
-                        <img src="<?= URL ?>public/images/portfolio/project3.jpg"
-                             class="img-fluid portfolio-image"
-                             alt="">
-
-                        <div class="portfolio-body">
-
-                        <span class="portfolio-category">
-
-                            پایگاه داده
-
-                        </span>
-
-                            <h5>
-
-                                سیستم مدیریت بیمارستان
-
-                            </h5>
-
-                            <p>
-
-                                تحلیل، طراحی و پیاده سازی پایگاه داده
-
-                            </p>
-
-                            <div class="portfolio-tech">
-
-                                <span>ERD</span>
-
-                                <span>SQL</span>
-
-                                <span>MySQL</span>
-
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="text-center mt-5">
-
-                <a href="<?= URL ?>portfolio" class="btn btn-outline-main">
-
-                    مشاهده همه نمونه‌کارها
-
-                </a>
-
-            </div>
-
-        </div>
-
     </section>
 </main>
 

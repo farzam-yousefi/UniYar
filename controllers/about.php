@@ -7,14 +7,10 @@ class About extends Controller
     }
     function index()
     {
-        $data= $this->model->test();
+        $data= [];
         $this->view("about/index",$data);
 
 	}
-	function test(){
-        $this->model->test();
-    }
-
 
 }
 ?>

@@ -3,32 +3,37 @@
     Meta
     ==================================*/
 
-    .portfolio-meta{
+    .portfolio-meta {
 
-        display:flex;
+        display: flex;
 
-        flex-wrap:wrap;
+        flex-wrap: wrap;
 
-        gap:18px;
+        gap: 18px;
 
-        margin-top:18px;
+        margin-top: 18px;
 
     }
 
-    .portfolio-meta span{
+    .portfolio-meta span {
 
-        display:flex;
+        display: flex;
 
-        align-items:center;
+        align-items: center;
 
-        gap:6px;
+        gap: 6px;
 
-        color:#6B7280;
+        color: #6B7280;
 
-        font-size:14px;
+        font-size: 14px;
 
     }
 </style>
+<?php
+$portfolios = [];
+if (isset($data['isActivePortfolios']))
+    $portfolios = $data['isActivePortfolios'];
+?>
 <main>
     <section class="portfolio-intro py-5">
 
@@ -88,7 +93,6 @@
                 </li>
 
 
-
                 <li class="nav-item">
                     <button class="nav-link filter-btn filter-database"
                             data-filter="database">
@@ -114,48 +118,47 @@ Portfolio Grid
 
                 <!-- Programming -->
 
-                <div class="col-lg-4 col-md-6 portfolio-item programming">
+                <?php
+                foreach ($portfolios as $portfolio) {
+                    ?>
+                    <div class="col-lg-4 col-md-6 portfolio-item <?= strtolower($portfolio['category'] ?? '') ?>">
 
-                    <div class="portfolio-card card-programming">
+                        <div class="portfolio-card card-<?= strtolower($portfolio['category'] ?? '') ?>">
 
-                        <img src="<?= URL ?>public/images/portfolio/project1.jpg">
+                            <img src="<?= URL ?>public/images/portfolios/<?= $portfolio['category'] ?>/<?= $portfolio['cover_image'] ?>">
 
-                        <div class="portfolio-body">
+                            <div class="portfolio-body">
 
                          <span class="portfolio-category">
-
-برنامه‌نویسی
+                             <?= constant(htmlspecialchars($portfolio['category'] ?? '')) ?>
                          </span>
 
-                            <h5>
+                                <h5>
+                                    <?= htmlspecialchars($portfolio['title'] ?? '') ?>
+                                </h5>
 
-                                سیستم مدیریت کتابخانه
+                                <p>
+                                    <?= htmlspecialchars($portfolio['short_description'] ?? '') ?>
+                                </p>
 
-                            </h5>
+                                <div class="portfolio-meta portfolio-meta-theme">
 
-                            <p>
+                                    <span>
 
-                                پیاده سازی سیستم مدیریت کتابخانه با PHP و MySQL
+                                    <i class="fas fa-clock"></i>
+                                        <?= Helper::convert2farsi($portfolio['duration']) ?> روز
+                                    </span>
 
-                            </p>
+                                    <span>
 
-                            <div class="portfolio-meta portfolio-meta-theme">
+                                     <i class="fas fa-graduation-cap"></i>
 
-                               <span>
+                                        <?= constant(htmlspecialchars($portfolio['level'] ?? '')) ?>
 
-                                <i class="fas fa-clock"></i>
-
-۴ روز
-
-                                 </span>
-
-                                <span>
-
-                                 <i class="fas fa-graduation-cap"></i>
-
-کارشناسی
 
                                     </span>
+
+                                </div>
 
                             </div>
 
@@ -163,9 +166,9 @@ Portfolio Grid
 
                     </div>
 
-                </div>
-
-
+                    <?php
+                }
+                ?>
                 <!-- Website -->
 
                 <div class="col-lg-4 col-md-6 portfolio-item website">

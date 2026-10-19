@@ -14,7 +14,7 @@ class Index extends Controller
     {
         $result = $this->model->getFooterInfo();
         Model::sessionSet("footerInfo", $result);
-        $data['selectedPortfolios'] = $this->model->getSelectedPortfolios();
+        $data['isFeaturedPortfolios'] = $this->model->getSelectedPortfolios();
         $this->view("index/index", $data);
 
     }

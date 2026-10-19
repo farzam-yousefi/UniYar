@@ -469,7 +469,7 @@ FAQ CTA
 
             </p>
 
-            <a href="<?= URL ?>contact"
+            <a href="<?= URL ?>contact#contactForm"
 
                class="btn">
 

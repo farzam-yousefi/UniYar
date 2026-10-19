@@ -13,6 +13,9 @@ class model_contact extends Model
         parent::__construct();
     }
 
+    /* ======================
+ WEBSITE OPERATIONS
+  ====================== */
     function add($post)
     {
 
@@ -64,6 +67,9 @@ class model_contact extends Model
     }
 
 
+    /* ======================
+ ADMIN PANEL OPERATIONS
+  ====================== */
     function getInitialInfo()
     {
         $totalCount = $this->myFetch("select count(*) as totalCount from messages")['totalCount'];

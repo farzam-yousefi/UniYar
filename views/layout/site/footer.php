@@ -75,10 +75,10 @@ foreach ($footerInfo as $row) {
                 <ul class="footer-contact footer-links">
 
                     <li>
-                        <a href="">
+
                         <i class="bi bi-envelope"></i>
                             <span class="ps-1"><?=htmlspecialchars($contactInfo['email'] ?? '')?></span>
-                        </a>
+
                     </li>
 
                     <li>

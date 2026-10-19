@@ -46,12 +46,12 @@ function normalizePersian(text) {
         .trim();
 }
 
-function focusTextarea(textarea){
+function focusTextarea(textarea) {
 
 
     textarea.addEventListener('click', function () {
-
-        this.setSelectionRange(0, 0);
+        if (this.value.trim() === '')
+            this.setSelectionRange(0, 0);
 
     });
 

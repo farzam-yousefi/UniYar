@@ -8,8 +8,8 @@ class Portfolio extends Controller
     }
     function index()
     {
-        $x=[];
-        $this->view("portfolio/index",$x);
+        $data['isActivePortfolios']=$this->model->getActivePortfolios();
+        $this->view("portfolio/index",$data);
 
 	}
 

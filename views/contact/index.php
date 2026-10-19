@@ -529,7 +529,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
 
             <!-- فرم -->
 
-            <div class="col-lg-8">
+            <div class="col-lg-8" id="contactForm">
 
                 <div class="contact-form">
 
