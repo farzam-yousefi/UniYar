@@ -1227,18 +1227,9 @@ if (isset($data['order'])) {
 
             }
         });
-    });
+        const textareas = document.querySelectorAll('textarea');
 
-    const textareas = document.querySelectorAll('textarea');
-
-    textareas.forEach(textarea => {
-
-        textarea.addEventListener('click', function () {
-
-            this.setSelectionRange(0, 0);
-
-        });
-
+        textareas.forEach(textarea =>focusTextarea(textarea) );
     });
 
     $(function () {

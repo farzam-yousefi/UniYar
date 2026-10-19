@@ -679,7 +679,7 @@ if (isset($data['portfolios'])) {
 
                              data-category="<?= $cat ?>">
 
-                            <img src="<?= URL ?>public/images/portfolios/<?=$portfolio['category']?>/<?= $portfolio['cover_image'] ?>">
+                            <img src="<?= URL ?>public/images/portfolios/<?= $portfolio['category'] ?>/<?= $portfolio['cover_image'] ?>">
 
 
                             <div class="portfolio-body">
@@ -810,7 +810,7 @@ if (isset($data['portfolios'])) {
                                             <input
                                                     type="checkbox"
 
-                                                    class="portfolio-switch"
+                                                    class="portfolio-switch featured-switch"
 
                                                     data-id="<?= $portfolio['id'] ?>"
 
@@ -823,6 +823,51 @@ if (isset($data['portfolios'])) {
                                         </label>
 
                                     </div>
+
+                                </div>
+
+                                <!-- Tags form user -->
+                                <div class="mt-3  portfolio-tags d-none">
+                                    <label class="form-label">
+                                        تگ‌ها (حداکثر ۴ تگ و جداشده با -)
+                                    </label>
+
+                                    <input
+                                            data-required="تگ‌های پروژه"
+                                            data-action="پر کنید"
+                                            type="text"
+                                            name="tags"
+                                            class="form-control tags"
+                                            value="<?= htmlspecialchars(
+                                                $portfolio['tags'] ?? '',
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>"
+                                            placeholder="مثلاً  : mvc - php">
+
+                                    <?php if (isset($errors['tags'])): ?>
+                                        <div class="form-error general-form-error">
+                                            <?= $errors['tags'] ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="align-items-center d-flex justify-content-around pt-2">
+                                        <button type="button" class="bg bg-primary save-tags"> ثبت</button>
+                                        <button type="button" class="bg bg-secondary cancel-tags"> انصراف</button>
+                                    </div>
+                                </div>
+
+                                <!-- Tags form DATA BASE -->
+                                <div class="mt-3  portfolio-tech <?= empty($portfolio['tags']) ? 'd-none' : '' ?>">
+                                    <?php
+                                    if (!empty($portfolio['tags'])) {
+                                        $items = explode('-', $portfolio['tags']);
+                                        foreach ($items as $item) {
+                                            ?>
+                                            <span><?= htmlspecialchars($item) ?></span>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
 
                                 </div>
 
@@ -1041,43 +1086,137 @@ if (isset($data['portfolios'])) {
 status switch
 ==========================================*/
     //**** rebind after ajax by delegation
+
+    //******
     $(document).on('change', '.portfolio-switch', function () {
 
-        const id = this.dataset.id;
-        const field = this.dataset.field;
-        const value = this.checked ? 1 : 0;
+        const id = $(this).data('id');
+        const field = $(this).data('field');
+        const value = $(this).prop('checked') ? 1 : 0;
 
+        if (field === "is_featured") {
+            const card = $(this).closest('.portfolio-card');
+            const tags = card.find('.portfolio-tags');
+            const techs = card.find('.portfolio-tech');
+
+            tags.toggleClass('d-none', !this.checked);
+            techs.addClass('d-none');
+        }
+
+        // سوییچ فعال (هر دو حالت یا ممتاز خاموش
+        if ((field === 'is_active') || (field === "is_featured" && value === 0))
+            updatePortfolioSwitch(id, field, value);
+
+
+    });
+
+    //save && cancel btn for tags section
+    $(document).on('click', '.save-tags', function () {
+        const $card = $(this).closest('.portfolio-card');
+        const $tags = $card.find('.tags');
+        const $switch = $card.find('.featured-switch');
+        const id = $switch.data('id');
+        const field = $switch.data('field');
+        const value = $switch.prop('checked') ? 1 : 0;
+
+        const tagsValue = $tags.val().trim();
+
+        if (!tagsValue) {
+            myAlert.error('خطا', 'برای پروژه ممتاز، تگ‌ها را وارد کنید.');
+            $tags.trigger('focus');
+            return;
+        }
+        updatePortfolioSwitch(id, field, value, tagsValue);
+
+    });
+
+    $(document).on('click', '.cancel-tags', function () {
+
+        const $card = $(this).closest('.portfolio-card');
+        const $tags = $card.find('.portfolio-tags');
+        const $switch = $card.find('.featured-switch');
+
+        // مخفی کردن بخش تگ‌ها
+        $tags.addClass('d-none');
+
+        // خاموش کردن سوییچ ممتاز
+        $switch.prop('checked', false);
+
+    });
+
+
+    function updatePortfolioSwitch(id, field, value, tagsValue = null) {
 
         $.ajax({
             url: "<?= URL ?>admin/portfolios/changeBeingActiveFeatured/" + id,
             type: "POST",
-            dataType: "text",//'text or json
-            data: {value: value, field: field},
-
-            beforeSend: function () {
-                //$('#imgSpinner1').show();
-
+            dataType: "json",
+            data: {
+                value: value,
+                field: field,
+                tags: tagsValue
             },
             error: function (jqXHR, textStatus, errorThrown) {
-
                 console.error(jqXHR.status, errorThrown);
+
+                const response = jqXHR.responseJSON;
+
+                if (response && response.message) {
+                    myAlert.error('خطا', response.message);
+                    return;
+                }
 
                 myAlert.error(
                     'خطا',
-                    'تغییر وضعیت با خطا مواجه شد .دوباره تلاش کنید.'
+                    'تغییر وضعیت با خطا مواجه شد. دوباره تلاش کنید.'
                 );
-
             },
             success: function (data) {
+                if (data.success && field === 'is_featured' && Number(value) === 1) {
 
-            },
+                    myAlert.success(
+                        'موفق',
+                        'تگ‌ها با موفقیت اضافه و ذخیره شدند.'
+                    );
 
+                    const $card = $(`.portfolio-switch[data-id="${id}"]`)
+                        .closest('.portfolio-card');
+
+                    const $portfolioBody = $card.find('.portfolio-body');
+
+                    // جداسازی تگ‌ها
+                    const items = tagsValue
+                        .split('-')
+                        .map(tag => tag.trim())
+                        .filter(tag => tag !== '');
+
+                    // ساخت div تگ‌ها
+                    const $techDiv = $('<div>', {
+                        class: 'mt-3 portfolio-tech'
+                    });
+
+                    // ساخت span برای هر تگ
+                    items.forEach(function (item) {
+                        $('<span>')
+                            .text(item)
+                            .appendTo($techDiv);
+                    });
+
+                    // حذف تگ‌های قبلی، در صورت وجود
+                    $portfolioBody.find('.portfolio-tech').remove();
+
+                    // اضافه کردن تگ‌ها به انتهای portfolio-body
+                    $portfolioBody.append($techDiv);
+                    $portfolioBody.find('.portfolio-tags').addClass('d-none');
+
+                }
+            }
         });
+    }
 
-    });
     /*==========================================
-       Delete
-       ==========================================*/
+      Delete
+      ==========================================*/
     $(document).on('click', '.btn-delete', function (event) {
 
         event.preventDefault();
@@ -1085,7 +1224,6 @@ status switch
         myAlert.delete(this.href);
 
     });
-
 
 </script>
 

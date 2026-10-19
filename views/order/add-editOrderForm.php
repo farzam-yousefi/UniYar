@@ -2764,18 +2764,8 @@ Success Modal
                 myAlert.error('خطا', 'لطفا فیلدهای ضروری را پر کنید')
             }
         });
+        const textareas = document.querySelectorAll('textarea');
+
+        textareas.forEach(textarea =>focusTextarea(textarea) );
     });
-
-    const textareas = document.querySelectorAll('textarea');
-
-    textareas.forEach(textarea => {
-
-        textarea.addEventListener('click', function () {
-
-            this.setSelectionRange(0, 0);
-
-        });
-
-    });
-
 </script>

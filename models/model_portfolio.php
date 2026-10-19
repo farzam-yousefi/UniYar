@@ -40,8 +40,10 @@ class model_portfolio extends Model
     function changeBeingActiveFeatured($post, $id)
     {
         $column = ($post['field'] == "is_active") ? "is_active" : "is_featured";
-        $sql = "update projects set $column = ? where id=?";
-        $this->doQuery($sql, [$post['value'], $id]);
+        if($column==="is_featured" && (int)($post['value']===0))
+            $post['tags']=null;
+        $sql = "update projects set $column = ? , tags=? where id=?";
+        $this->doQuery($sql, [$post['value'],$post['tags'], $id]);
     }
 
     function delete($id)
@@ -55,8 +57,8 @@ class model_portfolio extends Model
         try {
 
             $sql = "insert into projects(service_id,title,slug,short_description,description,
-cover_image,github_url,is_featured , is_active ,display_order,duration,level, category,
-handled_by_admin_id,started_date,completed_date,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+           cover_image,github_url,is_featured , is_active ,display_order,duration,level, category,
+           handled_by_admin_id,started_date,completed_date,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
             $sql0 = "select COALESCE(MAX(display_order), 0) + 1 as display_order from projects";
 

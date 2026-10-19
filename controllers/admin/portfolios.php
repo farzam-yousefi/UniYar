@@ -35,7 +35,64 @@ class portfolios extends Controller
     function changeBeingActiveFeatured($id)
     {
         $this->loadModel("portfolio");
-        $this->model->changeBeingActiveFeatured($_POST, $id);
+
+        $post = $_POST;
+
+        $field = $post['field'] ?? '';
+        $value = (int)($post['value'] ?? 0);
+
+        if ($field === 'is_featured' && $value === 1) {
+            $tags = Helper::sanitize($post['tags'] ?? '');
+
+            if ($tags === '') {
+                $this->jsonError('تگ‌ها را برای پروژه ممتاز وارد کنید.');
+            }
+
+            // جداکننده‌های غیرمجاز
+            if (preg_match('/[,،;؛|\/\\\\]+/u', $tags)) {
+                $this->jsonError('برای جداسازی تگ‌ها فقط خط تیره (-) مجاز است.');
+            }
+
+            $items = explode('-', $tags);
+
+            if (count($items) > 4) {
+                $this->jsonError('حداکثر ۴ تگ مجاز است.');
+            }
+
+            foreach ($items as $item) {
+                if (trim($item) === '') {
+                    $this->jsonError('هیچ تگی نباید خالی باشد.');
+                }
+            }
+
+            $post['tags'] = $tags;
+        }
+
+        $this->model->changeBeingActiveFeatured($post, $id);
+        header('Content-Type: application/json; charset=utf-8');
+        $message = ($field === 'is_featured' && $value === 1)
+            ? 'تگ‌ها با موفقیت اضافه و ذخیره شدند.'
+            : 'تغییرات با موفقیت ذخیره شد.';
+
+        echo json_encode([
+            'success' => true,
+            'message' => $message
+        ], JSON_UNESCAPED_UNICODE);
+
+        exit;
+    }
+
+    private function jsonError(string $message): void
+    {
+        http_response_code(422);
+        header('Content-Type: application/json; charset=utf-8');
+
+        echo json_encode([
+            'success' => false,
+            'message' => $message
+        ], JSON_UNESCAPED_UNICODE);
+
+        exit;
     }
 
     function delete($id)
@@ -128,258 +185,269 @@ class portfolios extends Controller
             'errors' => []
         ];
 
-            if (!empty($files)) {
-                $imageResult = Helper::validatorImage($files['cover_image'], $subDir, $item,
-                    $itemName, $imgIsRequired);
+        if (!empty($files)) {
+            $imageResult = Helper::validatorImage($files['cover_image'], $subDir, $item,
+                $itemName, $imgIsRequired);
 
 
-            } elseif ($imgIsRequired) {
+        } elseif ($imgIsRequired) {
 
-                $imageResult = Helper::validatorImage([],$subDir, $item,$itemName,
-                    true
-                );
-            }
-            $errors = array_merge(
-                $postResult['errors'],
-                $imageResult['errors'] ?? []
+            $imageResult = Helper::validatorImage([], $subDir, $item, $itemName,
+                true
             );
+        }
+        $errors = array_merge(
+            $postResult['errors'],
+            $imageResult['errors'] ?? []
+        );
 
-            if (!empty($errors)) {
+        if (!empty($errors)) {
 
-                $data['errors'] = $errors;
-                $data['portfolio'] = $postResult['data'];
+            $data['errors'] = $errors;
+            $data['portfolio'] = $postResult['data'];
 
-                $this->view("admin/portfolios/add-edit", $data,
-                    "admin", "admin");
+            $this->view("admin/portfolios/add-edit", $data,
+                "admin", "admin");
 
-                return;
-            }
-
-
-            // اینجا یعنی همه چیز درست است
-            $post = $postResult['data'];
-
-            $imageName = $imageResult['data']['filename'];
-
-            // ذخیره در دیتابیس
-            $adminId = $this->getCurrentAdminId();
-            $this->loadModel("portfolio");
-
-            $result = $this->model->addFromAdmin($post, $imageName, $adminId);
-            if ($result)
-                $_SESSION['alert-resultOperation'] = [
-                    'type' => 'success',
-                    'title' => 'عملیات موفق',
-                    'message' => 'نمونه کار با موفقیت ثبت شد.'
-                ];
-            else
-                $_SESSION['alert-resultOperation'] = [
-                    'type' => 'error',
-                    'title' => 'عملیات ناموفق',
-                    'message' => 'عملیات ثبت نمونه کار با خطا مواجه شد.'
-                ];
-            $_SESSION['operation'] = "addPortfolioFromAdmin";
-            header("Location:" . URL . "admin/portfolios");
+            return;
         }
 
-        function update($post, $files, $id)
-        {
-            $this->loadModel("portfolio");
-            $data['mode'] = "edit";
-            $subDir = "portfolios/" . $post['category'];
-            $itemName = 'نمونه کار';
-            $item = 'cover_image';
-            $imgIsRequired = false;
 
-            $postResult = $this->validator($post);
+        // اینجا یعنی همه چیز درست است
+        $post = $postResult['data'];
 
-    // تصویر قبلی
-            $oldPortfolio = $this->model->getPortfolioById($id);
+        $imageName = $imageResult['data']['filename'];
 
-            if (!$oldPortfolio) {
-                // نمونه کار وجود ندارد
-                return;
-            }
+        // ذخیره در دیتابیس
+        $adminId = $this->getCurrentAdminId();
+        $this->loadModel("portfolio");
 
-            // اگر تصویر جدید انتخاب شده
-            if (
-                isset($files['cover_image']) &&
-                $files['cover_image']['error'] !== UPLOAD_ERR_NO_FILE
-            ) {
-                $imageResult = Helper::validatorImage($files['cover_image'], $subDir, $item, $itemName, $imgIsRequired);
-            } else {
-                // تصویر قبلی را حفظ کن
-                $imageResult = [
-                    'success' => true,
-                    'data' => [
-                        'filename' => $oldPortfolio['cover_image'],
-                    ],
-                    'errors' => []
-                ];
-            }
+        $result = $this->model->addFromAdmin($post, $imageName, $adminId);
+        if ($result)
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'success',
+                'title' => 'عملیات موفق',
+                'message' => 'نمونه کار با موفقیت ثبت شد.'
+            ];
+        else
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'error',
+                'title' => 'عملیات ناموفق',
+                'message' => 'عملیات ثبت نمونه کار با خطا مواجه شد.'
+            ];
+        $_SESSION['operation'] = "addPortfolioFromAdmin";
+        header("Location:" . URL . "admin/portfolios");
+    }
 
-            $errors = array_merge(
-                $postResult['errors'],
-                $imageResult['errors'] ?? []
-            );
+    function update($post, $files, $id)
+    {
+        $this->loadModel("portfolio");
+        $data['mode'] = "edit";
+        $subDir = "portfolios/" . $post['category'];
+        $itemName = 'نمونه کار';
+        $item = 'cover_image';
+        $imgIsRequired = false;
 
+        $postResult = $this->validator($post);
 
-            if (!empty($errors)) {
+        // تصویر قبلی
+        $oldPortfolio = $this->model->getPortfolioById($id);
 
-                $data['errors'] = $errors;
-                $data['portfolio'] = $postResult['data'];
-
-                $this->view("admin/portfolios/add-edit", $data,
-                    "admin", "admin");
-
-                return;
-            }
-
-
-            // اینجا یعنی همه چیز درست است
-            $post = $postResult['data'];
-
-            $imageName = $imageResult['data']['filename'];
-
-            // ویرایش در دیتابیس
-            $adminId = $this->getCurrentAdminId();
-
-
-            $result = $this->model->editFromAdmin($post, $imageName, $adminId, $id);
-            if ($result)
-                $_SESSION['alert-resultOperation'] = [
-                    'type' => 'success',
-                    'title' => 'عملیات موفق',
-                    'message' => 'نمونه کار با موفقیت ویرایش شد.'
-                ];
-            else
-                $_SESSION['alert-resultOperation'] = [
-                    'type' => 'error',
-                    'title' => 'عملیات ناموفق',
-                    'message' => 'عملیات ویرایش نمونه کار با خطا مواجه شد.'
-                ];
-            $_SESSION['operation'] = "editPortfolioFromAdmin";
-            header("Location:" . URL . "admin/portfolios/index");
+        if (!$oldPortfolio) {
+            // نمونه کار وجود ندارد
+            return;
         }
 
-        /* ======================
-      validation
-      ====================== */
-
-        function validator($post)
-        {
-            $errors = [];
-
-
-            // پاک سازی فیلد های متنی
-            $post['title'] = Helper::sanitize($post['title'] ?? '');
-            $post['short_description'] = Helper::cleanTechDescription(
-                $post['short_description'] ?? ''
-            );
-            $post['description'] = Helper::cleanTechDescription(
-                $post['description'] ?? ''
-            );
-
-            //فیلدهای select
-            $post['category'] = trim($post['category']) ?? '';
-            $post['level'] = trim($post['level']) ?? '';
-            $post['status'] = strtoupper(trim($post['status'])) ?? '';
-
-            if ($post['category'] === '') {
-                $errors['category'] = 'دسته بندی را انتخاب کنید.';
-            } else if (!in_array($post['category'], ALLOWED_CATEGORIES, true)) {
-                $errors['category'] = 'دسته بندی انتخاب شده معتبر نیست.';
-            }
-
-
-            if ($post['level'] === '') {
-                $errors['level'] = 'مقطع را انتخاب کنید.';
-            } else if (!in_array($post['level'], ALLOWED_LEVELS, true)) {
-                $errors['level'] = 'مقطع انتخاب شده معتبر نیست.';
-            }
-
-            if ($post['status'] === '') {
-                $errors['status'] = 'وضعیت را انتخاب کنید.';
-            } else if (!in_array($post['status'], ALLOWED_STATUSES, true)) {
-                $errors['status'] = 'وضعیت انتخاب شده معتبر نیست.';
-            }
-
-//فیلد های سوییچ/چک باکس
-            $post['is_featured'] = isset($post['is_featured']) ? 1 : 0;
-            $post['is_active'] = isset($post['is_active']) ? 1 : 0;
-
-
-            //آدرس ها
-            $post['project_url'] = trim($_POST['project_url'] ?? '');
-
-            if ($post['project_url'] !== '') {
-
-                if (!filter_var($post['project_url'], FILTER_VALIDATE_URL))
-                    $errors['project_url'] = 'آدرس پروژه معتبر نیست.';
-                else {
-                    $scheme = strtolower(
-                        parse_url($post['project_url'], PHP_URL_SCHEME) ?? ''
-                    );
-
-                    if (!in_array($scheme, ['http', 'https'], true)) {
-                        $errors['project_url'] =
-                            'آدرس پروژه باید با http یا https باشد.';
-                    }
-
-                }
-            }
-
-
-            // اعتبارسنجی فیلدهای ضروری
-
-            if ($post['title'] === '') {
-                $errors['title'] = 'عنوان نمونه کار الزامی است.';
-            }
-
-
-            if ($post['short_description'] === '') {
-                $errors['short_description'] = 'توضیح کوتاه الزامی است.';
-            }
-
-
-            if ($post['description'] === '') {
-                $errors['description'] = 'توضیحات پروژه الزامی است.';
-            }
-
-
-            if ($post['started_date'] === '') {
-                $errors['started_date'] = 'تاریخ ثبت الزامی است.';
-            }
-
-
-            if ($post['completed_date'] === '') {
-                $errors['completed_date'] = 'تاریخ تحویل الزامی است.';
-            }
-
-            $startedAt = trim($post['started_date']) ?? '';
-            $completedAt = trim($post['completed_date']) ?? '';
-
-            if ($startedAt !== '' && $completedAt !== '') {
-
-                $startedAtMiladi = Helper::jaliliToMiladi($startedAt);
-                $completedAtMiladi = Helper::jaliliToMiladi($completedAt);
-
-                if ($startedAtMiladi > $completedAtMiladi) {
-                    $errors['completed_date'] =
-                        'تاریخ تحویل باید بعد از تاریخ ثبت باشد.';
-                }
-            }
-            if ($post['started_date'] !== '')
-                $post['started_date'] = Helper::jaliliToMiladi(trim($post['started_date']));
-            if ($post['completed_date'] !== '')
-                $post['completed_date'] = Helper::jaliliToMiladi(trim($post['completed_date']));
-
-
-            return [
-                'data' => $post,
-                'errors' => $errors
+        // اگر تصویر جدید انتخاب شده
+        if (
+            isset($files['cover_image']) &&
+            $files['cover_image']['error'] !== UPLOAD_ERR_NO_FILE
+        ) {
+            $imageResult = Helper::validatorImage($files['cover_image'], $subDir, $item, $itemName, $imgIsRequired);
+        } else {
+            // تصویر قبلی را حفظ کن
+            $imageResult = [
+                'success' => true,
+                'data' => [
+                    'filename' => $oldPortfolio['cover_image'],
+                ],
+                'errors' => []
             ];
         }
 
+        $errors = array_merge(
+            $postResult['errors'],
+            $imageResult['errors'] ?? []
+        );
 
+
+        if (!empty($errors)) {
+
+            $data['errors'] = $errors;
+            $data['portfolio'] = $postResult['data'];
+
+            $this->view("admin/portfolios/add-edit", $data,
+                "admin", "admin");
+
+            return;
+        }
+
+
+        // اینجا یعنی همه چیز درست است
+        $post = $postResult['data'];
+
+        $imageName = $imageResult['data']['filename'];
+
+        // ویرایش در دیتابیس
+        $adminId = $this->getCurrentAdminId();
+
+
+        $result = $this->model->editFromAdmin($post, $imageName, $adminId, $id);
+        if ($result)
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'success',
+                'title' => 'عملیات موفق',
+                'message' => 'نمونه کار با موفقیت ویرایش شد.'
+            ];
+        else
+            $_SESSION['alert-resultOperation'] = [
+                'type' => 'error',
+                'title' => 'عملیات ناموفق',
+                'message' => 'عملیات ویرایش نمونه کار با خطا مواجه شد.'
+            ];
+        $_SESSION['operation'] = "editPortfolioFromAdmin";
+        header("Location:" . URL . "admin/portfolios/index");
     }
+
+    /* ======================
+  validation
+  ====================== */
+
+    function validator($post)
+    {
+        $errors = [];
+
+
+        // پاک سازی فیلد های متنی
+        $post['title'] = Helper::sanitize($post['title'] ?? '');
+        $post['short_description'] = Helper::cleanTechDescription(
+            $post['short_description'] ?? ''
+        );
+        $post['description'] = Helper::cleanTechDescription(
+            $post['description'] ?? ''
+        );
+
+        //فیلدهای select
+        $post['category'] = trim($post['category']) ?? '';
+        $post['level'] = trim($post['level']) ?? '';
+        $post['status'] = strtoupper(trim($post['status'])) ?? '';
+
+        if ($post['category'] === '') {
+            $errors['category'] = 'دسته بندی را انتخاب کنید.';
+        } else if (!in_array($post['category'], ALLOWED_CATEGORIES, true)) {
+            $errors['category'] = 'دسته بندی انتخاب شده معتبر نیست.';
+        }
+
+
+        if ($post['level'] === '') {
+            $errors['level'] = 'مقطع را انتخاب کنید.';
+        } else if (!in_array($post['level'], ALLOWED_LEVELS, true)) {
+            $errors['level'] = 'مقطع انتخاب شده معتبر نیست.';
+        }
+
+        if ($post['status'] === '') {
+            $errors['status'] = 'وضعیت را انتخاب کنید.';
+        } else if (!in_array($post['status'], ALLOWED_STATUSES, true)) {
+            $errors['status'] = 'وضعیت انتخاب شده معتبر نیست.';
+        }
+
+//فیلد های سوییچ/چک باکس
+        $post['is_featured'] = isset($post['is_featured']) ? 1 : 0;
+        $post['is_active'] = isset($post['is_active']) ? 1 : 0;
+
+
+        //آدرس ها
+        $post['project_url'] = trim($_POST['project_url'] ?? '');
+
+        if ($post['project_url'] !== '') {
+
+            if (!filter_var($post['project_url'], FILTER_VALIDATE_URL))
+                $errors['project_url'] = 'آدرس پروژه معتبر نیست.';
+            else {
+                $scheme = strtolower(
+                    parse_url($post['project_url'], PHP_URL_SCHEME) ?? ''
+                );
+
+                if (!in_array($scheme, ['http', 'https'], true)) {
+                    $errors['project_url'] =
+                        'آدرس پروژه باید با http یا https باشد.';
+                }
+
+            }
+        }
+
+
+        // اعتبارسنجی فیلدهای ضروری
+
+        if ($post['title'] === '') {
+            $errors['title'] = 'عنوان نمونه کار الزامی است.';
+        }
+
+
+        if ($post['short_description'] === '') {
+            $errors['short_description'] = 'توضیح کوتاه الزامی است.';
+        }
+
+
+        if ($post['description'] === '') {
+            $errors['description'] = 'توضیحات پروژه الزامی است.';
+        }
+
+
+        if ($post['started_date'] === '') {
+            $errors['started_date'] = 'تاریخ ثبت الزامی است.';
+        }
+
+
+        if ($post['completed_date'] === '') {
+            $errors['completed_date'] = 'تاریخ تحویل الزامی است.';
+        }
+
+        $startedAt = trim($post['started_date']) ?? '';
+        $completedAt = trim($post['completed_date']) ?? '';
+
+        if ($startedAt !== '' && $completedAt !== '') {
+
+            $startedAtMiladi = Helper::jaliliToMiladi($startedAt);
+            $completedAtMiladi = Helper::jaliliToMiladi($completedAt);
+
+            if ($startedAtMiladi > $completedAtMiladi) {
+                $errors['completed_date'] =
+                    'تاریخ تحویل باید بعد از تاریخ ثبت باشد.';
+            }
+        }
+        if ($post['started_date'] !== '')
+            $post['started_date'] = Helper::jaliliToMiladi(trim($post['started_date']));
+        if ($post['completed_date'] !== '')
+            $post['completed_date'] = Helper::jaliliToMiladi(trim($post['completed_date']));
+
+
+        return [
+            'data' => $post,
+            'errors' => $errors
+        ];
+    }
+
+    function validateTags(string $tags)
+    {
+        $tags = trim($tags);
+
+        if ($tags === '') {
+            return false;
+        }
+
+
+        return true;
+    }
+
+}

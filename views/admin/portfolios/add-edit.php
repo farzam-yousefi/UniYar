@@ -49,9 +49,12 @@
         object-fit: cover;
 
     }
-
+  .switch-width{
+      width: 40px;
+  }
 
 </style>
+
 <?php if (isset($_SESSION['alert-resultOperation'])) {
     if ($_SESSION['operation'] === 'editPortfolioFromAdmin' &&
         $_SESSION['alert-resultOperation']['type'] === 'error') { ?>
@@ -502,89 +505,104 @@ $hasError = !empty($errors);
 
                     <hr class="my-4">
 
-                    <div class="row align-items-center">
+                    <div class="row align-items- w-100 gx-3 gy-3 mt-2 mb-4">
+
+                        <!-- Status -->
+                        <div class="col-12 col-md-6 col-lg-3">
+
+
+                            <label class="form-label">
+                                وضعیت
+                            </label>
+
+                            <select
+                                    id="status"
+                                    name="status"
+                                    class="form-control w-100">
+
+                                <option
+                                        value="in_progress"
+                                    <?= ($portfolio['status'] ?? '') === 'IN_PROGRESS' ? 'selected' : '' ?>>
+                                    پیش‌نویس
+                                </option>
+
+                                <option
+                                        value="completed"
+                                    <?= ($portfolio['status'] ?? '') === 'COMPLETED' ? 'selected' : '' ?>>
+                                    منتشر شده
+                                </option>
+
+                            </select>
+
+
+                        </div>
+
 
                         <!-- Switches -->
-                        <div class="col-12 col-md-6">
+                        <div class="ps-md-5 mt-lg-4  mt-md-5 col-12 col-md-6 col-lg-3">
 
-                            <div class="d-flex gap-4">
+                            <div class="align-items-center gap-3">
 
-                                <div class="d-flex align-items-center mt-2 mb-3 gap-2">
-
-                                    <label>
+                                <!-- Active -->
+                                <div class="my-lg-2">
+                                    <label class="mb-0 switch-width">
                                         فعال
                                     </label>
 
-                                    <label class="form-switch">
-                                        <input
-                                                type="checkbox"
-                                                name="is_active"
-                                                value="1"
-
-                                            <?php
-                                            if ($mode === "add")
-                                                echo 'checked';
-
-                                            else
-                                                if ((isset($portfolio)) && ($portfolio['is_active']))
-                                                    echo 'checked';
-                                            ?>
-                                        >
-                                        <span></span>
-                                    </label>
+                                    <input
+                                            type="checkbox"
+                                            name="is_active"
+                                            value="1"
+                                        <?= ($mode === "add" ||
+                                            (!empty($portfolio['is_active'])))
+                                            ? 'checked' : '' ?>>
 
                                 </div>
 
-                                <div class="d-flex align-items-center mt-2 mb-3 gap-2">
+                                <!-- Featured -->
+                                <label class="mb-0 switch-width">
+                                    ممتاز
+                                </label>
 
-                                    <label>
-                                        ممتاز
-                                    </label>
 
-                                    <label class="form-switch">
-                                        <input
-                                                type="checkbox"
-                                                name="is_featured"
-                                                value="1"
-                                            <?= ((isset($portfolio)) && ($portfolio['is_featured'])) ? 'checked' : '' ?>
-                                        >
-                                        <span></span>
-                                    </label>
+                                <input  id="is_featured"
+                                        type="checkbox"
+                                        name="is_featured"
+                                        value="1"
+                                    <?= !empty($portfolio['is_featured']) ? 'checked' : '' ?>>
 
-                                </div>
 
                             </div>
 
                         </div>
 
 
-                        <!-- Status -->
-                        <div class="col-12 col-md-6 mt-3 mt-md-0">
+                        <!-- Tags -->
+                        <div class="col-12 col-lg-6 mt-md-4">
 
-                            <div class="d-flex align-items-center mt-md-2 mt-sm-0 mb-3 mb-sm-4 gap-3">
+                            <label for="tags" class="form-label">
+                                تگ‌ها (صرفاً برای ممتازها، توجه : حداکثر ۴ تگ و جداشده با -)
+                            </label>
 
-                                <label for="status">
-                                    وضعیت
-                                </label>
+                            <input  <?= empty($portfolio['is_featured']) ? 'disabled' : '' ?>
+                                    id="tags"
+                                    data-required="تگ‌های پروژه"
+                                    data-action="پر کنید"
+                                    type="text"
+                                    name="tags"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars(
+                                        $portfolio['tags'] ?? '',
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>"
+                                    placeholder="مثلاً  : mvc - php">
 
-                                <select
-                                        id="status"
-                                        name="status"
-                                        class="form-control w-50">
-
-                                    <option value="in_progress"
-                                        <?= ($portfolio['status'] ?? '') === 'IN_PROGRESS' ? 'selected' : '' ?>>
-                                        پیش نویس
-                                    </option>
-
-                                    <option value="completed"
-                                        <?= ($portfolio['status'] ?? '') === 'COMPLETED' ? 'selected' : '' ?>>
-                                        منتشر شده
-                                    </option>
-
-                                </select>
-
-                            </div>
+                            <?php if (isset($errors['tags'])): ?>
+                                <div class="form-error general-form-error">
+                                    <?= $errors['tags'] ?>
+                                </div>
+                            <?php endif; ?>
 
                         </div>
 
@@ -657,21 +675,16 @@ $hasError = !empty($errors);
             if (!validateAdminPortfolioForm(form)) {
 
                 e.preventDefault();
-                myAlert.error("خطا","لطفا فیلدهای خطادار را تصحیح کنید.")
+                myAlert.error("خطا", "لطفا فیلدهای خطادار را تصحیح کنید.")
 
             }
         });
-    });
+        const textareas = document.querySelectorAll('textarea');
 
-    const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => focusTextarea(textarea));
 
-    textareas.forEach(textarea => {
-
-        textarea.addEventListener('click', function () {
-
-            this.setSelectionRange(0, 0);
-
+        $('#is_featured').on('change', function () {
+            $('#tags').prop('disabled', !this.checked);
         });
-
     });
 </script>

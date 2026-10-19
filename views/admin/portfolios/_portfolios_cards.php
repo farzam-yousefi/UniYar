@@ -176,7 +176,7 @@ if (isset($data['portfolios'])) {
                             <input
                                     type="checkbox"
 
-                                    class="portfolio-switch"
+                                    class="portfolio-switch featured-switch"
 
                                     data-id="<?= $portfolio['id'] ?>"
 
@@ -189,6 +189,51 @@ if (isset($data['portfolios'])) {
                         </label>
 
                     </div>
+
+                </div>
+
+                <!-- Tags form user -->
+                <div class="mt-3  portfolio-tags d-none">
+                    <label class="form-label">
+                        تگ‌ها (حداکثر ۴ تگ و جداشده با -)
+                    </label>
+
+                    <input
+                            data-required="تگ‌های پروژه"
+                            data-action="پر کنید"
+                            type="text"
+                            name="tags"
+                            class="form-control tags"
+                            value="<?= htmlspecialchars(
+                                $portfolio['tags'] ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>"
+                            placeholder="مثلاً  : mvc - php">
+
+                    <?php if (isset($errors['tags'])): ?>
+                        <div class="form-error general-form-error">
+                            <?= $errors['tags'] ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="align-items-center d-flex justify-content-around pt-2">
+                        <button type="button" class="bg bg-primary save-tags"> ثبت</button>
+                        <button type="button" class="bg bg-secondary cancel-tags"> انصراف</button>
+                    </div>
+                </div>
+
+                <!-- Tags form DATA BASE -->
+                <div class="mt-3  portfolio-tech <?= empty($portfolio['tags']) ? 'd-none' : '' ?>">
+                    <?php
+                    if(!empty($portfolio['tags'])) {
+                        $items = explode('-', $portfolio['tags']);
+                        foreach ($items as $item) {
+                            ?>
+                            <span><?= htmlspecialchars($item) ?></span>
+                            <?php
+                        }
+                    }
+                    ?>
 
                 </div>
 
@@ -222,18 +267,25 @@ if (isset($data['portfolios'])) {
 }
 ?>
 
-<script>
-    /*==========================================
-      Delete
-      ==========================================*/
-    $(document).on('click', '.btn-delete', function (event) {
-
-        event.preventDefault();
-
-        myAlert.delete(this.href);
-
-    });
-</script>
+<!--<script>-->
+<!--    /*==========================================-->
+<!--      Delete-->
+<!--      ==========================================*/-->
+<!--    $(document).on('click', '.btn-delete', function (event) {-->
+<!---->
+<!--        event.preventDefault();-->
+<!---->
+<!--        myAlert.delete(this.href);-->
+<!---->
+<!--    });-->
+<!---->
+<!--    $(document).on('change', '.featured-switch', function () {-->
+<!--        const card = $(this).closest('.portfolio-card');-->
+<!--        const tags = card.find('.portfolio-tags');-->
+<!---->
+<!--        tags.toggleClass('d-none', !this.checked);-->
+<!--    });-->
+<!--</script>-->
 
 
 

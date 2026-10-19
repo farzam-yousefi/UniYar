@@ -231,7 +231,7 @@ if (isset($_SESSION['alert-resultOperation'])) { ?>
     document.addEventListener('DOMContentLoaded', function () {
         const textareas = document.querySelectorAll('textarea');
 
-        textareas.forEach(textarea =>focusTextarea(textarea) )
+        textareas.forEach(textarea =>focusTextarea(textarea) );
 
     });
 </script>
