@@ -256,19 +256,9 @@ Sort Header
 </style>
 
 <?php
-
 if (isset($data['portfolios'])) {
-    $portfolios = $data['portfolios'][0];
-    foreach ($portfolios as &$portfolio) {
+    $portfolios = $data['portfolios'];
 
-        $portfolio['started_date'] =
-            Helper::MiladiTojalili((string)$portfolio['started_date'], '-');
-
-        $portfolio['completed_date'] =
-            Helper::MiladiTojalili((string)$portfolio['completed_date'], '-');
-    }
-
-    unset($portfolio);
 } else
     $portfolios = [];
 ?>
@@ -288,27 +278,41 @@ if (isset($data['portfolios'])) {
             <div class="sort-header">
 
                 <div class="flex row col-12">
-                    <div class="col-lg-9 col-md-8">
-                        <h2>
+                    <div class="col-md-8">
+                        <h4>
 
-                            مرتب سازی نمونه کارها
+                            مرتب سازی نمونه کارهای فعال(قابل نمایش در سایت)
 
-                        </h2>
+                        </h4>
 
-                        <p>
+                        <p class="mt-3">
 
                             برای تغییر ترتیب نمایش نمونه کارها آنها را بکشید و در محل جدید رها کنید.
 
                         </p>
                     </div>
-                    <div class="col-lg-3 col-md-4 flex text-center align-items-center ">
-                        <a href="http://localhost:8080/uniyar/admin/portfolios" class="btn btn-main w-100">
+                    <div class="col-md-4 d-flex text-center align-items-center justify-content-end gap-1 ">
+                        <a href="<?=URL ?>admin/portfolios/sort/featured" class="btn btn-main">
 
-                            <i class="bi bi-arrow-return-right ms-2"></i>
+                            <i class="bi bi-star-half ms-1"></i>
+
+                            ممتاز
+
+                        </a> <a href="<?=URL ?>admin/portfolios/sort/active" class="btn btn-main">
+
+                            <i class="bi bi-eye-fill ms-1"></i>
+
+                            همه
+
+                        </a>
+                        <a href="<?=URL ?>admin/portfolios" class="btn btn-main">
+
+                            <i class="bi bi-arrow-return-right ms-1"></i>
 
                             بازگشت
 
                         </a>
+
                     </div>
                 </div>
 
@@ -332,9 +336,7 @@ if (isset($data['portfolios'])) {
 
                             <!-- items -->
                             <?php
-                            foreach ($portfolios
-
-                                     as $portfolio) {
+                            foreach ($portfolios as $portfolio) {
                                 ?>
                                 <div class="sort-card"
 
@@ -352,7 +354,7 @@ if (isset($data['portfolios'])) {
                                             <?= htmlspecialchars(
                                                 $portfolio['title'] ?? '',
                                                 ENT_QUOTES,
-                                                'UTF-8')  ?>
+                                                'UTF-8') ?>
                                         </h5>
 
                                         <div class="sort-meta d-flex flex-wrap gap-2">

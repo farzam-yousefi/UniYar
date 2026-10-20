@@ -49,9 +49,10 @@
         object-fit: cover;
 
     }
-  .switch-width{
-      width: 40px;
-  }
+
+    .switch-width {
+        width: 40px;
+    }
 
 </style>
 
@@ -100,20 +101,29 @@ $hasError = !empty($errors);
         <div class="container-fluid">
 
 
-            <div class="portfolio-form-header">
+            <div class="portfolio-form-header d-flex justify-content-between align-items-start">
+                <div>
+                    <h2>
 
-                <h2>
+                        <?= $title = ($mode !== "add") ? "ویرایش نمونه کار" : "افزودن نمونه کار" ?>
 
-                    <?= $title = ($mode !== "add") ? "ویرایش نمونه کار" : "افزودن نمونه کار" ?>
+                    </h2>
 
-                </h2>
+                    <p class="text-muted">
 
-                <p class="text-muted">
+                        اطلاعات نمونه کاری که در سایت نمایش داده می‌شود را مدیریت کنید
 
-                    اطلاعات نمونه کاری که در سایت نمایش داده می‌شود را مدیریت کنید
+                    </p>
+                </div>
+                <div class="ms-md-auto mt-md-2 pe-md-4">
+                    <a href="<?=URL ?>admin/portfolios" class="btn btn-main">
 
-                </p>
+                        <i class="bi bi-arrow-return-right ms-1"></i>
 
+                        بازگشت
+
+                    </a>
+                </div>
             </div>
 
 
@@ -122,7 +132,6 @@ $hasError = !empty($errors);
 
                 <input type="hidden" name="portfolioId" value="<?= $portfolio['id'] ?? '' ?>">
                 <div class="portfolio-form-card">
-
 
                     <div class="row g-4">
 
@@ -565,10 +574,10 @@ $hasError = !empty($errors);
                                 </label>
 
 
-                                <input  id="is_featured"
-                                        type="checkbox"
-                                        name="is_featured"
-                                        value="1"
+                                <input id="is_featured"
+                                       type="checkbox"
+                                       name="is_featured"
+                                       value="1"
                                     <?= !empty($portfolio['is_featured']) ? 'checked' : '' ?>>
 
 
@@ -584,7 +593,7 @@ $hasError = !empty($errors);
                                 تگ‌ها (صرفاً برای ممتازها، توجه : حداکثر ۴ تگ و جداشده با -)
                             </label>
 
-                            <input  <?= empty($portfolio['is_featured']) ? 'disabled' : '' ?>
+                            <input <?= empty($portfolio['is_featured']) ? 'disabled' : '' ?>
                                     id="tags"
                                     type="text"
                                     name="tags"

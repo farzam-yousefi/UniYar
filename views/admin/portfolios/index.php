@@ -89,6 +89,12 @@ Portfolio Header
 
     }
 
+    .filter-btn .badge {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+
     /*==========================================
     Toolbar
     ==========================================*/
@@ -111,7 +117,7 @@ Portfolio Header
 
         flex-wrap: wrap;
 
-        gap: 10px;
+        gap: 20px;
 
     }
 
@@ -429,12 +435,11 @@ Portfolio Header
 ?>
 
 <?php
-
+$totalCount = $data['totalCount'] ?? 0;
+$competedCount = $data['completedCount'] ?? 0;
+$inProgressCount = $totalCount - $competedCount;
 if (isset($data['portfolios'])) {
     $portfolios = $data['portfolios'];
-    $totalCount = $data['totalCount'];
-    $competedCount = $data['completedCount'];
-    $inProgressCount = $totalCount - $competedCount;
     foreach ($portfolios as &$portfolio) {
 
         $portfolio['started_date'] =
@@ -476,7 +481,7 @@ if (isset($data['portfolios'])) {
 
                     <p>
 
-                        مدیریت نمونه‌کارهای نمایش داده شده در سایت
+                        مدیریت نمونه‌کارها جهت نمایش در سایت
 
                     </p>
 
@@ -509,27 +514,7 @@ if (isset($data['portfolios'])) {
             ==============================-->
             <div class="row g-3">
 
-                <div class="col-lg-4 col-md-6 stats">
-                    <a href="<?= URL ?>admin/portfolios/getPortfolios/all"
-
-                       class="stat-card static-filter"
-                    >
-
-                <span>
-
-                    کل نمونه کارها
-
-                </span>
-
-                        <h3>
-
-                            <?= $totalCount ?? 0 ?>
-
-                        </h3>
-
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 stats">
+                <div class="col-lg-3 col-md-6 stats">
                     <a href="<?= URL ?>admin/portfolios/getPortfolios/completed"
 
                        class="stat-card static-filter">
@@ -549,7 +534,7 @@ if (isset($data['portfolios'])) {
 
                     </a>
                 </div>
-                <div class="col-lg-4 col-md-6 stats">
+                <div class="col-lg-3 col-md-6 stats">
 
 
                     <a href="<?= URL ?>admin/portfolios/getPortfolios/in_progress"
@@ -571,6 +556,48 @@ if (isset($data['portfolios'])) {
 
                     </a>
                 </div>
+
+                <div class="col-lg-3 col-md-6 stats">
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/active"
+
+                       class="stat-card static-filter"
+                    >
+
+                <span>
+
+                    فعال ها (قابل نمایش)
+
+                </span>
+
+                        <h3>
+
+                            <?= $data['activeCount'] ?? 0 ?>
+
+                        </h3>
+
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 stats">
+                    <a href="<?= URL ?>admin/portfolios/getPortfolios/featured"
+
+                       class="stat-card static-filter"
+                    >
+
+                <span>
+
+                    ممتازها (صفحه اصلی)
+
+                </span>
+
+                        <h3>
+
+                            <?= $data['featuredCount'] ?? 0 ?>
+
+                        </h3>
+
+                    </a>
+                </div>
             </div>
             <!--==============================
             Toolbar
@@ -582,35 +609,43 @@ if (isset($data['portfolios'])) {
 
                     <div class="portfolio-filter">
 
-                        <button class="filter-btn active"
+                        <button class="filter-btn active position-relative"
                                 id="all-btn" data-filter="all">
 
                             همه
-
+                            <span class="position-absolute top-25 start-25 rounded-pill badge bg-warning">
+                                  <?= $totalCount ?>
+                            </span>
                         </button>
 
-                        <button class="filter-btn filter-website"
+                        <button class="filter-btn filter-website position-relative"
 
                                 data-filter="website">
 
                             وب سایت
-
+                            <span class="position-absolute top-25 start-25 rounded-pill badge bg-warning">
+                                  <?= $data['websiteCount'] ?? 0 ?>
+                            </span>
                         </button>
 
-                        <button class="filter-btn filter-database"
+                        <button class="filter-btn filter-database position-relative"
 
                                 data-filter="database">
 
                             پایگاه داده
-
+                            <span class="position-absolute top-25 start-25 rounded-pill badge bg-warning">
+                                  <?= $data['databaseCount'] ?? 0 ?>
+                            </span>
                         </button>
 
-                        <button class="filter-btn filter-programming"
+                        <button class="filter-btn filter-programming position-relative"
 
                                 data-filter="programming">
 
                             برنامه نویسی
-
+                            <span class="position-absolute top-25 start-25 rounded-pill badge bg-warning">
+                                  <?= $data['programmingCount'] ?? 0 ?>
+                            </span>
                         </button>
 
                     </div>

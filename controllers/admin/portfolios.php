@@ -15,10 +15,15 @@ class portfolios extends Controller
     function index()
     {
         $this->loadModel("portfolio");
-        $result = $this->model->getAllPortfolios();
-        $data['portfolios'] = $result[0];
-        $data['totalCount'] = $result[1]['totalCount'];
-        $data['completedCount'] = $result[2]['completedCount'];
+        $data['portfolios'] = $this->model->getAllPortfolios();
+        $statics=$this->model->getStatics();
+        $data['totalCount'] = $statics[0]['totalCount'];
+        $data['completedCount'] = $statics[1]['completedCount'];
+        $data['activeCount'] = $statics[2]['activeCount'];
+        $data['featuredCount'] = $statics[3]['featuredCount'];
+        $data['websiteCount'] = $statics[4]['websiteCount'];
+        $data['databaseCount'] = $statics[5]['databaseCount'];
+        $data['programmingCount'] = $statics[6]['programmingCount'];
         $this->view("admin/portfolios/index", $data,
             "admin", "admin");
     }
@@ -27,7 +32,7 @@ class portfolios extends Controller
     {
 
         $this->loadModel("portfolio");
-        $data['portfolios'] = $this->model->getPortfolios(strtoupper($status));
+        $data['portfolios'] = $this->model->getPortfolios($status);
         $this->view("admin/portfolios/_portfolios_cards", $data, "admin", "admin",
             false, false, false, false);
     }
@@ -82,10 +87,10 @@ class portfolios extends Controller
 
     }
 
-    function sort()
+    function sort($mode='active')
     {
         $this->loadModel("portfolio");
-        $data['portfolios'] = $this->model->getAllPortfolios("display_order", "asc");
+        $data['portfolios'] = $this->model->getVisiblePortfoliosForSort($mode);
         $this->view("admin/portfolios/sort", $data,
             "admin", "admin");
 
