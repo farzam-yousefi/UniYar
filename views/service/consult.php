@@ -173,7 +173,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="hero-buttons justify-content-center">
 
-                        <a href=<?= URL ?>order/index/CONSULT" class="btn btn-main">
+                        <a href="<?= URL ?>order#orderForm" class="btn btn-main">
 
                             ثبت درخواست مشاوره
                             <i class="fas fa-chevron-left"></i>
@@ -189,7 +189,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <img
                             src="<?= URL ?>public/images/services/consult-hero.png"
-                            class=" hero-image"
+                            class="img-fluid hero-image"
                             alt="مشاوره آموزشی">
 
                 </div>

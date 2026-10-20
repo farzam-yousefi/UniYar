@@ -278,7 +278,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="hero-buttons justify-content-center" >
 
-                        <a href="<?=URL?>admin/order" class="btn btn-main">
+                        <a href="<?= URL ?>order#orderForm" class="btn btn-main">
 
                             ثبت درخواست
                             <i class="fas fa-chevron-left"></i>
@@ -296,7 +296,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
                 <div class="col-lg-6 text-center order-1 order-lg-2">
                     <img src="<?= URL ?>public/images/services/project-hero.png"
 
-                         class="hero-image"
+                         class="img-fluid hero-image"
 
                          alt="Project Service">
 
@@ -344,7 +344,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="<?= URL ?>public/images/portfolio/project1.jpg"
+                        <img src="<?= URL ?>public/images/portfolios/PROGRAMMING/LibraryManagement.png"
                              alt="">
 
                         <div class="portfolio-body">
@@ -379,7 +379,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="<?= URL ?>public/images/portfolio/project2.jpg"
+                        <img src="<?= URL ?>public/images/portfolios/WEBSITE/CPR.png"
                              alt="">
 
                         <div class="portfolio-body">
@@ -392,7 +392,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                             <h5>
 
-                                فروشگاه اینترنتی
+                                 فروشگاه اینترنتی
 
                             </h5>
 
@@ -414,7 +414,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="portfolio-card">
 
-                        <img src="<?= URL ?>public/images/portfolio/project3.jpg"
+                        <img src="<?= URL ?>public/images/portfolios/DATABASE/UniversityDatabaseERD.png"
                              alt="">
 
                         <div class="portfolio-body">

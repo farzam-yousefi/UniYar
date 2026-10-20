@@ -15,7 +15,7 @@ if (isset($data['isFeaturedPortfolios'])) {
                         از ایده تا تحویل کنارتان می مانیم</span>
                     <h1 class="display-4 fw-bold mt-3">هر درخواست،<br>یک راه‌حل تخصصی</h1>
                     <p class="text-muted mt-3">انجام پروژه، تدریس خصوصی، رفع اشکال و مشاوره آموزشی.</p><a
-                            class="btn btn-main px-4 py-2 mt-2" href="<?= URL ?>order">ثبت درخواست</a></div>
+                            class="btn btn-main px-4 py-2 mt-2" href="<?= URL ?>order#orderForm">ثبت درخواست</a></div>
                 <div class="col-lg-6">
 
 

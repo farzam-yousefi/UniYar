@@ -523,6 +523,280 @@
 
     </section>
 
+
+    <!--    /* ================= -SERVICES ================= */-->
+
+    <section class="services-section">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <!-- پروژه -->
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="service-box">
+
+                        <div class="text-center service-image">
+
+                            <img class="img-fluid "
+
+                                 src="<?= URL ?>public/images/services/project.png" alt="project">
+
+
+                            <h3 class="pt-2">
+
+                                انجام پروژه
+
+                            </h3>
+
+                            <p>
+
+                                انجام انواع پروژه‌های دانشگاهی، برنامه‌نویسی، پایگاه داده،
+                                طراحی سایت.
+
+                            </p>
+
+                            <ul class="service-list">
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+                                    پروژه برنامه نویسی
+                                </li>
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+                                    پروژه پایگاه داده
+                                </li>
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+                                    طراحی سایت
+                                </li>
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+                                   پروژه های تحقیقاتی
+                                </li>
+
+                            </ul>
+                        </div>
+                            <div class="service-buttons">
+
+                                <a href="<?= URL ?>service/projectService"
+                                   class="btn btn-outline-main">
+
+                                    جزئیات
+
+                                </a>
+
+                                <a href="<?= URL ?>order#orderForm" class="btn btn-main">
+
+                                    ثبت درخواست
+
+                                </a>
+
+                            </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- تدریس -->
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="service-box">
+
+                        <div class="text-center service-image">
+
+                            <img class="img-fluid hero-image"
+                                 src="<?= URL ?>public/images/services/teach.png" alt="private teach">
+                            <h3 class="pt-2">
+
+                                تدریس خصوصی
+
+                            </h3>
+
+                            <p>
+
+                                تدریس خصوصی حضوری و آنلاین توسط مدرسین مجرب دانشگاه.
+
+                            </p>
+
+                            <ul class="service-list">
+
+                                <li>
+                                <i class="fas fa-check"></i>
+                                برنامه‌نویسی</li>
+                                <li>
+                                <i class="fas fa-check"></i>
+
+                                ریاضی</li>
+                                <li>
+                                <i class="fas fa-check"></i>
+                                دروس تخصصی</li>
+
+                            </ul>
+                        </div>
+                            <div class="service-buttons">
+
+                                <a href="<?= URL ?>service/privateTeachingService" class="btn btn-outline-main">
+
+                                    جزئیات
+
+                                </a>
+
+                                <a href="<?= URL ?>order#orderForm" class="btn btn-main">
+
+                                    ثبت درخواست
+
+                                </a>
+
+                            </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- رفع اشکال -->
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="service-box">
+
+                        <div class="text-center service-image">
+
+                            <img class="img-fluid " src="<?= URL ?>public/images/services/debug.png"
+                                 alt="correct-code">
+
+
+                            <h3 class="pt-2">
+
+                                رفع اشکال
+
+                            </h3>
+
+                            <p>
+
+                                بررسی و رفع اشکال پروژه‌ها، کدها و تمرین‌های دانشگاهی.
+
+                            </p>
+
+                            <ul class="service-list">
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+
+                                    Debug
+                                </li>
+                                <li><i class="fas fa-check"></i>
+
+                                    بهینه‌سازی
+                                </li>
+                                <li>
+                                <i class="fas fa-check"></i>
+
+                                    توضیح کد
+                                </li>
+
+                            </ul>
+                        </div>
+                            <div class="service-buttons">
+
+                                <a href="<?= URL ?>service/debugService" class="btn btn-outline-main">
+
+                                    جزئیات
+
+                                </a>
+
+                                <a href="<?= URL ?>order#orderForm" class="btn btn-main">
+
+                                    ثبت درخواست
+
+                                </a>
+
+                            </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- مشاوره -->
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="service-box">
+
+                        <div class="text-center service-image">
+
+                            <img class="img-fluid " src="<?= URL ?>public/images/services/consult.png"
+                                 alt="consultance">
+
+
+                            <h3 class="pt-2">
+
+                                مشاوره آموزشی
+
+                            </h3>
+
+                            <p>
+
+                                انتخاب موضوع پروژه، مسیر یادگیری و برنامه‌ریزی تحصیلی.
+
+                            </p>
+
+                            <ul class="service-list">
+
+                                <li>
+                                    <i class="fas fa-check"></i>
+
+                                    انتخاب پروژه
+                                </li>
+
+                                <li>
+                                    <i class="fas fa-check"></i>انتخاب مسیر یادگیری
+                                </li>
+
+                                <li>
+                                    <i class="fas fa-check"></i>مشاوره تخصصی
+                                </li>
+
+                            </ul>
+                        </div>
+                            <div class="service-buttons">
+
+                                <a href="<?= URL ?>service/consultService"
+                                        class="btn btn-outline-main">
+
+                                    جزئیات
+
+                                </a>
+
+                                <a href="<?= URL ?>order#orderForm" class="btn btn-main">
+
+                                    ثبت درخواست
+
+                                </a>
+
+                            </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--    /* ================= -PROCESS ================= */-->
     <section class="process-section">
 
         <div class="container">
@@ -616,277 +890,6 @@
                     </div>
 
                     <h5>تحویل نهایی</h5>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-    <!--    /* ================= -SERVICES ================= */-->
-
-    <section class="services-section">
-
-        <div class="container">
-
-            <div class="row g-4">
-
-                <!-- پروژه -->
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-
-                    <div class="service-box">
-
-                        <div class="text-center service-image">
-
-                            <img class="img-fluid "
-
-                                 src="<?= URL ?>public/images/services/project.png" alt="project">
-
-
-                            <h3 class="pt-2">
-
-                                انجام پروژه
-
-                            </h3>
-
-                            <p>
-
-                                انجام انواع پروژه‌های دانشگاهی، برنامه‌نویسی، پایگاه داده،
-                                طراحی سایت.
-
-                            </p>
-
-                            <ul class="service-list">
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-                                    پروژه برنامه نویسی
-                                </li>
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-                                    پروژه پایگاه داده
-                                </li>
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-                                    طراحی سایت
-                                </li>
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-                                   پروژه های تحقیقاتی
-                                </li>
-
-                            </ul>
-                        </div>
-                            <div class="service-buttons">
-
-                                <a href="<?= URL ?>service/projectService"
-                                   class="btn btn-outline-main">
-
-                                    جزئیات
-
-                                </a>
-
-                                <a href="<?= URL ?>order" class="btn btn-main">
-
-                                    ثبت درخواست
-
-                                </a>
-
-                            </div>
-
-
-                    </div>
-
-                </div>
-
-                <!-- تدریس -->
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-
-                    <div class="service-box">
-
-                        <div class="text-center service-image">
-
-                            <img class="img-fluid "
-                                 src="<?= URL ?>public/images/services/teach.png" alt="private teach">
-                            <h3 class="pt-2">
-
-                                تدریس خصوصی
-
-                            </h3>
-
-                            <p>
-
-                                تدریس خصوصی حضوری و آنلاین توسط مدرسین مجرب دانشگاه.
-
-                            </p>
-
-                            <ul class="service-list">
-
-                                <li>
-                                <i class="fas fa-check"></i>
-                                برنامه‌نویسی</li>
-                                <li>
-                                <i class="fas fa-check"></i>
-
-                                ریاضی</li>
-                                <li>
-                                <i class="fas fa-check"></i>
-                                دروس تخصصی</li>
-
-                            </ul>
-                        </div>
-                            <div class="service-buttons">
-
-                                <a href="<?= URL ?>service/privateTeachingService" class="btn btn-outline-main">
-
-                                    جزئیات
-
-                                </a>
-
-                                <a href="<?= URL ?>order" class="btn btn-main">
-
-                                    ثبت درخواست
-
-                                </a>
-
-                            </div>
-
-
-                    </div>
-
-                </div>
-
-                <!-- رفع اشکال -->
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-
-                    <div class="service-box">
-
-                        <div class="text-center service-image">
-
-                            <img class="img-fluid " src="<?= URL ?>public/images/services/debug.png"
-                                 alt="correct-code">
-
-
-                            <h3 class="pt-2">
-
-                                رفع اشکال
-
-                            </h3>
-
-                            <p>
-
-                                بررسی و رفع اشکال پروژه‌ها، کدها و تمرین‌های دانشگاهی.
-
-                            </p>
-
-                            <ul class="service-list">
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-
-                                    Debug
-                                </li>
-                                <li><i class="fas fa-check"></i>
-
-                                    بهینه‌سازی
-                                </li>
-                                <li>
-                                <i class="fas fa-check"></i>
-
-                                    توضیح کد
-                                </li>
-
-                            </ul>
-                        </div>
-                            <div class="service-buttons">
-
-                                <a href="<?= URL ?>service/debugService" class="btn btn-outline-main">
-
-                                    جزئیات
-
-                                </a>
-
-                                <a href="<?= URL ?>order" class="btn btn-main">
-
-                                    ثبت درخواست
-
-                                </a>
-
-                            </div>
-
-
-                    </div>
-
-                </div>
-
-                <!-- مشاوره -->
-
-                <div class="col-lg-3 col-md-6 col-sm-6">
-
-                    <div class="service-box">
-
-                        <div class="text-center service-image">
-
-                            <img class="img-fluid " src="<?= URL ?>public/images/services/consult.png"
-                                 alt="consultance">
-
-
-                            <h3 class="pt-2">
-
-                                مشاوره آموزشی
-
-                            </h3>
-
-                            <p>
-
-                                انتخاب موضوع پروژه، مسیر یادگیری و برنامه‌ریزی تحصیلی.
-
-                            </p>
-
-                            <ul class="service-list">
-
-                                <li>
-                                    <i class="fas fa-check"></i>
-
-                                    انتخاب پروژه
-                                </li>
-
-                                <li>
-                                    <i class="fas fa-check"></i>انتخاب مسیر یادگیری
-                                </li>
-
-                                <li>
-                                    <i class="fas fa-check"></i>مشاوره تخصصی
-                                </li>
-
-                            </ul>
-                        </div>
-                            <div class="service-buttons">
-
-                                <a href="<?= URL ?>service/consultService"
-                                        class="btn btn-outline-main">
-
-                                    جزئیات
-
-                                </a>
-
-                                <a href="<?= URL ?>order" class="btn btn-main">
-
-                                    ثبت درخواست
-
-                                </a>
-
-                            </div>
-
-
-                    </div>
 
                 </div>
 

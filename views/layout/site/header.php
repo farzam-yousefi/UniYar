@@ -72,7 +72,7 @@ if ($openTrackingModal): ?>
 
                 </ul>
                 <div class="d-flex gap-2 mt-3 mt-lg-0">
-                    <a class="btn btn-main p-3" href="<?= URL ?>order">
+                    <a class="btn btn-main p-3" href="<?= URL ?>order#orderForm">
                         ثبت درخواست
                     </a>
                     <button
@@ -148,7 +148,7 @@ Tracking Request Modal
                         </div>
                         <div
                                 id="trackingError"
-                                class="tracking-error">
+                                class="tracking-error form-error">
 
                         </div>
                         <button

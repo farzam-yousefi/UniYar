@@ -201,7 +201,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="hero-buttons">
 
-                        <a href="<?= URL ?>order"
+                        <a href="<?= URL ?>order#orderForm"
 
                            class="btn btn-main">
 

@@ -165,7 +165,7 @@ $serviceTitle= $data['serviceTitle'] ?? '' ;
 
                     <div class="hero-buttons">
 
-                        <a href="<?= URL ?>order" class="btn btn-main">
+                        <a href="<?= URL ?>order#orderForm" class="btn btn-main">
 
                             درخواست رفع اشکال
 
