@@ -60,7 +60,8 @@ class model_order extends Model
         $sql = "select full_name, mobile,email,orders.id as order_id, major,level,
 orders.title as title,tracking_code,
   orders.description, delivery_date,first_price,services.type as service_id ,
-  service_items_id,has_file,customer_id, teaching_type from orders,services,customers  where tracking_code=?
+  service_items_id,has_file,customer_id, teaching_type, orders.created_at as submission_date 
+   , orders.status from orders,services,customers   where tracking_code=?
    and orders.service_id=services.id and orders.customer_id=customers.id";
         $order = $this->myFetch($sql, [$code]);
         if (!$order) {

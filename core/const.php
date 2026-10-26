@@ -1,7 +1,7 @@
 <?php
 
 define("",'');
-define("PENDING", "در انتظار");
+define("PENDING", "در حال انتظار");
 define("REVIEWING", "در حال بررسی");
 define("CANCELED", "لغو شد");
 

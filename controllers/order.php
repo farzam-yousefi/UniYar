@@ -69,6 +69,39 @@ class Order extends Controller
     }
 
 
+    public function getOrderByTrackingCode($code)
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $order = $this->model->getOrderByTrackingCode($code);
+
+        if (!$order) {
+            http_response_code(404);
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'کد پیگیری معتبر نیست.'
+            ], JSON_UNESCAPED_UNICODE);
+
+            exit;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'tracking' => $order['tracking_code'],
+            'service' => trim($order['service_id'] ?? ''),
+            'category' => trim($order['project_category'] ?? ''),
+            'date' =>  Helper::jaliliDate(
+                Helper::MiladiTojalili(
+                    date('Y-m-d', strtotime($order['submission_date'] ?? ''))
+                )
+            ),
+            'status' => $order['status'],
+        ], JSON_UNESCAPED_UNICODE);
+
+        exit;
+    }
+
     function action($mode)
     {
         $files = [];

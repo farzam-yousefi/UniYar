@@ -14,7 +14,7 @@ unset($_SESSION['open_trackingModal']);
 if ($openTrackingModal): ?>
 
     <script>
-        let err="<?=$errors?>";
+        let err = "<?=$errors?>";
         document.addEventListener('DOMContentLoaded', function () {
 
             const modalElement =
@@ -23,8 +23,7 @@ if ($openTrackingModal): ?>
             const modal =
                 bootstrap.Modal.getOrCreateInstance(modalElement);
             const trackingError = document.getElementById("trackingError");
-            document.getElementById('defaultMsg').classList.add('d-none');
-            trackingError.innerHTML =err;
+            trackingError.innerHTML = err;
             modal.show();
 
         });
@@ -71,27 +70,28 @@ if ($openTrackingModal): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= URL ?>contact">تماس با ما</a></li>
 
                 </ul>
-                <div class="d-flex gap-2 mt-3 mt-lg-0">
-                    <a class="btn btn-main p-3" href="<?= URL ?>order#orderForm">
-                        ثبت درخواست
-                    </a>
-                    <button
-                            type="button"
-
-                            class="btn btn-outline-main p-3"
-
-                            data-bs-toggle="modal"
-                            data-bs-target="#trackingModal">
-
-                        <i class="bi bi-search me-2"></i>
-
-                        پیگیری/ویرایش
-
-                    </button>
-                </div>
             </div>
+            <div class="d-flex gap-2 mt-3 mt-lg-0 navbar-orders-btns">
+                <a class="btn btn-main p-2" href="<?= URL ?>order#orderForm">
+                    ثبت درخواست
+                </a>
+                <button
+                        type="button"
 
+                        class="btn btn-outline-main tracking-btn p-2"
+
+                        data-bs-toggle="modal"
+                        data-bs-target="#trackingModal">
+
+                    <i class="bi bi-search me-2"></i>
+
+                    پیگیری/ویرایش
+
+                </button>
+            </div>
         </div>
+
+
     </nav>
 </header>
 <?php include ROOT_PATH . '/views/shared/loadingOverlay.php'; ?>
@@ -105,7 +105,7 @@ Tracking Request Modal
      tabindex="-1"
      aria-hidden="true">
 
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
 
         <div class="modal-content tracking-modal">
 
@@ -117,7 +117,7 @@ Tracking Request Modal
 
                 <div id="trackingStep1">
                     <form method="get" action="<?= URL ?>order/edit"
-                        id="editByTrackingCode">
+                          id="editByTrackingCode">
 
                         <input type="hidden"
                                name="return_url"
@@ -133,10 +133,6 @@ Tracking Request Modal
                             </h4>
 
                         </div>
-
-                        <p id="defaultMsg">
-                            کد پیگیری خود را وارد کنید.
-                        </p>
 
                         <div class="form-group mt-4">
 
@@ -230,9 +226,7 @@ Tracking Request Modal
 
                                     <span id="rTrackingCode">
 
-                        UY-258741
-
-                    </span>
+                                    </span>
 
                                 </div>
 
@@ -245,10 +239,7 @@ Tracking Request Modal
                                     <strong>نوع خدمت</strong>
 
                                     <span id="rService">
-
-                        پروژه برنامه نویسی
-
-                    </span>
+                                    </span>
 
                                 </div>
 
@@ -261,10 +252,7 @@ Tracking Request Modal
                                     <strong>تاریخ ثبت</strong>
 
                                     <span id="rDate">
-
-                        1405/05/20
-
-                    </span>
+                                    </span>
 
                                 </div>
 
@@ -277,11 +265,8 @@ Tracking Request Modal
                                     <strong>وضعیت</strong>
 
                                     <span id="rStatus"
-                                          class="badge bg-primary tracking-status">
-
-                        در حال بررسی
-
-                    </span>
+                                          class="badge tracking-status">
+                                    </span>
 
                                 </div>
 
@@ -292,10 +277,7 @@ Tracking Request Modal
                     </div>
 
                     <div id="rDescription"
-                         class="tracking-description">
-
-                        درخواست شما توسط کارشناسان در حال بررسی است.
-
+                         class="tracking-description text-primary">
                     </div>
 
                     <div class="tracking-actions mt-2">
@@ -321,7 +303,7 @@ Tracking Request Modal
 </div>
 
 <script>
-    document.getElementById("defaultMsg").classList.remove('d-none');
+
     /*==================================================
          SEARCH SECTION
          ==================================================*/
@@ -359,62 +341,117 @@ Tracking Request Modal
 
             const tracking =
                 document.getElementById("trackingCode").value.trim();
+            const trackingError = document.getElementById("trackingError");
+
+            trackingError.textContent = "";
+
 
             if (tracking === "") {
-
-                document.getElementById("trackingError").innerHTML =
-                    "لطفا کد پیگیری را وارد کنید.";
-                document.getElementById("defaultMsg").classList.add('d-none');
+                trackingError.textContent = "لطفاً کد پیگیری را وارد کنید.";
                 return;
             }
 
-            showStep("trackingLoading");
 
             // -------------------
             // Ajax اینجا
             // -------------------
 
-            /*
+
             $.ajax({
+                type: "GET",
+                dataType: "json",//text or json
+                url: "<?= URL ?>order/getOrderByTrackingCode/" + encodeURIComponent(tracking),
 
-                ...
+                beforeSend: function () {
+                    showStep("trackingLoading");
+                    //$('#imgSpinner1').show();
 
-                success:function(data){
+                },
 
-                    document.getElementById("rTrackingCode").innerHTML=data.tracking;
+                success: function (data) {
 
-                    document.getElementById("rService").innerHTML=data.service;
+                    if (!data.success) {
+                        showStep("trackingStep1");
+                        trackingError.textContent =
+                            data.message || "کد پیگیری معتبر نیست.";
+                        trackingError.classList.remove("d-none");
+                        return;
+                    }
 
-                    document.getElementById("rDate").innerHTML=data.date;
+                    let status = data.status || "";
+                    let service = data.service || "";
+                    let category = data.category || "";
+                    let bgStatus = '';
+                    switch (status) {
+                        case 'PENDING':
+                            bgStatus = 'bg-secondary';
+                            break;
+                        case 'REVIEWING':
+                            bgStatus = 'bg-warning';
+                            break;
+                        case 'IN_PROGRESS':
+                            bgStatus = 'bg-primary';
+                            break;
+                        case 'COMPLETED':
+                            bgStatus = 'bg-success';
+                            break;
+                        case 'CANCELED':
+                            bgStatus = 'bg-danger';
+                            break;
 
-                    document.getElementById("rStatus").innerHTML=data.status;
+                    }
+                    document.getElementById("rTrackingCode").textContent =
+                        data.tracking || "";
 
-                    document.getElementById("rDescription").innerHTML=data.description;
+                    document.getElementById("rService").textContent =
+                        SERVICE_TYPE[data.service] + ' ' +
+                        PROJECT_TYPE[data.category];
+
+
+                    document.getElementById("rDate").textContent =
+                        data.date || "";
+
+                    document.getElementById("rStatus").classList.add(bgStatus);
+                    document.getElementById("rStatus").textContent =
+                        ORDER_STATUS[data.status];
+
+                    document.getElementById("rDescription").textContent =
+                        'درخواست شما توسط کارشناسان ما ' +
+                        ORDER_STATUS[data.status] +
+                        ' است.'
+                    ;
+
 
                     showStep("trackingResult");
 
                 },
 
-                error:function(){
+                error: function (xhr) {
 
                     showStep("trackingStep1");
 
-                    document.getElementById("trackingError").innerHTML =
-                        "کد پیگیری معتبر نیست.";
+                    if (xhr.status === 404) {
+                        trackingError.textContent =
+                            "کد پیگیری معتبر نیست.";
+                    } else {
+                        trackingError.textContent =
+                            "خطایی در ارتباط با سرور رخ داد. لطفاً دوباره تلاش کنید.";
+                    }
 
+                    trackingError.classList.remove("d-none");
                 }
 
             });
 
-            */
+
             //for testing
-            showStep("trackingLoading");
-
-            setTimeout(function () {
-
-                showStep("trackingResult");
-
-            }, 2500);
+            // showStep("trackingLoading");
+            //
+            // setTimeout(function () {
+            //
+            //     showStep("trackingResult");
+            //
+            // }, 2500);
 
         });
 
@@ -456,13 +493,35 @@ Tracking Request Modal
 
         if (trackingCode === "") {
 
-            trackingError.innerHTML =
+            trackingError.textContent =
                 "لطفا کد پیگیری را وارد کنید.";
-            document.getElementById("defaultMsg").classList.add('d-none');
             e.preventDefault();
             return;
         }
         trackingError.innerHTML = "";
 
     });
+
+
+    const ORDER_STATUS = {
+        PENDING: <?= json_encode(PENDING, JSON_UNESCAPED_UNICODE) ?>,
+        REVIEWING: <?= json_encode(REVIEWING, JSON_UNESCAPED_UNICODE) ?>,
+        CANCELED: <?= json_encode(CANCELED, JSON_UNESCAPED_UNICODE) ?>,
+        IN_PROGRESS: <?= json_encode(IN_PROGRESS, JSON_UNESCAPED_UNICODE) ?>,
+        COMPLETED: <?= json_encode(COMPLETED, JSON_UNESCAPED_UNICODE) ?>
+    };
+
+    const SERVICE_TYPE = {
+        PROJECT: <?= json_encode(PROJECT, JSON_UNESCAPED_UNICODE) ?>,
+        TEACH: <?= json_encode(TEACH, JSON_UNESCAPED_UNICODE) ?>,
+        DEBUG: <?= json_encode(DEBUG, JSON_UNESCAPED_UNICODE) ?>,
+        CONSULT: <?= json_encode(CONSULT, JSON_UNESCAPED_UNICODE) ?>
+    };
+    const PROJECT_TYPE = {
+        WEBSITE: <?= json_encode(WEBSITE, JSON_UNESCAPED_UNICODE) ?>,
+        DATABASE: <?= json_encode(DATABASE, JSON_UNESCAPED_UNICODE) ?>,
+        PROGRAMMING: <?= json_encode(PROGRAMMING, JSON_UNESCAPED_UNICODE) ?>,
+        RESEARCH: <?= json_encode(RESEARCH, JSON_UNESCAPED_UNICODE) ?>
+    };
+
 </script>

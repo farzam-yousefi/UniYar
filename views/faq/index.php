@@ -419,7 +419,7 @@ FAQ Hero
                 <input
                         type="search" id="faqSearch" name="search"
                         class="form-control pe-5 search"
-                        placeholder="جستجوی در سوال ها و پاسخ ها...">
+                        placeholder="جستجو در سوال ها و پاسخ ها...">
                 <button
                         type="submit"
                         class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0">

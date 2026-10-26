@@ -87,6 +87,16 @@ Outline Button
 
 }
 
+.modal-dialog {
+    margin: 80px auto 0;
+}
+
+.form-error{
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+
 /*#trackingStep1{*/
    /**/
     /*justify-content: center;*/
@@ -94,139 +104,125 @@ Outline Button
  /**/
 /*}*/
 
-/* ---------- Tablet ---------- */
+/* ==============================
+   Mobile Navbar
+============================== */
 
-@media (max-width:991.98px){
+@media (max-width: 991.98px) {
 
-    .navbar-collapse{
-
-        text-align:center;
-        padding-top:20px;
-
+    .navbar {
+        position: relative;
+        padding: 6px 0;
     }
 
-    .navbar-nav{
-
-        gap:8px !important;
-
+    /* ردیف اصلی هدر */
+    .navbar > .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 6px;
     }
 
-    .btn-main ,.btn-outline-main{
-
-        display:inline-block;
-        margin-top:20px;
-
+    /* همبرگر */
+    .navbar-toggler {
+        order: 1;
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 4px 6px;
+        line-height: 1;
+        position: relative;
+        z-index: 1051;
     }
 
-}
-
-
-/*==============================
-Mobile Navbar
-==============================*/
-
-@media (max-width:991.98px){
-
-    .navbar>.container{
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:space-between;
-
+    /* دکمه‌های ثبت درخواست و پیگیری */
+    .navbar-orders-btns {
+        order: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        gap: 4px !important;
+        margin: 0 !important;
+        padding: 0;
     }
 
-    .navbar-toggler{
-
-        order:1;
-
-        margin:0;
-
+    .navbar-orders-btns .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        padding: 0 7px !important;
+        margin: 0 !important;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 500;
+        white-space: nowrap;
+        border-width: 1px;
     }
 
-    .navbar-brand{
-
-        order:2;
-
-        margin:0;
-
+    .navbar-orders-btns .bi {
+        font-size: 15px;
+        margin: 0 0 0 3px !important;
     }
 
-}
-/*==================================
-Mobile Menu Alignment
-===================================*/
-
-@media (max-width:991.98px){
-
-    /* کل منوی باز شده */
-    .navbar-collapse{
-        display:flex;
-        flex-direction:column;
-        align-items:flex-start;
-        text-align:right;
-        padding-top:20px;
+    /* لوگو */
+    .navbar-brand {
+        order: 3;
+        flex: 0 1 auto;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        z-index: 1051;
     }
 
-    /* لیست منو */
-    .navbar-nav{
-        width:100%;
-        margin:0 !important;
-        align-items:flex-start;
+    .logo {
+        display: block;
+        width: 100px;
+        height: auto;
     }
 
-    .navbar-nav .nav-item{
-        width:100%;
+    /* منوی بازشونده */
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        width: 100%;
+
+        display: none;
+        padding: 12px 20px;
+        background: #F8FBFF;
+
+        border-top: 1px solid #E8EEF5;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+        z-index: 1050;
+
+        text-align: right;
     }
 
-    .navbar-nav .nav-link{
-        display:block;
-        width:100%;
-        text-align:right;
-        padding:14px 0;
+    /* اجازه می‌ده Bootstrap منو را هنگام بازشدن نمایش دهد */
+    .navbar-collapse.show {
+        display: block;
     }
 
-    /* دکمه ثبت درخواست */
-    .navbar-collapse .btn-main{
-        margin-top:20px;
-        align-self:flex-start;
+    .navbar-nav {
+        width: 100%;
+        margin: 0 !important;
+        align-items: flex-start;
+        gap: 0 !important;
     }
 
-}
-@media (max-width:991.98px){
-
-    .navbar{
-        position:relative;
+    .navbar-nav .nav-item {
+        width: 100%;
     }
 
-    .navbar-brand{
-        position:relative;
-        z-index:1051;
+    .navbar-nav .nav-link {
+        display: block;
+        width: 100%;
+        padding: 9px 0;
+        text-align: right;
     }
-
-    .navbar-toggler{
-        position:relative;
-        z-index:1051;
-    }
-
-    .navbar-collapse{
-
-        position:absolute;
-        top:100%;
-        right:0;
-        width:100%;
-
-        background:#F8FBFF;
-
-        padding:20px;
-
-        border-top:1px solid #E8EEF5;
-        box-shadow:0 10px 25px rgba(0,0,0,.08);
-
-        z-index:1050;
-    }
-
 }
 
 /*==============================
@@ -241,7 +237,7 @@ Tracking Result Items
 
     border-radius:14px;
 
-    padding:16px 18px;
+    padding:12px 14px;
 
     text-align:right;
 
@@ -263,7 +259,7 @@ Tracking Result Items
 
 .tracking-item span{
 
-    color: #b3c3cc;
+    color: #4b4b4b;
 
 }
 
